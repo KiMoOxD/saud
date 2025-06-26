@@ -52,7 +52,7 @@ const Logo = () => (
         </motion.div>
         <div className="flex flex-col">
             <span className="text-2xl font-black bg-gradient-to-l from-slate-800 via-slate-700 to-teal-600 bg-clip-text text-transparent">
-                استشارات الخليج
+                شركة سعود
             </span>
             <div className="h-0.5 w-0 group-hover:w-full bg-gradient-to-l from-teal-500 to-slate-600 transition-all duration-500 rounded-full" />
         </div>
