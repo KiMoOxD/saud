@@ -12,10 +12,10 @@ const notoSansArabic = Noto_Sans_Arabic({
 });
 
 export const metadata = {
-  title: "استشارات الخليج | خدمات استشارية متكاملة",
+  title: "شركة سعود | خدمات استشارية متكاملة",
   description:
     "شركة استشارات متخصصة في دراسات الجدوى وخطط الأعمال والدراسات الفنية في المملكة العربية السعودية ودول الخليج",
-    generator: 'v0.dev'
+    generator: 'Kimo'
 }
 
 export default function RootLayout({ children }) {
