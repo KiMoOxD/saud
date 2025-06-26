@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect } from "react"
 import { motion, useInView, animate } from "framer-motion"
-import { Search, MapPin, DollarSign, TrendingUp, ArrowLeft, BarChart2, Wind } from "lucide-react"
+import { Search, MapPin, DollarSign, TrendingUp, ArrowLeft, ArrowRight, Wind } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
