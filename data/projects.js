@@ -1,5 +1,5 @@
 export const projectsData = {
-  السعودية: {
+  saudi_arabia: {
     Healthcare: [
       {
         id: "medical-sports-center-riyadh",
@@ -407,7 +407,7 @@ export const projectsData = {
         sector: "Manufacturing",
       },
     ],
-    Real_Estate_Commercial: [
+    Commercial: [
       {
         id: "malqa-towers-riyadh",
         project_name: "تطوير عقاري (أبراج الملقا)",
@@ -532,7 +532,7 @@ export const projectsData = {
         sector: "Tourism",
       },
     ],
-    Labor_HR_Services: [
+    HR_Services: [
       {
         id: "recruitment-company-jeddah",
         project_name: "شركة استقدام العمالة",
@@ -585,7 +585,7 @@ export const projectsData = {
         sector: "Labor_HR_Services",
       },
     ],
-    Design_Interior_Decoration: [
+    Design: [
       {
         id: "interior-design-office",
         project_name: "مكتب التصميم الداخلي",
@@ -657,7 +657,7 @@ export const projectsData = {
         sector: "Technology",
       },
     ],
-    Mining_Raw_Materials: [
+    Industry: [
       {
         id: "silica-sand-project-tabuk",
         project_name: "مشروع رمال السيليكا",
@@ -676,7 +676,7 @@ export const projectsData = {
         sector: "Mining_Raw_Materials",
       },
     ],
-    Labor_HR_Services_Food: [
+    Food: [
       {
         id: "catering-kitchen-mecca",
         project_name: "مطبخ الإعاشة المركزي",
@@ -696,7 +696,7 @@ export const projectsData = {
       },
     ],
   },
-  مصر: {
+  egypt: {
     Agriculture: [
       {
         id: "tomato-drying-factory-luxor",
@@ -721,7 +721,7 @@ export const projectsData = {
       },
     ],
   },
-  "الإمارات العربية المتحدة": {
+  united_arab_emirates: {
     Technology: [
       {
         id: "ecommerce-platform-dubai",
@@ -761,7 +761,7 @@ export const projectsData = {
         sector: "Technology",
       },
     ],
-    Real_Estate_Commercial: [
+    Commercial: [
       {
         id: "gulf-towers-abu-dhabi",
         project_name: "تطوير عقاري (أبراج الخليج)",
@@ -783,7 +783,7 @@ export const projectsData = {
       },
     ],
   },
-  قطر: {
+  qatar: {
     Tourism: [
       {
         id: "eco-resort-doha",
@@ -848,20 +848,23 @@ export const projectsData = {
 
 // Helper functions to get all projects and filter them
 export const getAllProjects = () => {
-  const allProjects = []
-  Object.keys(projectsData).forEach((country) => {
-    Object.keys(projectsData[country]).forEach((sector) => {
-      projectsData[country][sector].forEach((project) => {
+  const allProjects = [];
+  Object.keys(projectsData).forEach((countryKey) => {
+    const countryData = projectsData[countryKey];
+    Object.keys(countryData).forEach((sectorKey) => {
+      const projectsArray = countryData[sectorKey];
+      projectsArray.forEach((project) => {
+        // This new logic ensures the project's own 'sector' field is used,
+        // and adds the 'countryKey' for filtering.
         allProjects.push({
           ...project,
-          country,
-          sector,
-        })
-      })
-    })
-  })
-  return allProjects
-}
+          countryKey: countryKey, 
+        });
+      });
+    });
+  });
+  return allProjects;
+};
 
 export const getProjectsByCountry = (country) => {
   const projects = []
@@ -926,8 +929,8 @@ export const sectorNames = {
 }
 
 export const countryNames = {
-  السعودية: "المملكة العربية السعودية",
-  مصر: "جمهورية مصر العربية",
-  "الإمارات العربية المتحدة": "دولة الإمارات العربية المتحدة",
-  قطر: "دولة قطر",
+  saudi_arabia: "المملكة العربية السعودية",
+  egypt: "جمهورية مصر العربية",
+  united_arab_emirates: "دولة الإمارات العربية المتحدة",
+  qatar: "دولة قطر",
 }

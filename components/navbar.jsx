@@ -5,30 +5,46 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X, Briefcase, Home, Sparkles } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import BookingModal from "./booking-modal" // Assuming booking-modal.jsx is in the same directory
 
-// Enhanced BookingSystem component with modern RTL styling
-const BookingSystem = () => (
-    <motion.button 
+// Enhanced BookingSystem component with modal functionality
+const BookingSystem = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  return (
+    <>
+      <motion.button
+        onClick={() => setIsModalOpen(true)}
         className="relative group px-6 py-3 text-sm font-bold text-white bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
         whileHover={{ scale: 1.05, y: -2 }}
         whileTap={{ scale: 0.95 }}
-    >
+      >
         {/* Animated background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-300 via-teal-400 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
+
         {/* Floating particles effect */}
         <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-1 right-2 w-1 h-1 bg-white rounded-full animate-pulse" />
-            <div className="absolute bottom-2 left-3 w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce" style={{animationDelay: '0.5s'}} />
-            <div className="absolute top-2 left-1 w-1 h-1 bg-white/40 rounded-full animate-ping" style={{animationDelay: '1s'}} />
+          <div
+            className="absolute top-1 right-2 w-1 h-1 bg-white rounded-full animate-pulse" />
+          <div
+            className="absolute bottom-2 left-3 w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce"
+            style={{ animationDelay: "0.5s" }}
+          />
+          <div
+            className="absolute top-2 left-1 w-1 h-1 bg-white/40 rounded-full animate-ping"
+            style={{ animationDelay: "1s" }}
+          />
         </div>
-        
+
         <span className="relative z-10 flex items-center gap-2">
-            <Sparkles size={16} className="animate-pulse" />
-            احجز استشارة
+          <Sparkles size={16} className="animate-pulse" />
+          احجز استشارة
         </span>
-    </motion.button>
-);
+      </motion.button>
+      <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
+  )
+}
 
 // Enhanced Logo with modern RTL styling
 const Logo = () => (
@@ -100,17 +116,10 @@ export default function Navbar() {
         animate: { y: 0, opacity: 1 },
     }
     
+    // Simplified mobile menu variants for a smoother animation
     const mobileMenuVariants = {
-        closed: { 
-            x: "100%", 
-            opacity: 0,
-            scale: 0.95
-        },
-        open: { 
-            x: "0%", 
-            opacity: 1,
-            scale: 1
-        },
+        closed: { x: "100%" },
+        open: { x: "0%" },
     }
     
     const backdropVariants = {
@@ -238,7 +247,7 @@ export default function Navbar() {
                             initial="closed"
                             animate="open"
                             exit="closed"
-                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            transition={{ type: "tween", ease: "easeInOut", duration: 0.4 }}
                             className="md:hidden fixed top-0 right-0 bottom-0 w-[90%] max-w-sm bg-white/95 backdrop-blur-xl shadow-2xl z-50 p-6 flex flex-col"
                             dir="rtl"
                         >
