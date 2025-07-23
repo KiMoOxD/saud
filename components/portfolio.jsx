@@ -3,11 +3,10 @@
 import { motion, AnimatePresence, useInView, animate } from "framer-motion"
 import Link from "next/link"
 import { ArrowLeft, TrendingUp, Target } from "lucide-react"
-import { getAllProjects, sectorNames } from "@/data/projects"
+import projectsData from "@/data/projectsData.json"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 
-// --- Reusable AnimatedCounter Component (No changes needed here) ---
 function AnimatedCounter({ value, className, formatter = (v) => v.toLocaleString() }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: "-100px" })
@@ -29,19 +28,26 @@ function AnimatedCounter({ value, className, formatter = (v) => v.toLocaleString
   return <span ref={ref} className={className}>0</span>
 }
 
-// --- Main Achievements Component ---
 export default function Achievements() {
-  const allProjects = getAllProjects()
+  const allProjects = projectsData.projects
   const [activeSector, setActiveSector] = useState("All")
   const [filteredProjects, setFilteredProjects] = useState([])
 
-  // --- Data Processing ---
   const totalProjects = allProjects.length
   const totalInvestment = allProjects.reduce((sum, p) => sum + (p.financial_indicators.total_investment || 0), 0)
 
+  const sectorNames = allProjects.reduce((map, project) => {
+    if (project.sector && project.sector.en && project.sector.ar) {
+      map[project.sector.en] = project.sector.ar
+    }
+    return map
+  }, {})
+
   const topSectors = ["All", ...Object.entries(
     allProjects.reduce((acc, project) => {
-      acc[project.sector] = (acc[project.sector] || 0) + 1
+      if (project.sector && project.sector.en) { 
+        acc[project.sector.en] = (acc[project.sector.en] || 0) + 1
+      }
       return acc
     }, {})
   )
@@ -53,19 +59,18 @@ export default function Achievements() {
   useEffect(() => {
     const featuredProjects = allProjects
       .filter((p) => typeof p.financial_indicators.total_investment === "number")
-      .sort((a, b) => b.financial_indicators.total_investment - a.financial_indicators.total_investment)
+      .sort((a, b) => (b.financial_indicators.total_investment || 0) - (a.financial_indicators.total_investment || 0))
       .slice(0, 4)
 
     if (activeSector === "All") {
       setFilteredProjects(featuredProjects);
     } else {
       const sectorProjects = allProjects
-        .filter(p => p.sector === activeSector)
-        .sort((a, b) => b.financial_indicators.total_investment - a.financial_indicators.total_investment)
+        .filter(p => p.sector && p.sector.en === activeSector)
+        .sort((a, b) => (b.financial_indicators.total_investment || 0) - (a.financial_indicators.total_investment || 0))
         .slice(0, 4);
       setFilteredProjects(sectorProjects);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSector]);
 
   const formatCurrency = (amount) => {
@@ -74,15 +79,6 @@ export default function Achievements() {
     if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`
     return `$${value}`
   }
-
-  // --- NEW: Unified Saudi Green Theme Styling ---
-  const unifiedSectorStyle = {
-    text: "text-[#006C35]",
-    gradient: "from-[#006C35] to-emerald-500",
-    border: "border-green-200",
-    badgeBg: "bg-green-100",
-    badgeText: "text-green-800",
-  };
 
   const Stat = ({ icon, value, label, formatter }) => (
     <div className="text-center">
@@ -98,7 +94,7 @@ export default function Achievements() {
 
   return (
     <section className="relative w-full bg-slate-50 text-slate-800 py-24 sm:py-28 md:py-36 overflow-hidden">
-        {/* NEW: Background Animated Shapes (Consistent with Hero) */}
+        {/* Background Animated Shapes */}
         <div className="absolute inset-0 z-0">
             <motion.div 
               className="absolute top-1/4 left-0 w-96 h-96 bg-green-200/50 rounded-full filter blur-3xl"
@@ -110,7 +106,7 @@ export default function Achievements() {
               animate={{ x: [100, -100, 100], y: [50, -50, 50] }}
               transition={{ duration: 50, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror', delay: 5 }}
             />
-             <motion.div 
+              <motion.div 
               className="absolute bottom-1/2 right-1/3 w-80 h-80 bg-emerald-100/40 rounded-full filter blur-3xl"
               animate={{ y: [80, -80, 80] }}
               transition={{ duration: 60, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror', delay: 10 }}
@@ -142,7 +138,7 @@ export default function Achievements() {
         </motion.div>
 
         {/* --- Main Content Container --- */}
-        <div className="relative bg-white/70 backdrop-blur-2xl rounded-2xl p-4 sm:p-6 md:p-8 border border-slate-200/80 shadow-md">
+        <div className="relative bg-white/60 backdrop-blur-xl rounded-2xl p-4 sm:p-6 md:p-8 border border-slate-200/80 shadow-md">
           {/* --- Animated Sector Filters --- */}
           <div className="flex justify-center border-b border-slate-200/90 mb-8 overflow-x-auto pb-2">
             <div className="flex flex-nowrap -mx-2">
@@ -154,6 +150,7 @@ export default function Achievements() {
                   ${activeSector === sector ? 'text-green-600' : 'text-slate-500 hover:text-slate-900'}`
                 }
               >
+                {/* This logic now uses the dynamically created sectorNames map */}
                 {sector === "All" ? "أبرز المشاريع" : sectorNames[sector]}
                 {activeSector === sector && (
                   <motion.div
@@ -177,9 +174,7 @@ export default function Achievements() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
             >
-              {filteredProjects.map((project, index) => {
-                const style = unifiedSectorStyle; // Use the unified style for all cards
-                return (
+              {filteredProjects.map((project, index) => (
                   <motion.div
                     key={project.id}
                     layout
@@ -188,20 +183,30 @@ export default function Achievements() {
                     transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
                   >
                     <Link href={`/projects/${project.id}`} className="block h-full">
-                      <div className={`relative bg-white h-full p-6 rounded-xl border border-slate-200/70 shadow-sm hover:shadow-lg hover:border-green-300/50 transition-all duration-300 group`}>
-                        <div className={`absolute top-6 bottom-6 -left-px w-1 rounded-r-full bg-gradient-to-b ${style.gradient} opacity-75 group-hover:opacity-100 transition-opacity`}></div>
+                      {/* --- NEW: Light Green Gradient Card --- */}
+                      <div className={`relative h-full p-6 rounded-xl border transition-all duration-300 group
+                                      bg-gradient-to-br from-white to-green-100/70
+                                      border-slate-200/70
+                                      hover:border-green-300/80 hover:shadow-lg hover:shadow-green-500/20`}>
+                        
+                        <div className="absolute top-6 bottom-6 -left-px w-1 rounded-r-full bg-gradient-to-b from-green-400 to-emerald-500 opacity-75 group-hover:opacity-100 transition-opacity"></div>
+                        
                         <div className="pl-5 h-full flex flex-col">
                           <div className="flex-grow">
                             <div className="flex items-start justify-between mb-3">
-                              <h4 className="font-bold text-lg text-slate-800 group-hover:text-green-600 transition-colors">{project.project_name}</h4>
-                              <div className={`text-xs font-semibold px-2.5 py-1 rounded-full ${style.badgeBg} ${style.badgeText}`}>{sectorNames[project.sector]}</div>
+                              {/* Text reverted to dark for light background */}
+                              <h4 className="font-bold text-lg text-slate-800 group-hover:text-green-700 transition-colors">{project.project_name}</h4>
+                              {/* UPDATED: Directly use the Arabic sector name from the project object. */}
+                              <div className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800">{project.sector.ar}</div>
                             </div>
-                            <p className="text-slate-500 text-sm mb-4 leading-relaxed line-clamp-2">{project.description}</p>
+                            <p className="text-slate-600 text-sm mb-4 leading-relaxed line-clamp-2">{project.description}</p>
                           </div>
+                          {/* Divider reverted to light theme */}
                           <div className="border-t border-slate-200 pt-4 flex items-center justify-between mt-auto">
                             <div>
                               <div className="text-xs text-slate-500">إجمالي الاستثمار</div>
-                              <div className={`font-bold text-lg ${style.text}`}>{formatCurrency(project.financial_indicators.total_investment)}</div>
+                              {/* Investment value color updated */}
+                              <div className="font-bold text-lg text-green-700">{formatCurrency(project.financial_indicators.total_investment)}</div>
                             </div>
                             <div className="flex items-center gap-1 text-sm font-semibold text-green-600 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
                               <span>التفاصيل</span>
@@ -213,7 +218,7 @@ export default function Achievements() {
                     </Link>
                   </motion.div>
                 )
-              })}
+              )}
             </motion.div>
           </AnimatePresence>
         </div>

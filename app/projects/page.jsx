@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useMemo, useEffect, useRef } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { motion, animate } from "framer-motion"
-import { Search, MapPin, DollarSign, TrendingUp, Calendar, ArrowLeft, Inbox, Globe, Package, BarChart2 } from "lucide-react"
+import { Search, MapPin, DollarSign, TrendingUp, ArrowLeft, Inbox, Globe, Package, BarChart2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -10,7 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Link from "next/link"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-import { getAllProjects, sectorNames, countryNames } from "@/data/projects"
+import projectsData from "@/data/projectsData.json"
+
+const rawProjects = projectsData.projects;
 
 const formatCurrency = (amount) => {
     if (typeof amount !== "number") return "N/A"
@@ -46,19 +48,43 @@ export default function ProjectsPage() {
     const [selectedSector, setSelectedSector] = useState("all")
     const [sortBy, setSortBy] = useState("investment")
 
-    const allProjects = useMemo(() => getAllProjects(), [])
 
-    const { uniqueCountries, uniqueSectors, totalInvestment } = useMemo(() => {
-        const sectors = new Set(allProjects.map(p => p.sector));
-        const countries = new Set(allProjects.map(p => p.countryKey));
-        const investment = allProjects.reduce((sum, p) => sum + (p.financial_indicators.total_investment || 0), 0);
+    const { allProjects, countryNames, sectorNames, uniqueSectors, uniqueCountries, totalInvestment } = useMemo(() => {
+        const createKey = (name) => name.toLowerCase().replace(/\s+/g, '_');
+
+        const tempCountryNames = {}; 
+        const tempSectorNames = {};  
+
+        const processedProjects = rawProjects.map(p => {
+            const countryKey = createKey(p.country);
+            if (!tempCountryNames[countryKey]) {
+                tempCountryNames[countryKey] = p.country;
+            }
+
+            const sectorKey = p.sector?.en || 'N/A';
+            if (sectorKey !== 'N/A' && !tempSectorNames[sectorKey]) {
+                tempSectorNames[sectorKey] = p.sector.ar;
+            }
+            
+            return {
+                ...p,
+                countryKey: countryKey,
+                sector: { en: sectorKey, ar: p.sector?.ar || 'غير محدد' } 
+            };
+        });
+
+        const investment = processedProjects.reduce((sum, p) => sum + (p.financial_indicators.total_investment || 0), 0);
         
         return {
-            uniqueCountries: Array.from(countries),
-            uniqueSectors: Array.from(sectors),
+            allProjects: processedProjects,
+            countryNames: tempCountryNames,
+            sectorNames: tempSectorNames,
+            uniqueSectors: Object.keys(tempSectorNames),
+            uniqueCountries: Object.keys(tempCountryNames),
             totalInvestment: investment
         };
-    }, [allProjects]);
+    }, []);
+
 
     const filteredAndSortedProjects = useMemo(() => {
         return allProjects
@@ -68,7 +94,7 @@ export default function ProjectsPage() {
                     project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                     project.location.toLowerCase().includes(searchQuery.toLowerCase())
                 const matchesCountry = selectedCountry === "all" || project.countryKey === selectedCountry
-                const matchesSector = selectedSector === "all" || project.sector === selectedSector
+                const matchesSector = selectedSector === "all" || project.sector.en === selectedSector
                 return matchesSearch && matchesCountry && matchesSector
             })
             .sort((a, b) => {
@@ -79,22 +105,20 @@ export default function ProjectsPage() {
                     default: return 0
                 }
             })
-    }, [allProjects, searchQuery, selectedCountry, selectedSector])
+    }, [allProjects, searchQuery, selectedCountry, selectedSector, sortBy])
 
-    const getSectorStyle = (sector) => {
+    const getSectorStyle = (sectorKey) => {
         const styles = {
             Agriculture: { border: "border-emerald-500", badge: "bg-emerald-100 text-emerald-800" },
-            Energy: { border: "border-lime-500", badge: "bg-lime-100 text-lime-800" },
-            Technology: { border: "border-teal-500", badge: "bg-teal-100 text-teal-800" },
-            Healthcare: { border: "border-cyan-500", badge: "bg-cyan-100 text-cyan-800" },
             Manufacturing: { border: "border-yellow-500", badge: "bg-yellow-100 text-yellow-800" },
-            Real_Estate_Commercial: { border: "border-stone-500", badge: "bg-stone-100 text-stone-800" },
-            Labor_HR_Services: { border: "border-sky-500", badge: "bg-sky-100 text-sky-800" },
-            Design_Interior_Decoration: { border: "border-rose-500", badge: "bg-rose-100 text-rose-800" },
-            Mining_Raw_Materials: { border: "border-slate-500", badge: "bg-slate-100 text-slate-800" },
+            Healthcare: { border: "border-cyan-500", badge: "bg-cyan-100 text-cyan-800" },
+            "Real estate": { border: "border-stone-500", badge: "bg-stone-100 text-stone-800" },
+            "Human Resources": { border: "border-sky-500", badge: "bg-sky-100 text-sky-800" },
+            "Interior Design": { border: "border-rose-500", badge: "bg-rose-100 text-rose-800" },
+            "Mining and Quarrying": { border: "border-slate-500", badge: "bg-slate-100 text-slate-800" },
             Tourism: { border: "border-orange-500", badge: "bg-orange-100 text-orange-800" },
         };
-        return styles[sector] || { border: "border-gray-400", badge: "bg-gray-100 text-gray-800" };
+        return styles[sectorKey] || { border: "border-gray-400", badge: "bg-gray-100 text-gray-800" };
     }
     
     const containerVariants = {
@@ -164,7 +188,6 @@ export default function ProjectsPage() {
                 </div>
             </section>
 
-            {/* The rest of the component remains the same */}
             <section className="sticky top-0 z-30 py-4 bg-white/70 backdrop-blur-xl border-b border-slate-200/80 shadow-sm">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
@@ -195,11 +218,11 @@ export default function ProjectsPage() {
                                     <motion.div 
                                         whileHover={{ scale: 1.03, y: -5 }} 
                                         transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                                        className={`h-full bg-white rounded-2xl shadow-lg shadow-emerald-900/10 overflow-hidden flex flex-col group border-t-4 ${getSectorStyle(project.sector).border}`}
+                                        className={`h-full bg-white rounded-2xl shadow-lg shadow-emerald-900/10 overflow-hidden flex flex-col group border-t-4 ${getSectorStyle(project.sector.en).border}`}
                                     >
                                         <div className="p-6 flex flex-col h-full">
                                             <div className="flex items-center justify-between mb-3">
-                                                <Badge className={`${getSectorStyle(project.sector).badge} border-none`}>{sectorNames[project.sector] || project.sector}</Badge>
+                                                <Badge className={`${getSectorStyle(project.sector.en).badge} border-none`}>{project.sector.ar}</Badge>
                                                 <div className="flex items-center gap-2 text-sm text-slate-500">
                                                     <Globe className="h-4 w-4" />
                                                     <span>{project.country}</span>

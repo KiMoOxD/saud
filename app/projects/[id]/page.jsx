@@ -1,10 +1,14 @@
 import { notFound } from "next/navigation"
-import { getProjectById, getAllProjects } from "@/data/projects"
+// UPDATED: Changed to a default import
+import projectsData from "@/data/projectsData.json"
 import ProjectDetailClient from "./ProjectDetailClient"
+
+// Access the projects array from the imported data
+const projects = projectsData.projects;
 
 // Generate metadata for each project page
 export async function generateMetadata({ params }) {
-  const project = getProjectById(params.id)
+  const project = projects.find(p => p.id === params.id)
 
   if (!project) {
     return {
@@ -21,14 +25,13 @@ export async function generateMetadata({ params }) {
 
 // Generate static paths for all projects
 export async function generateStaticParams() {
-  const allProjects = getAllProjects()
-  return allProjects.map((project) => ({
+  return projects.map((project) => ({
     id: project.id,
   }))
 }
 
 export default function ProjectPage({ params }) {
-  const project = getProjectById(params.id)
+  const project = projects.find(p => p.id === params.id)
 
   if (!project) {
     notFound()

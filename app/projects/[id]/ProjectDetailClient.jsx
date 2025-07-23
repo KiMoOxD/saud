@@ -10,7 +10,8 @@ import Link from "next/link"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import BookingModal from "@/components/booking-modal"
-import { sectorNames, countryNames } from "@/data/projects"
+// REMOVED: sectorNames and countryNames are no longer needed as the project object contains this info.
+// import { sectorNames, countryNames } from "@/data/projects"
 
 // Animation Variants for staggered effect
 const containerVariants = {
@@ -39,20 +40,24 @@ export default function ProjectDetailClient({ project }) {
     }).format(amount)
   }
 
-  const getSectorColor = (sector) => {
+  const getSectorColor = (sectorKey) => {
     const colors = {
       Healthcare: { gradient: "from-blue-500 to-blue-400", text: "text-blue-500" },
       Agriculture: { gradient: "from-green-500 to-green-400", text: "text-green-500" },
       Manufacturing: { gradient: "from-orange-500 to-orange-400", text: "text-orange-500" },
       Technology: { gradient: "from-purple-500 to-purple-400", text: "text-purple-500" },
-      Real_Estate_Commercial: { gradient: "from-rose-500 to-rose-400", text: "text-rose-500" },
+      "Real estate": { gradient: "from-rose-500 to-rose-400", text: "text-rose-500" },
       Tourism: { gradient: "from-teal-500 to-teal-400", text: "text-teal-500" },
-      Labor_HR_Services: { gradient: "from-indigo-500 to-indigo-400", text: "text-indigo-500" },
-      Design_Interior_Decoration: { gradient: "from-amber-500 to-amber-400", text: "text-amber-500" },
-      Mining_Raw_Materials: { gradient: "from-stone-500 to-stone-400", text: "text-stone-500" },
-      Construction_Safety: { gradient: "from-red-500 to-red-400", text: "text-red-500" },
+      "Human Resources": { gradient: "from-indigo-500 to-indigo-400", text: "text-indigo-500" },
+      "Interior Design": { gradient: "from-amber-500 to-amber-400", text: "text-amber-500" },
+      "Mining and Quarrying": { gradient: "from-slate-500 to-slate-400", text: "text-slate-500" },
+       // Added other sectors from your data
+      "Food and Beverage": { gradient: "from-pink-500 to-pink-400", text: "text-pink-500" },
+      "Recycling and Waste Management": { gradient: "from-lime-500 to-lime-400", text: "text-lime-500" },
+      "Education": { gradient: "from-cyan-500 to-cyan-400", text: "text-cyan-500" },
+      "Food Processing": { gradient: "from-yellow-500 to-yellow-400", text: "text-yellow-500" },
     }
-    return colors[sector] || { gradient: "from-gray-500 to-gray-400", text: "text-gray-500" }
+    return colors[sectorKey] || { gradient: "from-gray-500 to-gray-400", text: "text-gray-500" }
   }
 
   const PrimaryButton = ({ children, className = "", ...props }) => (
@@ -93,15 +98,18 @@ export default function ProjectDetailClient({ project }) {
 
             <div className="max-w-4xl mx-auto text-center">
               <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-3 mb-6">
-                <Badge className={`bg-gradient-to-r ${getSectorColor(project.sector).gradient} text-white border-none px-4 py-1`}>
-                  {sectorNames[project.sector]}
+                {/* UPDATED: Use project.sector.en for color and project.sector.ar for display */}
+                <Badge className={`bg-gradient-to-r ${getSectorColor(project.sector.en).gradient} text-white border-none px-4 py-1`}>
+                  {project.sector.ar}
                 </Badge>
-                <Badge variant="outline" className="bg-white/50 border-gray-300 px-4 py-1">{countryNames[project.country] || project.country}</Badge>
+                {/* UPDATED: Use project.country directly */}
+                <Badge variant="outline" className="bg-white/50 border-gray-300 px-4 py-1">{project.country}</Badge>
               </motion.div>
 
               <h1 className="text-4xl md:text-6xl font-extrabold text-gray-800 mb-6">
                 {headlineWords.map((word, index) => (
-                    <motion.span key={index} variants={itemVariants} className={`inline-block mr-3 ${index === headlineWords.length - 1 ? `bg-gradient-to-r ${getSectorColor(project.sector).gradient} bg-clip-text text-transparent`: ''}`}>
+                    // UPDATED: Use project.sector.en for color logic
+                    <motion.span key={index} variants={itemVariants} className={`inline-block mr-3 ${index === headlineWords.length - 1 ? `bg-gradient-to-r ${getSectorColor(project.sector.en).gradient} bg-clip-text text-transparent`: ''}`}>
                         {word}
                     </motion.span>
                 ))}
@@ -134,7 +142,8 @@ export default function ProjectDetailClient({ project }) {
                 <motion.div variants={itemVariants} whileHover={{ y: -5, transition: { type: 'spring', stiffness: 300 } }}>
                   <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300">
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-3"><Target className={`h-6 w-6 ${getSectorColor(project.sector).text}`} />نظرة عامة على المشروع</CardTitle>
+                      {/* UPDATED: Use project.sector.en for color logic */}
+                      <CardTitle className="flex items-center gap-3"><Target className={`h-6 w-6 ${getSectorColor(project.sector.en).text}`} />نظرة عامة على المشروع</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6 text-gray-600">
                         <p className="leading-relaxed">{project.vision_alignment}</p>
