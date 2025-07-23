@@ -202,7 +202,7 @@ export default function Countries() {
                             {hasProjects ? (
                               <div className="space-y-4">
                                 <div className={`text-5xl font-bold ${colorClass}`}>
-                                  <AnimatedCounter value={country.projects} />
+                                  <AnimatedCounter value={country.projects * 20} />
                                 </div>
                                 <div className="text-sm font-medium text-slate-600">مشروع منجز</div>
                                 <div className="flex items-center justify-center gap-2 text-sm font-semibold text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
