@@ -11,6 +11,7 @@ import Link from "next/link"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import projectsData from "@/data/projectsData.json"
+import Image from "next/image"
 
 const rawProjects = projectsData.projects;
 
@@ -221,36 +222,43 @@ export default function ProjectsPage() {
                             <motion.div key={project.id} variants={itemVariants} className="h-full">
                                 <Link href={`/projects/${project.id}`} className="block h-full">
                                     <motion.div
-                                        whileHover={{ scale: 1.03, y: -5 }}
-                                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                                        className={`h-full bg-white rounded-2xl shadow-lg shadow-emerald-900/10 overflow-hidden flex flex-col group border-t-4 ${getSectorStyle(project.sector.en).border}`}
+                                        whileHover={{ y: -5 }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                                        className="h-full bg-white rounded-2xl shadow-lg shadow-emerald-900/5 overflow-hidden flex flex-col group"
                                     >
-                                        <div className="p-6 flex flex-col h-full">
-                                            <div className="flex items-center justify-between mb-3">
-                                                <Badge className={`${getSectorStyle(project.sector.en).badge} border-none`}>{project.sector.ar}</Badge>
-                                                <div className="flex items-center gap-2 text-sm text-slate-500">
-                                                    <Globe className="h-4 w-4" />
-                                                    {/* FIX: Display the Arabic country name */}
-                                                    <span>{project.country.ar}</span>
-                                                </div>
+                                        <div className="relative h-52 w-full overflow-hidden">
+                                            <Image
+                                                src={project.image || "/placeholder.jpg"}
+                                                alt={project.project_name}
+                                                fill
+                                                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                                            <div className="absolute top-4 right-4">
+                                                <Badge className={`${getSectorStyle(project.sector.en).badge} border-none shadow-md`}>{project.sector.ar}</Badge>
                                             </div>
-                                            <h3 className="text-xl font-bold text-slate-800 group-hover:text-green-700 transition-colors duration-300 line-clamp-2 leading-snug">
+                                        </div>
+                                        <div className="p-5 flex flex-col flex-grow">
+                                            <h3 className="text-lg font-bold text-slate-800 group-hover:text-green-600 transition-colors duration-300 line-clamp-2 mb-2">
                                                 {project.project_name}
                                             </h3>
-                                            <div className="mt-auto pt-6">
-                                                <div className="space-y-3 text-sm text-slate-600 border-t border-slate-200/80 pt-4">
-                                                    <div className="flex items-center gap-2"><MapPin size={16} className="text-slate-400" /> {project.location}</div>
-                                                    {typeof project.financial_indicators.total_investment === "number" && (
-                                                        <div className="flex items-center gap-2"><DollarSign size={16} className="text-slate-400" /> {formatCurrency(project.financial_indicators.total_investment)}</div>
-                                                    )}
-                                                    {project.financial_indicators.internal_rate_of_return && (
-                                                        <div className="flex items-center gap-2"><TrendingUp size={16} className="text-slate-400" /> IRR: {project.financial_indicators.internal_rate_of_return}</div>
-                                                    )}
-                                                </div>
-                                                <div className="mt-4 text-green-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1">
-                                                    عرض التفاصيل <ArrowLeft size={16} className="transition-transform group-hover:translate-x-[-4px]"/>
-                                                </div>
+                                            <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
+                                                <Globe className="h-4 w-4" />
+                                                <span>{project.country.ar} - {project.location}</span>
                                             </div>
+                                            <div className="mt-auto space-y-2 text-sm">
+                                                {typeof project.financial_indicators.total_investment === "number" && (
+                                                    <div className="flex items-center gap-2 text-slate-600"><DollarSign size={16} className="text-green-500" /> <span className="font-semibold">{formatCurrency(project.financial_indicators.total_investment)}</span></div>
+                                                )}
+                                                {project.financial_indicators.internal_rate_of_return && (
+                                                    <div className="flex items-center gap-2 text-slate-600"><TrendingUp size={16} className="text-green-500" /> IRR: <span className="font-semibold">{project.financial_indicators.internal_rate_of_return}</span></div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="p-4 bg-slate-50 border-t border-slate-200/60 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <span className="text-green-600 font-semibold flex items-center justify-center gap-1">
+                                                عرض التفاصيل <ArrowLeft size={16} />
+                                            </span>
                                         </div>
                                     </motion.div>
                                 </Link>
