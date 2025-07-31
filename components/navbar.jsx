@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { usePathname } from 'next/navigation'
-import { Menu, X, Briefcase, Home, Sparkles } from "lucide-react"
+import { Menu, X, Briefcase, Home, Sparkles, DollarSign, Wrench } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import BookingModal from "./booking-modal" 
@@ -43,7 +43,6 @@ const BookingSystem = () => {
   );
 };
 
-// Modern & Sleek Logo
 const Logo = () => (
     <Link href="/" className="flex items-center gap-3 z-50 group cursor-pointer">
         <div className="relative p-2 bg-white/80 rounded-full shadow-inner shadow-slate-200 group-hover:shadow-md transition-shadow duration-300">
@@ -67,13 +66,14 @@ export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const pathname = usePathname();
-
     const navLinks = [
         { href: "/", label: "الرئيسية", icon: Home },
         { href: "/projects", label: "المشاريع", icon: Briefcase },
-    ];
+        { href: "/investments", label: "الاستثمارات", icon: DollarSign },
+        { href: "/services", label: "الخدمات", icon: Wrench }
+            ]
 
-    useEffect(() => {
+  useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
