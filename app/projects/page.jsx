@@ -50,31 +50,34 @@ export default function ProjectsPage() {
 
 
     const { allProjects, countryNames, sectorNames, uniqueSectors, uniqueCountries, totalInvestment } = useMemo(() => {
-        const createKey = (name) => name.toLowerCase().replace(/\s+/g, '_');
+        // Correctly handles strings and prevents errors if name is undefined
+        const createKey = (name) => name?.toLowerCase().replace(/\s+/g, '_') || 'unknown';
 
-        const tempCountryNames = {}; 
-        const tempSectorNames = {};  
+        const tempCountryNames = {};
+        const tempSectorNames = {};
 
         const processedProjects = rawProjects.map(p => {
-            const countryKey = createKey(p.country);
-            if (!tempCountryNames[countryKey]) {
-                tempCountryNames[countryKey] = p.country;
+            // FIX: Pass the English name string from the country object to createKey
+            const countryKey = createKey(p.country?.en);
+            if (p.country?.ar && !tempCountryNames[countryKey]) {
+                // Store the Arabic name for the dropdown filter
+                tempCountryNames[countryKey] = p.country.ar;
             }
 
             const sectorKey = p.sector?.en || 'N/A';
             if (sectorKey !== 'N/A' && !tempSectorNames[sectorKey]) {
                 tempSectorNames[sectorKey] = p.sector.ar;
             }
-            
+
             return {
                 ...p,
                 countryKey: countryKey,
-                sector: { en: sectorKey, ar: p.sector?.ar || 'غير محدد' } 
+                sector: { en: sectorKey, ar: p.sector?.ar || 'غير محدد' }
             };
         });
 
-        const investment = processedProjects.reduce((sum, p) => sum + (p.financial_indicators.total_investment || 0), 0);
-        
+        const investment = processedProjects.reduce((sum, p) => sum + (p.financial_indicators?.total_investment || 0), 0);
+
         return {
             allProjects: processedProjects,
             countryNames: tempCountryNames,
@@ -108,19 +111,21 @@ export default function ProjectsPage() {
     }, [allProjects, searchQuery, selectedCountry, selectedSector, sortBy])
 
     const getSectorStyle = (sectorKey) => {
+        // FIX: Removed spaces from keys to match data (e.g., "Real estate" -> "RealEstate")
         const styles = {
             Agriculture: { border: "border-emerald-500", badge: "bg-emerald-100 text-emerald-800" },
             Manufacturing: { border: "border-yellow-500", badge: "bg-yellow-100 text-yellow-800" },
             Healthcare: { border: "border-cyan-500", badge: "bg-cyan-100 text-cyan-800" },
-            "Real estate": { border: "border-stone-500", badge: "bg-stone-100 text-stone-800" },
-            "Human Resources": { border: "border-sky-500", badge: "bg-sky-100 text-sky-800" },
-            "Interior Design": { border: "border-rose-500", badge: "bg-rose-100 text-rose-800" },
-            "Mining and Quarrying": { border: "border-slate-500", badge: "bg-slate-100 text-slate-800" },
+            RealEstate: { border: "border-stone-500", badge: "bg-stone-100 text-stone-800" },
+            HumanResources: { border: "border-sky-500", badge: "bg-sky-100 text-sky-800" },
+            InteriorDesign: { border: "border-rose-500", badge: "bg-rose-100 text-rose-800" },
+            MiningandQuarrying: { border: "border-slate-500", badge: "bg-slate-100 text-slate-800" },
             Tourism: { border: "border-orange-500", badge: "bg-orange-100 text-orange-800" },
         };
-        return styles[sectorKey] || { border: "border-gray-400", badge: "bg-gray-100 text-gray-800" };
+        // Remove spaces from the incoming key to match the style keys
+        return styles[sectorKey.replace(/\s/g, '')] || { border: "border-gray-400", badge: "bg-gray-100 text-gray-800" };
     }
-    
+
     const containerVariants = {
         hidden: {},
         visible: { transition: { staggerChildren: 0.07 } },
@@ -144,46 +149,46 @@ export default function ProjectsPage() {
                         animate="visible"
                         variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
                     >
-                        <motion.h1 
+                        <motion.h1
                             className="text-4xl md:text-6xl font-extrabold bg-gradient-to-l from-emerald-800 via-green-600 to-lime-500 bg-clip-text text-transparent mb-6"
                             variants={itemVariants}
                         >
                             محفظة مشاريعنا الاستثمارية
                         </motion.h1>
-                        <motion.p 
+                        <motion.p
                             className="text-lg md:text-xl text-slate-600 mb-12 leading-relaxed"
                             variants={itemVariants}
                         >
                             اكتشف محفظتنا المتنوعة من المشاريع المبتكرة التي تدفع عجلة النمو عبر المنطقة.
                         </motion.p>
                     </motion.div>
-                    
-                    <motion.div 
+
+                    <motion.div
                         className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
                         initial="hidden"
                         animate="visible"
-                        variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.4 }}}}
+                        variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.4 } } }}
                     >
-                       {allProjects.length > 0 && (
-                           <motion.div variants={itemVariants}>
-                               <AnimatedStat finalValue={allProjects.length} label="مشروع" icon={Package} />
-                           </motion.div>
-                       )}
-                       {uniqueCountries.length > 0 && (
-                           <motion.div variants={itemVariants}>
-                               <AnimatedStat finalValue={uniqueCountries.length} label="دولة" icon={Globe} />
-                           </motion.div>
-                       )}
-                       {uniqueSectors.length > 0 && (
-                           <motion.div variants={itemVariants}>
-                               <AnimatedStat finalValue={uniqueSectors.length} label="قطاع" icon={BarChart2} />
-                           </motion.div>
-                       )}
-                       {totalInvestment > 0 && (
-                           <motion.div variants={itemVariants}>
-                               <AnimatedStat finalValue={totalInvestment} label="إجمالي الاستثمارات" icon={DollarSign} formatter={formatCurrency} />
-                           </motion.div>
-                       )}
+                        {allProjects.length > 0 && (
+                            <motion.div variants={itemVariants}>
+                                <AnimatedStat finalValue={allProjects.length} label="مشروع" icon={Package} />
+                            </motion.div>
+                        )}
+                        {uniqueCountries.length > 0 && (
+                            <motion.div variants={itemVariants}>
+                                <AnimatedStat finalValue={uniqueCountries.length} label="دولة" icon={Globe} />
+                            </motion.div>
+                        )}
+                        {uniqueSectors.length > 0 && (
+                            <motion.div variants={itemVariants}>
+                                <AnimatedStat finalValue={uniqueSectors.length} label="قطاع" icon={BarChart2} />
+                            </motion.div>
+                        )}
+                        {totalInvestment > 0 && (
+                            <motion.div variants={itemVariants}>
+                                <AnimatedStat finalValue={totalInvestment} label="إجمالي الاستثمارات" icon={DollarSign} formatter={formatCurrency} />
+                            </motion.div>
+                        )}
                     </motion.div>
                 </div>
             </section>
@@ -215,8 +220,8 @@ export default function ProjectsPage() {
                         {filteredAndSortedProjects.map((project) => (
                             <motion.div key={project.id} variants={itemVariants} className="h-full">
                                 <Link href={`/projects/${project.id}`} className="block h-full">
-                                    <motion.div 
-                                        whileHover={{ scale: 1.03, y: -5 }} 
+                                    <motion.div
+                                        whileHover={{ scale: 1.03, y: -5 }}
                                         transition={{ type: "spring", stiffness: 300, damping: 15 }}
                                         className={`h-full bg-white rounded-2xl shadow-lg shadow-emerald-900/10 overflow-hidden flex flex-col group border-t-4 ${getSectorStyle(project.sector.en).border}`}
                                     >
@@ -225,7 +230,8 @@ export default function ProjectsPage() {
                                                 <Badge className={`${getSectorStyle(project.sector.en).badge} border-none`}>{project.sector.ar}</Badge>
                                                 <div className="flex items-center gap-2 text-sm text-slate-500">
                                                     <Globe className="h-4 w-4" />
-                                                    <span>{project.country}</span>
+                                                    {/* FIX: Display the Arabic country name */}
+                                                    <span>{project.country.ar}</span>
                                                 </div>
                                             </div>
                                             <h3 className="text-xl font-bold text-slate-800 group-hover:text-green-700 transition-colors duration-300 line-clamp-2 leading-snug">
@@ -253,26 +259,26 @@ export default function ProjectsPage() {
                     </motion.div>
 
                     {filteredAndSortedProjects.length === 0 && (
-                        <motion.div 
-                          className="text-center py-20"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
+                        <motion.div
+                            className="text-center py-20"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
                         >
-                          <div className="inline-block p-5 bg-green-100 rounded-full mb-6">
-                              <Inbox size={48} className="text-green-500"/>
-                          </div>
-                          <h3 className="text-2xl font-semibold text-slate-800">لا توجد نتائج</h3>
-                          <p className="text-slate-500 mt-2 max-w-md mx-auto">لم نعثر على أي مشاريع تطابق بحثك. حاول تعديل الفلاتر.</p>
-                          <Button
-                              onClick={() => {
-                                  setSearchQuery("")
-                                  setSelectedCountry("all")
-                                  setSelectedSector("all")
-                              }}
-                              className="mt-6 bg-green-600 hover:bg-green-700 text-white rounded-full px-5"
-                          >
-                              إعادة تعيين الفلاتر
-                          </Button>
+                            <div className="inline-block p-5 bg-green-100 rounded-full mb-6">
+                                <Inbox size={48} className="text-green-500"/>
+                            </div>
+                            <h3 className="text-2xl font-semibold text-slate-800">لا توجد نتائج</h3>
+                            <p className="text-slate-500 mt-2 max-w-md mx-auto">لم نعثر على أي مشاريع تطابق بحثك. حاول تعديل الفلاتر.</p>
+                            <Button
+                                onClick={() => {
+                                    setSearchQuery("")
+                                    setSelectedCountry("all")
+                                    setSelectedSector("all")
+                                }}
+                                className="mt-6 bg-green-600 hover:bg-green-700 text-white rounded-full px-5"
+                            >
+                                إعادة تعيين الفلاتر
+                            </Button>
                         </motion.div>
                     )}
                 </div>

@@ -1,0 +1,1210 @@
+{ "investments": [
+    {
+      "id": 1,
+      "name": "مشروع البيع على الخارطة 1",
+      "description": "تطوير فلل سكنية فاخرة في أبها تحت مسمى \"سماء أبها\"، مستفيدًا من النمو السكاني والتوجهات الحكومية.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "أبها",
+      "financial_indicators": {
+        "total_investment_cost": 1622017940,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 71096896,
+        "roi": "4.38%",
+        "payback_period": "3 سنوات"
+      },
+      "competitive_advantage": "تصاميم فريدة وخدمات هندسية راقية تجذب العملاء الباحثين عن السكن الفاخر.",
+      "alignment_with_vision_2030": "يدعم برامج الإسكان وزيادة نسبة تملك المنازل وفقًا لرؤية 2030.",
+      "call_to_action": "استثمر في مستقبل مزدهر في القطاع العقاري."
+    },
+    {
+      "id": 2,
+      "name": "البيع على الخارطة 2",
+      "description": "إنشاء مبنى سكني بحي الصحافة بالرياض، يضم شققًا بغرف وصالة، جيم، وحمام سباحة.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "الرياض",
+      "financial_indicators": {
+        "total_investment_cost": 22093143,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 14155912,
+        "roi": "21%",
+        "payback_period": "سنة واحدة"
+      },
+      "competitive_advantage": "تصاميم عصرية ونظام دفع ميسر على 8 دفعات.",
+      "alignment_with_vision_2030": "يساهم في سد الفجوة السوقية للشقق السكنية بالرياض.",
+      "call_to_action": "اغتنم فرصة استثمارية واعدة في السوق العقاري بالرياض."
+    },
+    {
+      "id": 3,
+      "name": "مشروع شقق سكنية وفندقية",
+      "description": "تأجير 72 وحدة سكنية وفندقية بجدة، مستفيدًا من تزايد الزوار والكثافة السكانية.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "جدة",
+      "financial_indicators": {
+        "total_investment_cost": 5000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 1409306,
+        "roi": "34%",
+        "payback_period": "4 سنوات"
+      },
+      "competitive_advantage": "شقق فندقية متكاملة بأسعار تنافسية وجودة عالية.",
+      "alignment_with_vision_2030": "يدعم زيادة مساهمة القطاع السياحي في الناتج المحلي.",
+      "call_to_action": "استثمر في قلب السياحة السعودية المزدهرة."
+    },
+    {
+      "id": 4,
+      "name": "مشروع سوبر ماركت",
+      "description": "إنشاء سوبر ماركت في المنطقة الشرقية على مساحة 200 متر مربع، يقدم منتجات غذائية متنوعة.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "المنطقة الشرقية",
+      "financial_indicators": {
+        "total_investment_cost": 470000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 631081,
+        "roi": "50.7%",
+        "payback_period": "سنتين"
+      },
+      "competitive_advantage": "منتجات متنوعة وجودة عالية مع رقابة داخلية صارمة.",
+      "alignment_with_vision_2030": "يساهم في تلبية الاحتياجات الأساسية للسكان.",
+      "call_to_action": "استثمر في قطاع استهلاكي مستقر ومتنامٍ."
+    },
+    {
+      "id": 5,
+      "name": "مصنع متكامل لإنتاج البلوك والخرسانة الجاهزة",
+      "description": "إقامة مصنع لإنتاج الخرسانة الجاهزة والبلوك الأسمنتي، يستهدف قطاع التشييد والبناء.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 30000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 9274296,
+        "roi": "38%",
+        "payback_period": "4 سنوات"
+      },
+      "competitive_advantage": "منتجات عالية الجودة باستخدام أحدث تقنيات الإنتاج.",
+      "alignment_with_vision_2030": "يدعم قطاع التشييد والبناء لتحقيق النمو الاقتصادي.",
+      "call_to_action": "استثمر في أساس النمو العمراني للمملكة."
+    },
+    {
+      "id": 6,
+      "name": "مشروع استيراد الخضار والفاكهة",
+      "description": "استيراد وتوزيع الخضار والفاكهة عبر شركة استيراد، غرف تبريد، ومبيعات التجزئة.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "الرياض، جدة، الدمام، وغيرها",
+      "financial_indicators": {
+        "total_investment_cost": 30000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 31434785,
+        "roi": "40.8%",
+        "payback_period": "5 سنوات"
+      },
+      "competitive_advantage": "منتجات عالية الجودة بأسعار تنافسية مع فريق تخزين مؤهل.",
+      "alignment_with_vision_2030": "يساهم في تحقيق الأمن الغذائي وتقليل الاعتماد على الواردات.",
+      "call_to_action": "استثمر في سوق الخضار والفاكهة دائم النمو."
+    },
+    {
+      "id": 7,
+      "name": "مزرعة البيوت المحمية",
+      "description": "إنتاج الخضروات والفواكه باستخدام الزراعة المحمية والمكشوفة، مع مشتلين لتوفير المدخلات الزراعية.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 3300000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 3386484,
+        "roi": "27.8%",
+        "payback_period": "4 سنوات"
+      },
+      "competitive_advantage": "استخدام أفضل أنواع الشتلات وكوادر فنية متخصصة.",
+      "alignment_with_vision_2030": "يدعم تحقيق الاكتفاء الذاتي من المنتجات الزراعية.",
+      "call_to_action": "استثمر في زراعة مستدامة ومربحة."
+    },
+    {
+      "id": 8,
+      "name": "مصنع لإنتاج وتعبئة الغازات الطبية والصناعية",
+      "description": "إنشاء مصنع لإنتاج وتعبئة الغازات (الأكسجين، الهيدروجين، النيتروجين، الأرجون) في نجران.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "نجران",
+      "financial_indicators": {
+        "total_investment_cost": 7350000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 14038499,
+        "roi": "74.24%",
+        "payback_period": "سنتين"
+      },
+      "competitive_advantage": "منتجات بجودة عالية وأسعار تنافسية باستخدام أحدث التقنيات.",
+      "alignment_with_vision_2030": "يدعم الصناعات المحلية ويقلل الاعتماد على الاستيراد.",
+      "call_to_action": "استثمر في قطاع حيوي ومستقبلي."
+    },
+    {
+      "id": 9,
+      "name": "مشروع الخدمات اللوجستية",
+      "description": "إقامة شركة خدمات لوجستية متخصصة في التخزين الجاف والبارد، التخليص الجمركي، وتتبع الشحنات.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "الرياض",
+      "financial_indicators": {
+        "total_investment_cost": 0,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 0,
+        "roi": "غير محدد",
+        "payback_period": "غير محدد"
+      },
+      "competitive_advantage": "حلول تخزينية مرنة وأنظمة تشغيل آلي متطورة.",
+      "alignment_with_vision_2030": "يدعم تطوير القطاع اللوجستي لزيادة مساهمته في الناتج المحلي.",
+      "call_to_action": "استثمر في العمود الفقري للاقتصاد الحديث."
+    },
+    {
+      "id": 10,
+      "name": "مشروع كليات أهلية",
+      "description": "إنشاء كليات أهلية لتقديم برامج تعليمية عالية الجودة وتلبية احتياجات سوق العمل.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 100000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 84498590,
+        "roi": "35.8%",
+        "payback_period": "5 سنوات"
+      },
+      "competitive_advantage": "تعليم متميز وتطوير مهارات الطلاب وفقًا لمتطلبات سوق العمل.",
+      "alignment_with_vision_2030": "يدعم زيادة مشاركة القطاع الخاص في التعليم الجامعي.",
+      "call_to_action": "استثمر في عقول المستقبل وبناء جيل متعلم."
+    },
+    {
+      "id": 11,
+      "name": "فندق 5 نجوم",
+      "description": "إنشاء فندق خمس نجوم في الرياض، يقدم خدمات ضيافة فاخرة لاستقطاب السياح والزوار.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "الرياض",
+      "financial_indicators": {
+        "total_investment_cost": 100000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 29885078,
+        "roi": "23.9%",
+        "payback_period": "6 سنوات"
+      },
+      "competitive_advantage": "تصميم فاخر وخدمات راقية تلبي تطلعات الضيوف المميزين.",
+      "alignment_with_vision_2030": "يدعم تنويع مصادر الدخل وزيادة مساهمة قطاع السياحة.",
+      "call_to_action": "استثمر في قطاع الضيافة الفاخرة بمستقبل واعد."
+    },
+    {
+      "id": 12,
+      "name": "مصنع كبريت في السعودية",
+      "description": "إقامة مصنع لإنتاج الكبريت الصناعي لتلبية الطلب في صناعات الكيماويات، الأسمدة، والمطاط.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "مدينة صناعية",
+      "financial_indicators": {
+        "total_investment_cost": 25000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 15245690,
+        "roi": "35%",
+        "payback_period": "5 سنوات"
+      },
+      "competitive_advantage": "تقنيات متطورة تنتج كبريتًا بجودة عالية وفق المعايير البيئية.",
+      "alignment_with_vision_2030": "يدعم التنمية الصناعية وزيادة المحتوى المحلي.",
+      "call_to_action": "استثمر في صناعة أساسية ذات طلب متنامٍ."
+    },
+    {
+      "id": 13,
+      "name": "البيع على الخارطة في السعودية",
+      "description": "تطوير وحدات سكنية على الخارطة لتلبية الطلب المتزايد في السوق العقاري السعودي.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 25000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 18900000,
+        "roi": "35.2%",
+        "payback_period": "4 سنوات"
+      },
+      "competitive_advantage": "تصاميم عصري وجودة عالية تزيد من جاذبية الوحدات السكنية.",
+      "alignment_with_vision_2030": "يتوافق مع جهود زيادة نسبة تملك المنازل.",
+      "call_to_action": "استثمر في فرصة عقارية واعدة بعوائد ممتازة."
+    },
+    {
+      "id": 14,
+      "name": "مزرعة أغنام متكاملة",
+      "description": "إقامة مزرعة أغنام لإنتاج اللحوم، الصوف، والألبان، لتلبية الطلب المتزايد في السوق المحلي.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 10000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 4960379,
+        "roi": "27.8%",
+        "payback_period": "6 سنوات"
+      },
+      "competitive_advantage": "استخدام تقنيات حديثة في التربية والرعاية لضمان جودة المنتجات.",
+      "alignment_with_vision_2030": "يساهم في تحقيق الأمن الغذائي وتقليل الواردات.",
+      "call_to_action": "استثمر في مشروع حيوي بعوائد مجزية."
+    },
+    {
+      "id": 15,
+      "name": "مصنع لصناعة الخرسانة الجاهزة (مبدئي)",
+      "description": "إنشاء مصنع لإنتاج الخرسانة الجاهزة لتلبية الطلب في قطاع الإنشاءات بالمملكة.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 5000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 6158230,
+        "roi": "60.1%",
+        "payback_period": "سنتين"
+      },
+      "competitive_advantage": "منتجات عالية الجودة والتزام بالمواعيد والمعايير العالمية.",
+      "alignment_with_vision_2030": "يدعم قطاع التشييد والبناء لتحقيق التنمية الاقتصادية.",
+      "call_to_action": "استثمر في صناعة أساسية لكل مشروع بناء."
+    },
+    {
+      "id": 16,
+      "name": "تطبيق إلكتروني",
+      "description": "إطلاق تطبيق إلكتروني يقدم خدمات رقمية في مجالات مثل التجارة الإلكترونية، التعليم، أو الخدمات اللوجستية.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 1000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 1770396,
+        "roi": "75.8%",
+        "payback_period": "سنتين"
+      },
+      "competitive_advantage": "تجربة مستخدم سلسة وحلول رقمية مبتكرة تلبي احتياجات السوق.",
+      "alignment_with_vision_2030": "يدعم التحول الرقمي وتنمية الاقتصاد المعرفي.",
+      "call_to_action": "ادخل عالم التطبيقات الإلكترونية المربح."
+    },
+    {
+      "id": 17,
+      "name": "مشروع حاضنة أعمال للأعمال الفنية",
+      "description": "إنشاء حاضنة أعمال لدعم المواهب الفنية وتقديم الدعم اللوجستي والاستشاري.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 2000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 2000879,
+        "roi": "45.6%",
+        "payback_period": "3 سنوات"
+      },
+      "competitive_advantage": "برامج متخصصة ومساحات عمل مشتركة للفنانين.",
+      "alignment_with_vision_2030": "يدعم القطاع الثقافي والفني وفقًا لرؤية 2030.",
+      "call_to_action": "استثمر في الإبداع والفن بمردود مالي واجتماعي."
+    },
+    {
+      "id": 18,
+      "name": "مصنع معدات مكافحة الحريق",
+      "description": "إنتاج معدات مكافحة الحريق مثل طفايات الحريق وأنظمة الرش الآلي للمنشآت الصناعية والتجارية.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 15000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 13850230,
+        "roi": "38.9%",
+        "payback_period": "4 سنوات"
+      },
+      "competitive_advantage": "منتجات عالية الجودة تتوافق مع المعايير الدولية للسلامة.",
+      "alignment_with_vision_2030": "يدعم تعزيز الأمن والسلامة في المنشآت.",
+      "call_to_action": "استثمر في حماية الأرواح والممتلكات."
+    },
+    {
+      "id": 19,
+      "name": "مركز غسيل الكلى",
+      "description": "إنشاء مركز متخصص لغسيل الكلى يقدم رعاية صحية متقدمة لمرضى الفشل الكلوي.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 5000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 3890120,
+        "roi": "40.5%",
+        "payback_period": "3 سنوات"
+      },
+      "competitive_advantage": "أجهزة طبية حديثة وفريق طبي متخصص لرعاية المرضى.",
+      "alignment_with_vision_2030": "يدعم تطوير قطاع الرعاية الصحية وجودة الحياة.",
+      "call_to_action": "استثمر في صحة المجتمع بعوائد مستدامة."
+    },
+    {
+      "id": 20,
+      "name": "مصنع مراتب",
+      "description": "إنتاج مراتب بمختلف الأنواع والأحجام لتلبية الطلب في قطاعات الأثاث والفنادق.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 10000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 7850300,
+        "roi": "32.7%",
+        "payback_period": "4 سنوات"
+      },
+      "competitive_advantage": "تصميمات مبتكرة وجودة عالية باستخدام أفضل المواد الخام.",
+      "alignment_with_vision_2030": "يدعم الصناعات المحلية ويفتح فرص عمل جديدة.",
+      "call_to_action": "استثمر في صناعة الراحة والرفاهية."
+    },
+    {
+      "id": 21,
+      "name": "شركة تطوير عقاري",
+      "description": "تأسيس شركة متخصصة في تطوير مشاريع سكنية وتجارية متنوعة في المملكة.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 50000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 25120500,
+        "roi": "29.5%",
+        "payback_period": "5 سنوات"
+      },
+      "competitive_advantage": "تصاميم مبتكرة وجودة عالية في التنفيذ تلبي تطلعات المستثمرين.",
+      "alignment_with_vision_2030": "يدعم برامج الإسكان والتنمية العمرانية.",
+      "call_to_action": "استثمر في مستقبل مزدهر في القطاع العقاري."
+    },
+    {
+      "id": 22,
+      "name": "مصنع بطاريات الريموت",
+      "description": "إنتاج بطاريات الريموت كونترول بمختلف الأنواع والأحجام للسوق المحلي والإقليمي.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 8000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 6550150,
+        "roi": "39.8%",
+        "payback_period": "4 سنوات"
+      },
+      "competitive_advantage": "بطاريات عالية الجودة وذات عمر افتراضي طويل.",
+      "alignment_with_vision_2030": "يدعم الصناعات التحويلية ويقلل الاعتماد على الواردات.",
+      "call_to_action": "استثمر في صناعة مكونات إلكترونية أساسية."
+    },
+    {
+      "id": 23,
+      "name": "مشروع دار ضيافة الأطفال (حضَانة)",
+      "description": "إنشاء دار ضيافة للأطفال تقدم خدمات تعليمية وتنموية لمساعدة الأطفال على التكيف الاجتماعي.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 1500000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 1200000,
+        "roi": "35.0%",
+        "payback_period": "3 سنوات"
+      },
+      "competitive_advantage": "بيئة تعليمية محفزة تطور مهارات الأطفال وتعدهم للمراحل التعليمية.",
+      "alignment_with_vision_2030": "يدعم تمكين المرأة وزيادة مشاركتها في سوق العمل.",
+      "call_to_action": "استثمر في بناء جيل واعد ومستقل."
+    },
+    {
+      "id": 24,
+      "name": "مشروع شركة مقاولات بالرياض",
+      "description": "تأسيس شركة مقاولات متخصصة في تنفيذ المشاريع الإنشائية في الرياض.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "الرياض",
+      "financial_indicators": {
+        "total_investment_cost": 5000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 4500000,
+        "roi": "40.0%",
+        "payback_period": "3 سنوات"
+      },
+      "competitive_advantage": "حلول إنشائية مبتكرة والتزام بمعايير الجودة والسلامة.",
+      "alignment_with_vision_2030": "يدعم تطوير البنية التحتية والمدن الكبرى.",
+      "call_to_action": "استثمر في بناء مستقبل الرياض العمراني."
+    },
+    {
+      "id": 25,
+      "name": "مشروع مصنع بلاستيك",
+      "description": "إنشاء مصنع لإنتاج المنتجات البلاستيكية مثل الأكياس والعبوات لتلبية الطلب المحلي والإقليمي.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 12000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 8500000,
+        "roi": "33.5%",
+        "payback_period": "4 سنوات"
+      },
+      "competitive_advantage": "منتجات صديقة للبيئة وجودة عالية باستخدام أحدث التقنيات.",
+      "alignment_with_vision_2030": "يدعم تنويع القاعدة الصناعية وتعزيز المحتوى المحلي.",
+      "call_to_action": "استثمر في صناعة مرنة وواسعة الانتشار."
+    },
+    {
+      "id": 26,
+      "name": "مشروع محطة وقود",
+      "description": "إنشاء محطة وقود متكاملة الخدمات تشمل غسيل السيارات، صيانة سريعة، ومتجر صغير.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 8000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 6200000,
+        "roi": "37.5%",
+        "payback_period": "3 سنوات"
+      },
+      "competitive_advantage": "خدمات متنوعة وجودة عالية تجذب العملاء.",
+      "alignment_with_vision_2030": "يدعم تطوير البنية التحتية للطرق والخدمات اللوجستية.",
+      "call_to_action": "استثمر في قطاع الخدمات الأساسية بعوائد مستقرة."
+    },
+    {
+      "id": 27,
+      "name": "مشروع مصنع مياه معبأة",
+      "description": "إنتاج وتعبئة المياه النقية لتلبية الطلب المتزايد نتيجة النمو السكاني وتغير أنماط الاستهلاك.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 18000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 13000000,
+        "roi": "35.0%",
+        "payback_period": "4 سنوات"
+      },
+      "competitive_advantage": "تقنيات تنقية وتعبئة متطورة تضمن جودة ونقاء المياه.",
+      "alignment_with_vision_2030": "يدعم الأمن المائي وتوفير مياه شرب آمنة.",
+      "call_to_action": "استثمر في سوق المياه المعبأة دائم النمو."
+    },
+    {
+      "id": 28,
+      "name": "مشروع محطة كهرباء تعمل بالطاقة الشمسية",
+      "description": "إنشاء محطة لتوليد الكهرباء باستخدام الطاقة الشمسية للمساهمة في تنويع مصادر الطاقة.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 50000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 20000000,
+        "roi": "26.0%",
+        "payback_period": "7 سنوات"
+      },
+      "competitive_advantage": "استغلال الإشعاع الشمسي الوفير وتقنيات متطورة لضمان الكفاءة.",
+      "alignment_with_vision_2030": "يدعم برامج الطاقة المتجددة وتقليل الانبعاثات.",
+      "call_to_action": "استثمر في طاقة المستقبل المستدامة."
+    },
+    {
+      "id": 29,
+      "name": "مشروع مصنع تدوير النفايات",
+      "description": "إنشاء مصنع لتدوير النفايات الصلبة مثل البلاستيك والورق والمعادن لتحويلها إلى مواد خام قابلة لإعادة الاستخدام.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 20000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 15000000,
+        "roi": "32.0%",
+        "payback_period": "5 سنوات"
+      },
+      "competitive_advantage": "استخدام أحدث تقنيات الفرز والتدوير لزيادة الكفاءة وجودة المنتجات.",
+      "alignment_with_vision_2030": "يدعم الاستدامة البيئية وتقليل النفايات.",
+      "call_to_action": "استثمر في مستقبل مستدام وبيئة أنظف."
+    },
+    {
+      "id": 30,
+      "name": "مشروع مركز صيانة سيارات",
+      "description": "إنشاء مركز صيانة سيارات شامل يقدم خدمات الصيانة الدورية، إصلاح الأعطال، وغسيل السيارات.",
+      "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+      "location": "غير محدد",
+      "financial_indicators": {
+        "total_investment_cost": 3000000,
+        "currency": "ريال سعودي",
+        "expected_net_profit": 2500000,
+        "roi": "45.0%",
+        "payback_period": "سنتين"
+      },
+      "competitive_advantage": "فنيون مؤهلون ومعدات حديثة لضمان خدمة عالية الجودة.",
+      "alignment_with_vision_2030": "يدعم تطوير قطاع الخدمات وفرص العمل للمواطنين.",
+      "call_to_action": "استثمر في خدمة أساسية لا غنى عنها."
+    },
+    {
+        "id": 31,
+        "name": "شركة أمن وحراسة",
+        "description": "إنشاء شركة تقدم خدمات الأمن والحراسة للمنشآت الحكومية والخاصة، تلبي الطلب المتزايد على خدمات الأمن في المدن الكبرى.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 1500000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 1200000,
+          "roi": "55.0%",
+          "payback_period": "السنة الثانية"
+        },
+        "competitive_advantage": "توفير فريق مدرب ومجهز بأحدث تقنيات الأمن، مع التركيز على الجودة والموثوقية في الخدمات.",
+        "alignment_with_vision_2030": "يدعم رؤية 2030 من خلال تعزيز الأمن المجتمعي ودعم البيئة الآمنة للأعمال والاستثمار.",
+        "call_to_action": "استثمر في أمن المجتمع، هذه الشركة توفر عوائد مجزية في قطاع الأمن المتنامي."
+      },
+      {
+        "id": 32,
+        "name": "مصنع تمور",
+        "description": "إقامة مصنع لإنتاج وتعبئة التمور ومشتقاتها لتلبية الطلب المحلي والإقليمي على التمور عالية الجودة.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 8000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 6000000,
+          "roi": "35.0%",
+          "payback_period": "السنة الرابعة"
+        },
+        "competitive_advantage": "استخدام تقنيات حديثة للتعبئة والإنتاج مع التركيز على الجودة والتنوع في المنتجات.",
+        "alignment_with_vision_2030": "يتماشى مع رؤية 2030 بتعزيز الأمن الغذائي ودعم الصناعات الزراعية المحلية.",
+        "call_to_action": "استثمر في كنز التمور السعودي، هذا المصنع يعد بأرباح مستدامة في سوق مزدهر."
+      },
+      {
+        "id": 33,
+        "name": "مركز طبي تخصصي",
+        "description": "إنشاء مركز طبي يقدم خدمات متخصصة في مجالات طبية متعددة لتلبية احتياجات المرضى بجودة عالية.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 15000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 10500000,
+          "roi": "38.0%",
+          "payback_period": "السنة الرابعة"
+        },
+        "competitive_advantage": "توفير أطباء متخصصين وأحدث الأجهزة الطبية مع التركيز على تجربة المريض.",
+        "alignment_with_vision_2030": "يدعم رؤية 2030 بتحسين جودة الرعاية الصحية وتوفير خدمات طبية متقدمة.",
+        "call_to_action": "استثمر في صحة المجتمع، هذا المركز يضمن عوائد مستدامة ورعاية متميزة."
+      },
+      {
+        "id": 34,
+        "name": "مصنع أعلاف حيوانية",
+        "description": "إقامة مصنع لإنتاج أعلاف حيوانية عالية الجودة لدعم قطاع الثروة الحيوانية والمزارع.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 12000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 8400000,
+          "roi": "33.0%",
+          "payback_period": "السنة الرابعة"
+        },
+        "competitive_advantage": "إنتاج أعلاف متوازنة غذائيًا باستخدام تقنيات حديثة لضمان جودة عالية.",
+        "alignment_with_vision_2030": "يدعم الأمن الغذائي ويقلل الاعتماد على الواردات بتعزيز الإنتاج المحلي.",
+        "call_to_action": "استثمر في دعم الثروة الحيوانية، هذا المصنع يعد بأرباح مجزية في قطاع حيوي."
+      },
+      {
+        "id": 35,
+        "name": "مركز تأهيل طبي",
+        "description": "إنشاء مركز لتأهيل المرضى يقدم خدمات علاج طبيعي وإعادة تأهيل لتحسين جودة حياتهم.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 6000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 4500000,
+          "roi": "40.0%",
+          "payback_period": "السنة الثالثة"
+        },
+        "competitive_advantage": "توفير برامج تأهيل مخصصة مع فريق طبي متخصص وأحدث الأجهزة.",
+        "alignment_with_vision_2030": "يتماشى مع رؤية 2030 لتحسين الرعاية الصحية وجودة الحياة.",
+        "call_to_action": "استثمر في تحسين حياة المرضى، هذا المركز يقدم عوائد اجتماعية ومالية قيمة."
+      },
+      {
+        "id": 36,
+        "name": "مصنع منتجات ألبان",
+        "description": "إقامة مصنع لإنتاج منتجات الألبان مثل الحليب، الزبادي، والجبن لتلبية الطلب المحلي.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 20000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 14000000,
+          "roi": "32.0%",
+          "payback_period": "السنة الخامسة"
+        },
+        "competitive_advantage": "إنتاج منتجات ألبان طازجة بجودة عالية مع الالتزام بالمعايير الصحية.",
+        "alignment_with_vision_2030": "يدعم الأمن الغذائي ويقلل الاعتماد على الواردات بتعزيز الصناعات الغذائية.",
+        "call_to_action": "استثمر في قطاع الألبان المتنامي، هذا المصنع يضمن أرباحًا مستدامة."
+      },
+      {
+        "id": 37,
+        "name": "مركز تدريب وتطوير",
+        "description": "إنشاء مركز لتقديم برامج تدريبية مهنية لتطوير المهارات وتلبية احتياجات سوق العمل.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 2000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 1600000,
+          "roi": "50.0%",
+          "payback_period": "السنة الثانية"
+        },
+        "competitive_advantage": "تقديم برامج تدريبية مخصصة مع مدربين خبراء ومناهج حديثة.",
+        "alignment_with_vision_2030": "يدعم رؤية 2030 بتطوير القدرات البشرية وزيادة تنافسية القوى العاملة.",
+        "call_to_action": "استثمر في بناء المهارات، هذا المركز يعد بعوائد مجزية في سوق التدريب."
+      },
+      {
+        "id": 38,
+        "name": "مصنع مواد بناء صديقة للبيئة",
+        "description": "إقامة مصنع لإنتاج مواد بناء مستدامة تلبي معايير البيئة لدعم مشاريع التشييد.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 25000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 17500000,
+          "roi": "30.0%",
+          "payback_period": "السنة الخامسة"
+        },
+        "competitive_advantage": "إنتاج مواد بناء مبتكرة وصديقة للبيئة باستخدام تقنيات حديثة.",
+        "alignment_with_vision_2030": "يدعم مبادرات الاستدامة في رؤية 2030 وتعزيز البناء الأخضر.",
+        "call_to_action": "استثمر في مستقبل مستدام، هذا المصنع يقدم أرباحًا في قطاع البناء الأخضر."
+      },
+      {
+        "id": 39,
+        "name": "وكالة سفر وسياحة",
+        "description": "إنشاء وكالة تقدم خدمات السفر والسياحة، تشمل تنظيم الرحلات وحجوزات الفنادق.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 1000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 800000,
+          "roi": "60.0%",
+          "payback_period": "السنة الأولى"
+        },
+        "competitive_advantage": "تقديم خدمات سياحية متكاملة مع تجربة عملاء مميزة وحلول مخصصة.",
+        "alignment_with_vision_2030": "يدعم رؤية 2030 بتعزيز السياحة الداخلية والخارجية وجذب الزوار.",
+        "call_to_action": "استثمر في مغامرات السفر، هذه الوكالة توفر عوائد مجزية في قطاع السياحة."
+      },
+      {
+        "id": 40,
+        "name": "مزرعة دواجن",
+        "description": "إقامة مزرعة لتربية الدواجن وإنتاج البيض واللحوم لتلبية الطلب المحلي.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 15000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 10500000,
+          "roi": "31.0%",
+          "payback_period": "السنة الخامسة"
+        },
+        "competitive_advantage": "استخدام تقنيات حديثة لتربية الدواجن مع ضمان جودة المنتجات.",
+        "alignment_with_vision_2030": "يدعم الأمن الغذائي ويقلل الاعتماد على الواردات بتعزيز الإنتاج المحلي.",
+        "call_to_action": "استثمر في قطاع الدواجن الحيوي، هذه المزرعة تضمن أرباحًا مستدامة."
+      },
+      {
+        "id": 41,
+        "name": "مركز خدمة عملاء",
+        "description": "إنشاء مركز لتقديم خدمات دعم العملاء للشركات عبر الهاتف والمنصات الرقمية.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 2000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 1600000,
+          "roi": "55.0%",
+          "payback_period": "السنة الثانية"
+        },
+        "competitive_advantage": "توفير فريق مدرب ومنصات رقمية متقدمة لتقديم خدمة عملاء متميزة.",
+        "alignment_with_vision_2030": "يدعم التحول الرقمي وتحسين تجربة العملاء في مختلف القطاعات.",
+        "call_to_action": "استثمر في تجربة العملاء، هذا المركز يقدم عوائد مجزية في سوق الخدمات."
+      },
+      {
+        "id": 42,
+        "name": "مصنع أسمنت",
+        "description": "إقامة مصنع لإنتاج الأسمنت لتلبية الطلب المتزايد في قطاع التشييد والبناء.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 150000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 90000000,
+          "roi": "20.0%",
+          "payback_period": "السنة الثامنة"
+        },
+        "competitive_advantage": "إنتاج أسمنت عالي الجودة باستخدام أحدث تقنيات التصنيع.",
+        "alignment_with_vision_2030": "يدعم رؤية 2030 بتعزيز المحتوى المحلي في قطاع البناء والتشييد.",
+        "call_to_action": "استثمر في أساس البناء، هذا المصنع يضمن أرباحًا طويلة الأجل."
+      },
+      {
+        "id": 43,
+        "name": "مركز لياقة بدنية (جيم)",
+        "description": "إنشاء مركز لياقة بدنية مزود بأحدث المعدات لتعزيز الصحة واللياقة البدنية.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 3000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 2100000,
+          "roi": "45.0%",
+          "payback_period": "السنة الثالثة"
+        },
+        "competitive_advantage": "توفير برامج تدريب مخصصة ومدربين محترفين في بيئة محفزة.",
+        "alignment_with_vision_2030": "يدعم برامج جودة الحياة في رؤية 2030 بتعزيز الصحة العامة.",
+        "call_to_action": "استثمر في اللياقة والصحة، هذا الجيم يقدم عوائد مجزية في سوق متنامٍ."
+      },
+      {
+        "id": 44,
+        "name": "شركة تسويق رقمي",
+        "description": "تأسيس شركة تقدم خدمات التسويق الرقمي مثل إدارة الحملات الإعلانية والمحتوى.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 1000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 800000,
+          "roi": "60.0%",
+          "payback_period": "السنة الأولى"
+        },
+        "competitive_advantage": "تقديم حلول تسويقية مبتكرة مع فريق متخصص في التحليلات الرقمية.",
+        "alignment_with_vision_2030": "يدعم التحول الرقمي وتنمية الاقتصاد الرقمي في رؤية 2030.",
+        "call_to_action": "استثمر في التسويق الرقمي، هذه الشركة توفر عوائد هائلة في عالم رقمي."
+      },
+      {
+        "id": 45,
+        "name": "مصنع زجاج",
+        "description": "إقامة مصنع لإنتاج الزجاج المستخدم في البناء والصناعات الأخرى بجودة عالية.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 30000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 21000000,
+          "roi": "28.0%",
+          "payback_period": "السنة الخامسة"
+        },
+        "competitive_advantage": "إنتاج زجاج متين ومتنوع باستخدام تقنيات تصنيع متقدمة.",
+        "alignment_with_vision_2030": "يدعم رؤية 2030 بتعزيز المحتوى المحلي في الصناعات التحويلية.",
+        "call_to_action": "استثمر في صناعة الزجاج، هذا المصنع يقدم أرباحًا في سوق متنامٍ."
+      },
+      {
+        "id": 46,
+        "name": "مركز طبي أسنان",
+        "description": "إنشاء مركز طبي متخصص في طب الأسنان يقدم خدمات العلاج وتجميل الأسنان.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 5000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 3500000,
+          "roi": "42.0%",
+          "payback_period": "السنة الثالثة"
+        },
+        "competitive_advantage": "توفير أطباء أسنان متخصصين وتقنيات حديثة لعلاجات دقيقة.",
+        "alignment_with_vision_2030": "يدعم رؤية 2030 بتحسين الرعاية الصحية وجودة الحياة.",
+        "call_to_action": "استثمر في ابتسامة المستقبل، هذا المركز يضمن عوائد مجزية."
+      },
+      {
+        "id": 47,
+        "name": "مصنع خرسانة جاهزة (كبير)",
+        "description": "إقامة مصنع كبير لإنتاج الخرسانة الجاهزة لدعم المشاريع العمرانية الكبرى.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 50000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 35000000,
+          "roi": "32.0%",
+          "payback_period": "السنة الخامسة"
+        },
+        "competitive_advantage": "إنتاج خرسانة عالية الجودة باستخدام تقنيات حديثة مع الالتزام بالمواعيد.",
+        "alignment_with_vision_2030": "يدعم مشاريع رؤية 2030 الكبرى مثل نيوم والقدية.",
+        "call_to_action": "استثمر في ركيزة البناء، هذا المصنع يعد بأرباح صلبة ومستدامة."
+      },
+      {
+        "id": 48,
+        "name": "شركة إدارة فعاليات",
+        "description": "تأسيس شركة لتنظيم الفعاليات مثل المؤتمرات والمعارض والحفلات باحترافية.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 2000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 1800000,
+          "roi": "60.0%",
+          "payback_period": "السنة الثانية"
+        },
+        "competitive_advantage": "تقديم تصميمات إبداعية وحلول متكاملة لضمان نجاح الفعاليات.",
+        "alignment_with_vision_2030": "يدعم برامج جودة الحياة وتطوير قطاع الترفيه والسياحة.",
+        "call_to_action": "استثمر في صناعة الإبهار، هذه الشركة توفر عوائد في سوق الفعاليات."
+      },
+      {
+        "id": 49,
+        "name": "مصنع ملابس جاهزة",
+        "description": "إقامة مصنع لإنتاج الملابس الجاهزة للرجال، النساء، والأطفال والزي الرسمي.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 10000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 7500000,
+          "roi": "35.0%",
+          "payback_period": "السنة الرابعة"
+        },
+        "competitive_advantage": "استخدام تقنيات حديثة في الخياطة والتصميم مع جودة عالية.",
+        "alignment_with_vision_2030": "يدعم تنويع الصناعات التحويلية وزيادة المحتوى المحلي.",
+        "call_to_action": "استثمر في الأناقة، هذا المصنع يقدم أرباحًا في سوق الملابس المتنامي."
+      },
+      {
+        "id": 50,
+        "name": "مدرسة خاصة",
+        "description": "إنشاء مدرسة خاصة تقدم تعليمًا عالي الجودة لمراحل تعليمية مختلفة.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 20000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 15000000,
+          "roi": "30.0%",
+          "payback_period": "السنة السادسة"
+        },
+        "competitive_advantage": "توفير هيئة تدريس مؤهلة ومناهج مبتكرة في بيئة تعليمية محفزة.",
+        "alignment_with_vision_2030": "يدعم تطوير التعليم وجودة مخرجاته في رؤية 2030.",
+        "call_to_action": "استثمر في عقول المستقبل، هذه المدرسة تساهم في نهضة الوطن."
+      },
+      {
+        "id": 51,
+        "name": "مصنع أدوية",
+        "description": "إقامة مصنع لإنتاج الأدوية الأساسية والمتخصصة لتلبية احتياجات السوق.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 100000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 40000000,
+          "roi": "25.0%",
+          "payback_period": "السنة السابعة"
+        },
+        "competitive_advantage": "إنتاج أدوية بمعايير دولية باستخدام تقنيات تصنيع متقدمة.",
+        "alignment_with_vision_2030": "يدعم توطين الصناعات الدوائية وتعزيز الأمن الصحي.",
+        "call_to_action": "استثمر في صحة الوطن، هذا المصنع دعامة للأمن الصحي والأرباح."
+      },
+      {
+        "id": 52,
+        "name": "مركز ترفيه عائلي",
+        "description": "إنشاء مركز ترفيهي شامل يقدم أنشطة متنوعة للعائلات مثل الألعاب والمطاعم.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 15000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 10000000,
+          "roi": "38.0%",
+          "payback_period": "السنة الرابعة"
+        },
+        "competitive_advantage": "توفير بيئة آمنة وممتعة مع مرافق حديثة وأنشطة متنوعة.",
+        "alignment_with_vision_2030": "يدعم برامج جودة الحياة وتطوير قطاع الترفيه.",
+        "call_to_action": "استثمر في سعادة العائلة، هذا المركز يضمن ذكريات وعوائد مجزية."
+      },
+      {
+        "id": 53,
+        "name": "مصنع ألمنيوم",
+        "description": "إقامة مصنع لإنتاج منتجات الألمنيوم مثل الأبواب والنوافذ لقطاع البناء.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 35000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 20000000,
+          "roi": "29.0%",
+          "payback_period": "السنة السادسة"
+        },
+        "competitive_advantage": "إنتاج منتجات ألمنيوم خفيفة ومتينة باستخدام تقنيات حديثة.",
+        "alignment_with_vision_2030": "يدعم تنويع الصناعات التحويلية وزيادة المحتوى المحلي.",
+        "call_to_action": "استثمر في صناعة الألمنيوم، هذا المصنع يقدم أرباحًا في سوق متنامٍ."
+      },
+      {
+        "id": 54,
+        "name": "مركز تأهيل مدمني المخدرات",
+        "description": "إنشاء مركز لعلاج وتأهيل مدمني المخدرات ببرامج طبية ونفسية شاملة.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 7000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 5500000,
+          "roi": "35.0%",
+          "payback_period": "السنة الرابعة"
+        },
+        "competitive_advantage": "تقديم برامج علاجية مخصصة مع فريق طبي متخصص وبيئة داعمة.",
+        "alignment_with_vision_2030": "يدعم مكافحة المخدرات وبناء مجتمع صحي وآمن.",
+        "call_to_action": "استثمر في الأمل، هذا المركز يوفر عوائد اجتماعية ومالية قيمة."
+      },
+      {
+        "id": 55,
+        "name": "مصنع مواد تنظيف",
+        "description": "إقامة مصنع لإنتاج مواد التنظيف المنزلية والصناعية مثل المنظفات والمعقمات.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 10000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 8000000,
+          "roi": "36.0%",
+          "payback_period": "السنة الثالثة"
+        },
+        "competitive_advantage": "إنتاج مواد تنظيف آمنة وفعالة بمعايير بيئية وصحية عالية.",
+        "alignment_with_vision_2030": "يدعم تنويع الصناعات التحويلية وزيادة المحتوى المحلي.",
+        "call_to_action": "استثمر في النظافة، هذا المصنع يقدم أرباحًا في سوق متنامٍ."
+      },
+      {
+        "id": 56,
+        "name": "مستودعات لوجستية",
+        "description": "إنشاء مجمع مستودعات لوجستية حديثة للتخزين والتوزيع للشركات المحلية والدولية.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 20000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 15000000,
+          "roi": "32.0%",
+          "payback_period": "السنة الخامسة"
+        },
+        "competitive_advantage": "توفير حلول تخزينية مرنة مع أنظمة أمن ومراقبة متقدمة.",
+        "alignment_with_vision_2030": "يدعم رؤية 2030 لجعل المملكة مركزًا لوجستيًا عالميًا.",
+        "call_to_action": "استثمر في قلب التجارة، هذه المستودعات توفر عوائد في سوق لوجستي مزدهر."
+      },
+      {
+        "id": 57,
+        "name": "شركة خدمات نفط وغاز",
+        "description": "تأسيس شركة تقدم خدمات متكاملة لقطاع النفط والغاز مثل الحفر والصيانة.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 80000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 35000000,
+          "roi": "25.0%",
+          "payback_period": "السنة الثامنة"
+        },
+        "competitive_advantage": "توفير تقنيات متقدمة وفريق عمل مؤهل لزيادة كفاءة العمليات.",
+        "alignment_with_vision_2030": "يدعم تعزيز المحتوى المحلي في قطاع الطاقة وتنويع الاقتصاد.",
+        "call_to_action": "استثمر في عملاق الطاقة، هذه الشركة توفر أرباحًا في قطاع حيوي."
+      },
+      {
+        "id": 58,
+        "name": "مصنع بلاط وسيراميك",
+        "description": "إقامة مصنع لإنتاج البلاط والسيراميك لتلبية الطلب في قطاع البناء والتشييد.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 30000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 20000000,
+          "roi": "31.0%",
+          "payback_period": "السنة الخامسة"
+        },
+        "competitive_advantage": "إنتاج بلاط وسيراميك مبتكر بجودة عالية وتصميمات متنوعة.",
+        "alignment_with_vision_2030": "يدعم تنويع الصناعات التحويلية وزيادة المحتوى المحلي.",
+        "call_to_action": "استثمر في جمال المباني، هذا المصنع يقدم أرباحًا في سوق متنامٍ."
+      },
+      {
+        "id": 59,
+        "name": "مركز تدريب على ريادة الأعمال",
+        "description": "إنشاء مركز لتدريب رواد الأعمال على إدارة المشاريع وتطوير المهارات.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 1800000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 1600000,
+          "roi": "58.0%",
+          "payback_period": "السنة الثانية"
+        },
+        "competitive_advantage": "تقديم برامج تدريبية عملية مع مدربين خبراء وشبكة تواصل واسعة.",
+        "alignment_with_vision_2030": "يدعم دعم ريادة الأعمال وتنمية المنشآت الصغيرة والمتوسطة.",
+        "call_to_action": "استثمر في صناع المستقبل، هذا المركز يوفر عوائد تنموية عظيمة."
+      },
+      {
+        "id": 60,
+        "name": "مصنع منظفات صناعية",
+        "description": "إقامة مصنع لإنتاج منظفات ومطهرات صناعية لتلبية احتياجات القطاع الصناعي.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 15000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 11000000,
+          "roi": "34.0%",
+          "payback_period": "السنة الرابعة"
+        },
+        "competitive_advantage": "إنتاج منظفات فعالة بمعايير بيئية وصحية باستخدام تقنيات حديثة.",
+        "alignment_with_vision_2030": "يدعم تنويع الصناعات التحويلية وزيادة المحتوى المحلي.",
+        "call_to_action": "استثمر في كفاءة الصناعة، هذا المصنع يقدم أرباحًا في سوق متنامٍ."
+      },
+      {
+        "id": 61,
+        "name": "شركة خدمات تنظيف",
+        "description": "تأسيس شركة تقدم خدمات تنظيف للمنازل والمكاتب والمجمعات التجارية.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 1200000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 1000000,
+          "roi": "65.0%",
+          "payback_period": "السنة الأولى"
+        },
+        "competitive_advantage": "توفير فريق مدرب ومعدات صديقة للبيئة مع خدمة عملاء ممتازة.",
+        "alignment_with_vision_2030": "يدعم برامج جودة الحياة وتحسين البيئة الحضرية.",
+        "call_to_action": "استثمر في بيئة نظيفة، هذه الشركة توفر عوائد في سوق التنظيف."
+      },
+      {
+        "id": 62,
+        "name": "مركز طبي أطفال",
+        "description": "إنشاء مركز طبي متخصص في رعاية الأطفال مع عيادات وصيدلية ومختبر.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 4000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 3500000,
+          "roi": "43.0%",
+          "payback_period": "السنة الثالثة"
+        },
+        "competitive_advantage": "توفير أطباء متخصصين وبيئة صديقة للأطفال مع رعاية عالية الجودة.",
+        "alignment_with_vision_2030": "يدعم تطوير الرعاية الصحية ورعاية الأطفال في رؤية 2030.",
+        "call_to_action": "استثمر في صحة الأطفال، هذا المركز يوفر عوائد مجزية وحياة أفضل."
+      },
+      {
+        "id": 63,
+        "name": "مصنع ورق ومنتجات ورقية",
+        "description": "إقامة مصنع لإنتاج الورق والمنتجات الورقية مثل ورق الطباعة والتغليف.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 25000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 18000000,
+          "roi": "29.0%",
+          "payback_period": "السنة الخامسة"
+        },
+        "competitive_advantage": "إنتاج ورق عالي الجودة باستخدام مواد معاد تدويرها وتقنيات حديثة.",
+        "alignment_with_vision_2030": "يدعم تنويع الصناعات التحويلية وزيادة المحتوى المحلي.",
+        "call_to_action": "استثمر في صناعة الورق، هذا المصنع يقدم أرباحًا في سوق متنامٍ."
+      },
+      {
+        "id": 64,
+        "name": "مركز صيانة معدات صناعية",
+        "description": "إنشاء مركز لصيانة وإصلاح المعدات الصناعية الثقيلة والخفيفة للمصانع.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 7000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 5500000,
+          "roi": "38.0%",
+          "payback_period": "السنة الرابعة"
+        },
+        "competitive_advantage": "توفير فنيين متخصصين وأجهزة تشخيص متقدمة لضمان كفاءة المعدات.",
+        "alignment_with_vision_2030": "يدعم تطوير الصناعة المحلية وزيادة المحتوى المحلي.",
+        "call_to_action": "استثمر في استمرارية الإنتاج، هذا المركز يوفر أرباحًا في سوق حيوي."
+      },
+      {
+        "id": 65,
+        "name": "شركة استشارية مالية",
+        "description": "تأسيس شركة تقدم خدمات استشارية مالية مثل التخطيط وإدارة الاستثمارات.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 1500000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 1200000,
+          "roi": "50.0%",
+          "payback_period": "السنة الثانية"
+        },
+        "competitive_advantage": "توفير مستشارين ماليين خبراء وحلول مالية مخصصة للعملاء.",
+        "alignment_with_vision_2030": "يدعم تنويع الاقتصاد وتطوير الأسواق المالية في رؤية 2030.",
+        "call_to_action": "استثمر في التوجيه المالي، هذه الشركة توفر عوائد في سوق متنامٍ."
+      },
+      {
+        "id": 66,
+        "name": "مصنع خياطة وتطريز",
+        "description": "إقامة مصنع لإنتاج الملابس الجاهزة والمفروشات المطرزة والزي الموحد.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 3000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 2500000,
+          "roi": "42.0%",
+          "payback_period": "السنة الثالثة"
+        },
+        "competitive_advantage": "استخدام ماكينات حديثة للخياطة والتطريز مع تصميمات مبتكرة.",
+        "alignment_with_vision_2030": "يدعم تنويع الصناعات التحويلية وزيادة المحتوى المحلي.",
+        "call_to_action": "استثمر في التصميم والجودة، هذا المصنع يقدم أرباحًا في سوق متنامٍ."
+      },
+      {
+        "id": 67,
+        "name": "مركز تدريب على اللغات",
+        "description": "إنشاء مركز لتعليم اللغات الأجنبية مثل الإنجليزية والفرنسية للطلاب والموظفين.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 1000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 850000,
+          "roi": "60.0%",
+          "payback_period": "السنة الثانية"
+        },
+        "competitive_advantage": "توفير معلمين أكفاء ومناهج تفاعلية لتعليم اللغات بفعالية.",
+        "alignment_with_vision_2030": "يدعم تنمية القدرات البشرية وزيادة تنافسية القوى العاملة.",
+        "call_to_action": "استثمر في التواصل العالمي، هذا المركز يوفر عوائد معرفية مجزية."
+      },
+      {
+        "id": 68,
+        "name": "مصنع منتجات خشبية",
+        "description": "إقامة مصنع لإنتاج المنتجات الخشبية مثل الأبواب والأثاث والديكورات.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 8000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 6000000,
+          "roi": "34.0%",
+          "payback_period": "السنة الرابعة"
+        },
+        "competitive_advantage": "استخدام أجود الأخشاب وتقنيات تصنيع حديثة لمنتجات عالية الجودة.",
+        "alignment_with_vision_2030": "يدعم تنويع الصناعات التحويلية وزيادة المحتوى المحلي.",
+        "call_to_action": "استثمر في جمال الخشب، هذا المصنع يقدم أرباحًا في سوق متنامٍ."
+      },
+      {
+        "id": 69,
+        "name": "شركة توصيل طلبات",
+        "description": "تأسيس شركة توصيل طلبات تعتمد على منصة رقمية لخدمات التوصيل السريع.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 2500000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 2200000,
+          "roi": "65.0%",
+          "payback_period": "السنة الأولى"
+        },
+        "competitive_advantage": "توفير تطبيق سهل الاستخدام وفريق سائقين مدربين لتجربة توصيل سلسة.",
+        "alignment_with_vision_2030": "يدعم التحول الرقمي والاقتصاد التشاركي في رؤية 2030.",
+        "call_to_action": "استثمر في راحة العملاء، هذه الشركة توفر عوائد في سوق التوصيل."
+      },
+      {
+        "id": 70,
+        "name": "مصنع خرسانة سابقة الصب",
+        "description": "إقامة مصنع لإنتاج الخرسانة سابقة الصب لمشاريع البناء السريعة والكبرى.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 40000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 28000000,
+          "roi": "30.0%",
+          "payback_period": "السنة الخامسة"
+        },
+        "competitive_advantage": "إنتاج خرسانة دقيقة باستخدام تقنيات حديثة لتقليل وقت وتكاليف البناء.",
+        "alignment_with_vision_2030": "يدعم مشاريع رؤية 2030 الكبرى مثل نيوم والقدية.",
+        "call_to_action": "استثمر في البناء الذكي، هذا المصنع يقدم أرباحًا في قطاع متنامٍ."
+      },
+      {
+        "id": 71,
+        "name": "مركز طبي عيون",
+        "description": "إنشاء مركز طبي متخصص في طب العيون يقدم فحص النظر وجراحات متقدمة.",
+        "country": {"en": "Saudi Arabia", "ar": "المملكة العربية السعودية"},
+        "location": "غير محدد",
+        "financial_indicators": {
+          "total_investment_cost": 6000000,
+          "currency": "ريال سعودي",
+          "expected_net_profit": 5000000,
+          "roi": "40.0%",
+          "payback_period": "السنة الثالثة"
+        },
+        "competitive_advantage": "توفير أحدث تقنيات طب العيون وأطباء متخصصين مع خدمة عملاء ممتازة.",
+        "alignment_with_vision_2030": "يدعم تطوير الرعاية الصحية ورعاية العيون في رؤية 2030.",
+        "call_to_action": "استثمر في نور البصيرة، هذا المركز يوفر عوائد مجزية وحياة أفضل."
+      }
+  ]
+}

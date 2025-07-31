@@ -103,7 +103,7 @@ export default function ProjectDetailClient({ project }) {
                   {project.sector.ar}
                 </Badge>
                 {/* UPDATED: Use project.country directly */}
-                <Badge variant="outline" className="bg-white/50 border-gray-300 px-4 py-1">{project.country}</Badge>
+                <Badge variant="outline" className="bg-white/50 border-gray-300 px-4 py-1">{project.country.ar}</Badge>
               </motion.div>
 
               <h1 className="text-4xl md:text-6xl font-extrabold text-gray-800 mb-6">

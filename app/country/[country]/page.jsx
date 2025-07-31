@@ -1,12 +1,10 @@
-import { getProjectsByCountry } from "@/data/projects"
+import { getProjectsByCountry, getAllCountryPaths, countryNames } from "@/data/projects"
 import CountryProjectsClient from "./CountryProjectsClient"
-import { countryNames } from "@/data/projects"
 
-// Generates beautiful, dynamic titles and descriptions
 export async function generateMetadata({ params }) {
-  const country = decodeURIComponent(params.country)
-  const countryDisplayName = countryNames[country] || country
-  const projects = getProjectsByCountry(country)
+  const paramsData = await params;
+  const countryKey = paramsData.country;
+  const countryDisplayName = countryNames[countryKey] || countryKey;
 
   return {
     title: `مشاريعنا في ${countryDisplayName} | استشارات الخليج`,
@@ -14,20 +12,17 @@ export async function generateMetadata({ params }) {
   }
 }
 
-// Pre-builds pages for faster performance
 export async function generateStaticParams() {
-  const countries = ["السعودية", "الإمارات العربية المتحدة", "قطر", "مصر"]
-  return countries.map((country) => ({
-    country: encodeURIComponent(country),
-  }))
+  // This function now correctly returns an array of objects with string values.
+  // e.g., [{ country: 'saudi_arabia' }, { country: 'egypt' }]
+  return getAllCountryPaths();
 }
 
-// FIX: Added 'async' to the function signature
 export default async function CountryPage({ params }) {
-  const country = decodeURIComponent(params.country)
-  const projects = getProjectsByCountry(country)
+  const paramsData = await params;
+  const countryKey = paramsData.country;
+  const projects = getProjectsByCountry(countryKey);
 
-  // We now pass the projects to the client, even if empty,
-  // to let it handle the "Coming Soon" state gracefully.
-  return <CountryProjectsClient country={country} projects={projects} />
+  // Pass the country key to the client component.
+  return <CountryProjectsClient country={countryKey} projects={projects} />
 }

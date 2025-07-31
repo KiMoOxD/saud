@@ -8,7 +8,8 @@ const projects = projectsData.projects;
 
 // Generate metadata for each project page
 export async function generateMetadata({ params }) {
-  const project = projects.find(p => p.id === params.id)
+  const paramsData = await params;
+  const project = projects.find(p => p.id === paramsData.id)
 
   if (!project) {
     return {
@@ -30,8 +31,9 @@ export async function generateStaticParams() {
   }))
 }
 
-export default function ProjectPage({ params }) {
-  const project = projects.find(p => p.id === params.id)
+export default async function ProjectPage({ params }) {
+  const paramsData = await params;
+  const project = projects.find(p => p.id === paramsData.id)
 
   if (!project) {
     notFound()
