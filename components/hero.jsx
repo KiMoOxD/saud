@@ -1,201 +1,435 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { motion, useMotionValue, useTransform, animate } from "framer-motion"
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react"
+import { motion, useMotionValue, useTransform, animate, useScroll, useReducedMotion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
-import BookingModal from "@/components/booking-modal" // Assumed path
-import { Sparkles, TrendingUp, Lightbulb, Shield, Zap, ArrowLeft } from "lucide-react"
-import React, { useState, useEffect } from "react"
+import { Sparkles, TrendingUp, Lightbulb, Shield, Zap, ArrowLeft, Star } from "lucide-react"
+import BookingModal from "@/components/booking-modal"
 
-// --- Helper Component: AnimatedStat ---
-const AnimatedStat = ({ value, label, icon: Icon, iconColor }) => {
+// Memoized AnimatedStat with reduced animations on lower-end devices
+const AnimatedStat = React.memo(({ value, label, icon: Icon, index, prefersReducedMotion }) => {
   const count = useMotionValue(0)
   const rounded = useTransform(count, (latest) => Math.round(latest))
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 })
+  const { ref, inView } = useInView({ 
+    triggerOnce: true, 
+    threshold: 0.2,
+    rootMargin: '50px'
+  })
 
   useEffect(() => {
     if (inView) {
-      const controls = animate(count, value, { duration: 2, ease: "easeOut" })
+      const controls = animate(count, value, { 
+        duration: prefersReducedMotion ? 1 : 2.5, 
+        ease: "easeOut",
+        delay: prefersReducedMotion ? 0 : index * 0.2 
+      })
       return controls.stop
     }
-  }, [inView, count, value])
+  }, [inView, count, value, index, prefersReducedMotion])
+
+  const cardVariants = useMemo(() => ({
+    hidden: { opacity: 0, y: prefersReducedMotion ? 20 : 50, scale: prefersReducedMotion ? 1 : 0.9 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: { 
+        duration: prefersReducedMotion ? 0.3 : 0.8, 
+        delay: prefersReducedMotion ? 0 : index * 0.15,
+        type: prefersReducedMotion ? "tween" : "spring",
+        stiffness: 100
+      }
+    }
+  }), [index, prefersReducedMotion])
 
   return (
     <motion.div
       ref={ref}
-      className="text-center"
-      variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-      }}
+      className="relative group"
+      variants={cardVariants}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      whileHover={prefersReducedMotion ? {} : { scale: 1.05, y: -10 }}
+      whileTap={{ scale: 0.95 }}
     >
-      <div className="flex items-center justify-center gap-2">
-        <Icon className={`w-7 h-7 ${iconColor}`} />
-        <motion.span className="text-4xl font-bold text-slate-50">{rounded}</motion.span>
-        <span className="text-4xl font-bold text-slate-50">{label.includes("+") && "+"}</span>
+      <div className="relative overflow-hidden bg-white/80 backdrop-blur-xl border border-white/50 rounded-3xl p-6 sm:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_60px_rgba(93,197,107,0.15)] transition-all duration-700">
+        
+        {/* Simplified gradient overlay - only on hover */}
+        {!prefersReducedMotion && (
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-green-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        )}
+        
+        <div className="relative z-10 text-center">
+          {/* Simplified icon with conditional animation */}
+          <motion.div 
+            className="relative inline-flex items-center justify-center w-16 h-16 mb-6"
+            whileHover={prefersReducedMotion ? {} : { rotate: 360 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl blur-xl" />
+            <div className="relative bg-gradient-to-br from-green-500/10 to-green-600/10 w-full h-full rounded-2xl flex items-center justify-center">
+              <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
+            </div>
+          </motion.div>
+          
+          {/* Optimized number display */}
+          <div className="flex items-baseline justify-center gap-1 mb-3">
+            <motion.span 
+              className="text-2xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent"
+              style={{ fontVariantNumeric: 'tabular-nums' }}
+            >
+              {rounded}
+            </motion.span>
+            {(label.includes("+") || label.includes("%") || label.includes("/7")) && (
+              <motion.span 
+                className="text-xl sm:text-3xl font-black text-green-600"
+                initial={{ scale: 0 }}
+                animate={inView ? { scale: 1 } : {}}
+                transition={prefersReducedMotion ? { duration: 0.2 } : { delay: 2 + index * 0.2, type: "spring" }}
+              >
+                {label.includes("+") && "+"}
+                {label.includes("%") && "%"}
+                {label.includes("/7") && "/7"}
+              </motion.span>
+            )}
+          </div>
+          
+          <p className="text-xs sm:text-sm text-gray-600 font-medium tracking-wide">
+            {label.replace("+", "").replace("%", "").replace('/7', '')}
+          </p>
+        </div>
       </div>
-      <p className="text-sm text-slate-300 mt-1">{label.replace("+", "")}</p>
     </motion.div>
   )
-}
+})
 
-
-// --- Main Hero Component ---
-export default function Hero() {
+// Main Hero Component with performance optimizations
+export default function OptimizedHero() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-
+  const [isMobile, setIsMobile] = useState(false)
+  const prefersReducedMotion = useReducedMotion()
+  const { scrollY } = useScroll()
+  
+  // Reduced scroll transforms for better performance
+  const y1 = useTransform(scrollY, [0, 300], [0, prefersReducedMotion ? 0 : 50])
+  const y2 = useTransform(scrollY, [0, 300], [0, prefersReducedMotion ? 0 : -25])
+  
   const { ref: heroRef, inView: heroInView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
+    rootMargin: '100px'
   })
 
-  const containerVariants = {
+  // Memoized animation variants
+  const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+    visible: { 
+      opacity: 1, 
+      transition: { 
+        staggerChildren: prefersReducedMotion ? 0.05 : 0.15, 
+        delayChildren: prefersReducedMotion ? 0.1 : 0.3,
+        ease: [0.25, 0.46, 0.45, 0.94]
+      } 
+    },
+  }), [prefersReducedMotion])
+
+  const itemVariants = useMemo(() => ({
+    hidden: { y: prefersReducedMotion ? 20 : 80, opacity: 0, scale: prefersReducedMotion ? 1 : 0.95 },
+    visible: { 
+      y: 0, 
+      opacity: 1, 
+      scale: 1,
+      transition: { 
+        type: prefersReducedMotion ? "tween" : "spring", 
+        stiffness: 80, 
+        damping: 20,
+        duration: prefersReducedMotion ? 0.3 : 0.8 
+      } 
+    },
+  }), [prefersReducedMotion])
+
+  // Memoized stats data
+  const stats = useMemo(() => [
+    { icon: TrendingUp, value: 500, label: "مشروع ناجح+" },
+    { icon: Lightbulb, value: 15, label: "سنة خبرة" },
+    { icon: Shield, value: 98, label: "رضا العملاء %" },
+    { icon: Zap, value: 24, label: "دعم فني/7" },
+  ], [])
+
+  // Optimized resize handler with debouncing
+  const handleResize = useCallback(() => {
+    try {
+      setIsMobile(window.innerWidth < 640)
+    } catch (e) {
+      setIsMobile(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    handleResize()
+    const debouncedResize = debounce(handleResize, 150)
+    window.addEventListener('resize', debouncedResize)
+    return () => window.removeEventListener('resize', debouncedResize)
+  }, [handleResize])
+
+  // Debounce helper
+  function debounce(func, wait) {
+    let timeout
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout)
+        func(...args)
+      }
+      clearTimeout(timeout)
+      timeout = setTimeout(later, wait)
+    }
   }
 
-  const itemVariants = {
-    hidden: { y: 25, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100, damping: 15 } },
-  }
+  const handleModalOpen = useCallback(() => {
+    setIsModalOpen(true)
+  }, [])
 
-  const stats = [
-    { icon: TrendingUp, value: 500, label: "مشروع ناجح+", iconColor: "text-green-400" },
-    { icon: Lightbulb, value: 15, label: "سنة خبرة", iconColor: "text-amber-400" },
-    { icon: Shield, value: 98, label: "رضا العملاء %", iconColor: "text-green-400" },
-    { icon: Zap, value: 24, label: "دعم فني/7", iconColor: "text-slate-400" },
-  ]
+  const handleModalClose = useCallback(() => {
+    setIsModalOpen(false)
+  }, [])
 
   return (
     <section 
       ref={heroRef} 
-      // UPDATED: Base color is now a lighter, more vibrant dark green.
-      className="relative w-full min-h-screen flex items-center justify-center py-24 md:py-32 overflow-hidden bg-[#006C35]" 
+      className="relative w-full min-h-screen flex flex-col justify-center py-12 sm:py-16 md:py-24 overflow-hidden bg-gradient-to-br from-white  to-green-50/30" 
       dir="rtl"
     >
-      {/* Background Liquid Effect */}
-      <div className="absolute inset-0 z-0 filter blur-3xl">
+      {/* Simplified Background Layers */}
+      <div className="absolute inset-0 -z-10">
         
-        {/* UPDATED: Mixture of lighter colored blobs for the liquid effect */}
-        <motion.div 
-          className="absolute top-0 left-0 w-96 h-96 bg-emerald-500/50 rounded-full"
-          animate={{
-            x: [-100, 50, -100],
-            y: [-50, 100, -50],
-            rotate: [0, 180, 0],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{ duration: 40, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' }}
-        />
-        <motion.div 
-          className="absolute bottom-0 right-0 w-[30rem] h-[30rem] bg-green-600/60 rounded-full"
-          animate={{
-            x: [100, -100, 100],
-            y: [50, -150, 50],
-            scale: [1, 1.3, 1]
-          }}
-          transition={{ duration: 50, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror', delay: 5 }}
-        />
-        <motion.div 
-          className="absolute top-1/2 left-1/3 w-80 h-80 bg-teal-700/50 rounded-full"
-          animate={{
-            y: [80, -80, 80],
-            x: [50, -50, 50],
-            scale: [1, 0.9, 1]
-          }}
-          transition={{ duration: 60, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror', delay: 10 }}
-        />
-         <motion.div 
-          className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-emerald-600/50 rounded-full"
-          animate={{
-            y: [-80, 80, -80],
-            rotate: [0, -180, 0],
-          }}
-          transition={{ duration: 70, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror', delay: 15 }}
-        />
+        {/* Reduced complexity background blobs */}
+        {!prefersReducedMotion && (
+          <>
+            <motion.div
+              className="absolute top-[-20%] right-[-20%] w-[420px] sm:w-[600px] md:w-[800px] h-[420px] sm:h-[600px] md:h-[800px] bg-gradient-to-br from-green-500/15 via-emerald-500/10 to-teal-500/5 blur-[120px] sm:blur-[160px] md:blur-[200px] rounded-full"
+              style={{ y: y1 }}
+              animate={{
+                scale: [1, 1.1, 1]
+              }}
+              transition={{
+                duration: 20,
+                ease: "easeInOut",
+                repeat: Infinity,
+              }}
+            />
+            
+            <motion.div
+              className="absolute bottom-[-25%] left-[-15%] w-[360px] sm:w-[480px] md:w-[600px] h-[360px] sm:h-[480px] md:h-[600px] bg-gradient-to-tr from-green-600/10 via-emerald-400/8 to-lime-500/3 blur-[90px] sm:blur-[130px] md:blur-[180px] rounded-full"
+              style={{ y: y2 }}
+              animate={{
+                scale: [1.1, 0.9, 1.1]
+              }}
+              transition={{
+                duration: 25,
+                ease: "easeInOut",
+                repeat: Infinity,
+                delay: 5
+              }}
+            />
+          </>
+        )}
+
+        {/* Static grid pattern for reduced motion */}
+        <div className="absolute inset-0 opacity-[0.02]">
+          <div className="w-full h-full" style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(93,197,107,0.3) 1px, transparent 0)`,
+            backgroundSize: '50px 50px'
+          }} />
+        </div>
       </div>
 
-      <div className="relative z-20 container mx-auto px-4 text-center">
+      {/* Content Container */}
+      <div className="relative z-20 container mx-auto px-6 max-w-7xl">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={heroInView ? "visible" : "hidden"}
         >
-          {/* Top badge updated for better contrast */}
+          {/* Simplified Badge */}
           <motion.div
             variants={itemVariants}
-            className="inline-flex items-center gap-2 px-4 py-2 mb-6 text-sm font-semibold text-green-100 bg-white/10 border border-green-400/20 rounded-full shadow-sm backdrop-blur-sm"
+            className="text-center mb-12"
           >
-            <Sparkles className="w-5 h-5 text-green-300" />
-            <span>رواد الاستشارات الاقتصادية في المنطقة</span>
-          </motion.div>
-
-          <motion.h1
-            variants={itemVariants}
-            className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight"
-          >
-            نحن شركاؤكم في تحويل الأفكار إلى
-            <br />
-            <span className="relative inline-block mt-2">
-              {/* Headline gradient made brighter */}
-              <span className="bg-gradient-to-r from-green-200 to-emerald-300 bg-clip-text text-transparent">
-                مشاريع ناجحة
-              </span>
-              <motion.span
-                className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-green-300 to-emerald-400"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: heroInView ? 1 : 0 }}
-                transition={{ duration: 1, delay: 0.8, ease: [0.25, 1, 0.5, 1] }}
-                style={{ originX: 1 }}
-              />
-            </span>
-          </motion.h1>
-
-          <motion.p
-            variants={itemVariants}
-            className="text-lg md:text-xl text-slate-200 mb-12 max-w-3xl mx-auto"
-          >
-            نقدم حلولًا استشارية شاملة تُبنى على أسس علمية وخبرات عملية ميدانية، لنجسد جسرًا يربط بين رؤيتكم والواقع.
-          </motion.p>
-
-          <motion.div
-            variants={itemVariants}
-            className="flex justify-center items-center gap-4"
-          >
-            <motion.div whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.95 }}>
-              {/* Button updated for high contrast */}
-              <Button
-                onClick={() => setIsModalOpen(true)}
-                className="!py-3.5 !px-8 !text-base !font-bold !rounded-full !shadow-lg !bg-green-400 hover:!bg-green-300 !text-green-950 transition-all duration-300"
+            <motion.div 
+              className="inline-flex items-center gap-4 px-6 py-3 text-sm font-semibold text-green-700 bg-white/60 backdrop-blur-xl border border-white/40 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+              whileHover={prefersReducedMotion ? {} : { scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <motion.div
+                animate={prefersReducedMotion ? {} : { rotate: [0, 360] }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
               >
-                اطلب استشارة مجانية
-                <ArrowLeft className="w-5 h-5 mr-2" />
-              </Button>
+                <Sparkles className="w-4 h-4" />
+              </motion.div>
+              <span className="tracking-wider">رواد الاستشارات الاقتصادية</span>
+              <Star className="w-4 h-4 text-amber-500" />
             </motion.div>
           </motion.div>
-        </motion.div>
 
-        {/* --- Stats Section --- */}
-        <motion.div
-          className="mt-24 w-full"
-          variants={containerVariants}
-          initial="hidden"
-          animate={heroInView ? "visible" : "hidden"}
-        >
-          <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-4">
-            {stats.map((stat, i) => (
-              <AnimatedStat
-                key={i}
-                value={stat.value}
-                label={stat.label}
-                icon={stat.icon}
-                iconColor={stat.iconColor}
-              />
-            ))}
-          </div>
+          {/* Optimized Main Heading */}
+          <motion.div
+            variants={itemVariants}
+            className="text-center mb-12"
+          >
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-black leading-[0.95] tracking-tight mb-8">
+              <motion.span 
+                className="block text-gray-900"
+                initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -50 }}
+                animate={heroInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: prefersReducedMotion ? 0.1 : 0.5, duration: prefersReducedMotion ? 0.3 : 0.8 }}
+              >
+                نحن شركاؤكم في
+              </motion.span>
+              
+              <motion.span 
+                className="block mt-2 text-gray-800"
+                initial={{ opacity: 0, x: prefersReducedMotion ? 0 : 50 }}
+                animate={heroInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: prefersReducedMotion ? 0.2 : 0.7, duration: prefersReducedMotion ? 0.3 : 0.8 }}
+              >
+                تحويل الأفكار إلى
+              </motion.span>
+              
+              <motion.span className="relative inline-block mt-4 sm:mt-6">
+                <motion.span 
+                  className="relative z-10 bg-gradient-to-r from-green-600 via-emerald-500 to-green-700 bg-clip-text text-transparent text-2xl sm:text-3xl md:text-5xl lg:text-6xl"
+                  initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.8 }}
+                  animate={heroInView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ delay: prefersReducedMotion ? 0.3 : 0.9, duration: prefersReducedMotion ? 0.3 : 0.8, type: prefersReducedMotion ? "tween" : "spring" }}
+                >
+                  مشاريع ناجحة
+                </motion.span>
+                
+                {/* Simplified underline */}
+                <motion.div
+                  className="absolute -bottom-6 right-0 w-full h-2 bg-gradient-to-r from-transparent via-green-500 to-transparent rounded-full"
+                  initial={{ scaleX: 0, opacity: 0 }}
+                  animate={heroInView ? { scaleX: 1, opacity: 0.8 } : {}}
+                  transition={{ duration: prefersReducedMotion ? 0.5 : 1.5, delay: prefersReducedMotion ? 0.4 : 1.2 }}
+                />
+                
+                {!prefersReducedMotion && (
+                  <>
+                    <div className="absolute inset-0 -z-10 blur-3xl bg-green-500/20" />
+                    <div className="absolute inset-0 -z-20 blur-[100px] bg-emerald-400/10" />
+                  </>
+                )}
+              </motion.span>
+            </h1>
+          </motion.div>
+
+          {/* Simplified Description */}
+          <motion.div
+            variants={itemVariants}
+            className="text-center mb-16"
+          >
+            <motion.p 
+              className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light"
+              initial={{ opacity: 0, y: prefersReducedMotion ? 10 : 30 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: prefersReducedMotion ? 0.4 : 1.1, duration: prefersReducedMotion ? 0.3 : 0.8 }}
+            >
+              نقدم حلولًا استشارية شاملة تُبنى على أسس علمية وخبرات عملية ميدانية,
+              <br className="hidden md:block" />
+              <motion.span
+                className="text-green-700 font-medium"
+                initial={{ opacity: 0 }}
+                animate={heroInView ? { opacity: 1 } : {}}
+                transition={{ delay: prefersReducedMotion ? 0.5 : 1.5, duration: prefersReducedMotion ? 0.3 : 0.8 }}
+              >
+                لنجسد جسرًا يربط بين رؤيتكم والواقع.
+              </motion.span>
+            </motion.p>
+          </motion.div>
+
+          {/* Optimized CTA Section */}
+          <motion.div
+            variants={itemVariants}
+            className="text-center mb-28"
+          >
+            <motion.div 
+              whileHover={prefersReducedMotion ? {} : { scale: 1.05, y: -5 }} 
+              whileTap={{ scale: 0.95 }}
+              className="inline-block relative"
+            >
+              {!prefersReducedMotion && (
+                <div className="absolute -inset-4 bg-gradient-to-r from-green-500/30 to-emerald-500/30 rounded-full blur-2xl opacity-0 group-hover:opacity-70 transition-opacity duration-500" />
+              )}
+              
+              <button
+                onClick={handleModalOpen}
+                className="relative py-3 px-8 sm:py-4 sm:px-12 md:py-6 md:px-16 text-base sm:text-lg font-bold rounded-full overflow-hidden group bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white border-0 shadow-[0_15px_50px_rgba(93,197,107,0.4)] hover:shadow-[0_25px_80px_rgba(93,197,107,0.6)] transition-all duration-500"
+              >
+                <span className="relative z-10 flex items-center gap-4 font-bold text-lg">
+                  اطلب استشارة
+                  <motion.div
+                    animate={prefersReducedMotion ? {} : { x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <ArrowLeft className="w-5 h-5" />
+                  </motion.div>
+                </span>
+                
+                {/* Simplified background overlay */}
+                {!prefersReducedMotion && (
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
+                    initial={{ x: '-100%', skewX: -15 }}
+                    whileHover={{ x: '100%' }}
+                    transition={{ duration: 0.8 }}
+                  />
+                )}
+              </button>
+            </motion.div>
+            
+            {/* Simplified subtitle */}
+            <motion.div
+              initial={{ opacity: 0, y: prefersReducedMotion ? 10 : 20 }}
+              animate={heroInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: prefersReducedMotion ? 0.6 : 1.8, duration: prefersReducedMotion ? 0.3 : 0.6 }}
+              className="mt-6 flex items-center justify-center gap-4 text-sm text-gray-500"
+            >
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 bg-green-500 rounded-full ${prefersReducedMotion ? '' : 'animate-pulse'}`} />
+                <span>لا يتطلب بطاقة ائتمان</span>
+              </div>
+              <div className="w-1 h-1 bg-gray-300 rounded-full" />
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 bg-emerald-500 rounded-full ${prefersReducedMotion ? '' : 'animate-pulse'}`} />
+                <span>استشارة فورية</span>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Optimized Stats Grid */}
+          <motion.div
+            className="w-full"
+            variants={containerVariants}
+            initial="hidden"
+            animate={heroInView ? "visible" : "hidden"}
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 max-w-6xl mx-auto">
+              {stats.map((stat, i) => (
+                <AnimatedStat
+                  key={i}
+                  value={stat.value}
+                  label={stat.label}
+                  icon={stat.icon}
+                  index={i}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              ))}
+            </div>
+          </motion.div>
         </motion.div>
       </div>
-      <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+      <BookingModal isOpen={isModalOpen} onClose={handleModalClose} />
     </section>
   )
 }

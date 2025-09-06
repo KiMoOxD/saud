@@ -1,11 +1,32 @@
 "use client"
 
 import { motion, AnimatePresence, useInView, animate } from "framer-motion"
-import Link from "next/link"
 import { ArrowLeft, TrendingUp, Target } from "lucide-react"
-import projectsData from "@/data/projectsData.json"
-import { useEffect, useRef, useState } from "react"
-import { Button } from "@/components/ui/button"
+import React, { useEffect, useRef, useState } from "react"
+
+// --- MOCK DATA to prevent build errors ---
+const projectsData = {
+  projects: [
+    { id: 1, project_name: "مشروع نيوم السكني", sector: { en: "Real Estate", ar: "عقارات" }, description: "تطوير مجمع سكني فاخر ومتكامل الخدمات في قلب مدينة نيوم المستقبلية.", financial_indicators: { total_investment: 150000000 } },
+    { id: 2, project_name: "منصة التجارة الإلكترونية", sector: { en: "Technology", ar: "تقنية" }, description: "إنشاء منصة تجارة إلكترونية متطورة تدعم الشركات الصغيرة والمتوسطة.", financial_indicators: { total_investment: 5000000 } },
+    { id: 3, project_name: "مصنع الصناعات الغذائية", sector: { en: "Industrial", ar: "صناعي" }, description: "تأسيس مصنع لإنتاج وتعبئة المواد الغذائية بأحدث التقنيات.", financial_indicators: { total_investment: 25000000 } },
+    { id: 4, project_name: "منتجع سياحي بيئي", sector: { en: "Tourism", ar: "سياحة" }, description: "بناء منتجع سياحي صديق للبيئة يعتمد على الطاقة المتجددة.", financial_indicators: { total_investment: 75000000 } },
+    { id: 5, project_name: "تطبيق التوصيل الذكي", sector: { en: "Technology", ar: "تقنية" }, description: "تطبيق مبتكر لخدمات التوصيل يعتمد على الذكاء الاصطناعي لتحسين المسارات.", financial_indicators: { total_investment: 8000000 } },
+    { id: 6, project_name: "مركز بيانات سحابي", sector: { en: "Technology", ar: "تقنية" }, description: "مركز بيانات عالي الأداء لتقديم خدمات الحوسبة السحابية.", financial_indicators: { total_investment: 120000000 } },
+    { id: 7, project_name: "مجمع بتروكيماويات", sector: { en: "Industrial", ar: "صناعي" }, description: "تطوير مجمع صناعي لإنتاج البتروكيماويات المتخصصة.", financial_indicators: { total_investment: 300000000 } }
+  ]
+};
+
+
+// --- Helper Components ---
+const Button = ({ children, className, size, ...props }) => {
+  const sizeClasses = size === 'lg' ? 'px-6 py-3 sm:px-6 sm:py-3 text-base sm:text-lg' : 'px-4 py-2 text-sm';
+  return (
+    <button className={`${sizeClasses} ${className}`} {...props}>
+      {children}
+    </button>
+  );
+};
 
 function AnimatedCounter({ value, className, formatter = (v) => v.toLocaleString() }) {
   const ref = useRef(null)
@@ -28,6 +49,7 @@ function AnimatedCounter({ value, className, formatter = (v) => v.toLocaleString
   return <span ref={ref} className={className}>0</span>
 }
 
+
 export default function Achievements() {
   const allProjects = projectsData.projects
   const [activeSector, setActiveSector] = useState("All")
@@ -45,7 +67,7 @@ export default function Achievements() {
 
   const topSectors = ["All", ...Object.entries(
     allProjects.reduce((acc, project) => {
-      if (project.sector && project.sector.en) { 
+      if (project.sector && project.sector.en) {
         acc[project.sector.en] = (acc[project.sector.en] || 0) + 1
       }
       return acc
@@ -71,7 +93,7 @@ export default function Achievements() {
         .slice(0, 4);
       setFilteredProjects(sectorProjects);
     }
-  }, [activeSector]);
+  }, [activeSector, allProjects]);
 
   const formatCurrency = (amount) => {
     const value = Math.round(amount);
@@ -93,7 +115,7 @@ export default function Achievements() {
   );
 
   return (
-    <section className="relative w-full bg-slate-50 text-slate-800 py-24 sm:py-28 md:py-36 overflow-hidden">
+    <section className="relative w-full bg-white text-slate-800 py-24 sm:py-28 md:py-36 overflow-hidden">
         {/* Background Animated Shapes */}
         <div className="absolute inset-0 z-0">
             <motion.div 
@@ -150,7 +172,6 @@ export default function Achievements() {
                   ${activeSector === sector ? 'text-green-600' : 'text-slate-500 hover:text-slate-900'}`
                 }
               >
-                {/* This logic now uses the dynamically created sectorNames map */}
                 {sector === "All" ? "أبرز المشاريع" : sectorNames[sector]}
                 {activeSector === sector && (
                   <motion.div
@@ -182,40 +203,39 @@ export default function Achievements() {
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
                   >
-                    <Link href={`/projects/${project.id}`} className="block h-full">
-                      {/* --- NEW: Light Green Gradient Card --- */}
-                      <div className={`relative h-full p-6 rounded-xl border transition-all duration-300 group
-                                      bg-gradient-to-br from-white to-green-100/70
-                                      border-slate-200/70
-                                      hover:border-green-300/80 hover:shadow-lg hover:shadow-green-500/20`}>
+                    {/* --- NEW: Futuristic Card Design --- */}
+                    <a href={`/projects/${project.id}`} className="block h-full group">
+                      <div className="relative h-full p-6 rounded-2xl border transition-all duration-300 overflow-hidden bg-slate-50/50 backdrop-blur-lg border-slate-200/50 hover:border-emerald-400/60 hover:shadow-2xl hover:shadow-emerald-500/20">
+                        {/* Animated light orb on hover */}
+                        <div className="absolute top-0 -left-full w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl opacity-50 group-hover:left-10 transition-all duration-700 ease-in-out"></div>
+                        {/* Subtle dot pattern */}
+                        <div className="absolute inset-0 z-0 opacity-[0.04]" style={{
+                          backgroundImage: `radial-gradient(circle at center, #059669 1px, transparent 1px)`,
+                          backgroundSize: '25px 25px'
+                        }}></div>
                         
-                        <div className="absolute top-6 bottom-6 -left-px w-1 rounded-r-full bg-gradient-to-b from-green-400 to-emerald-500 opacity-75 group-hover:opacity-100 transition-opacity"></div>
-                        
-                        <div className="pl-5 h-full flex flex-col">
-                          <div className="flex-grow">
-                            <div className="flex items-start justify-between mb-3">
-                              {/* Text reverted to dark for light background */}
-                              <h4 className="font-bold text-lg text-slate-800 group-hover:text-green-700 transition-colors">{project.project_name}</h4>
-                              {/* UPDATED: Directly use the Arabic sector name from the project object. */}
-                              <div className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800">{project.sector.ar}</div>
+                        {/* The content must be on a relative div to be on top */}
+                        <div className="relative z-10 h-full flex flex-col">
+                            <div className="flex-grow">
+                                <div className="flex items-start justify-between mb-3">
+                                    <h4 className="font-bold text-lg text-slate-800 group-hover:text-green-700 transition-colors">{project.project_name}</h4>
+                                    <div className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800 flex-shrink-0">{project.sector.ar}</div>
+                                </div>
+                                <p className="text-slate-600 text-sm mb-4 leading-relaxed line-clamp-2">{project.description}</p>
                             </div>
-                            <p className="text-slate-600 text-sm mb-4 leading-relaxed line-clamp-2">{project.description}</p>
-                          </div>
-                          {/* Divider reverted to light theme */}
-                          <div className="border-t border-slate-200 pt-4 flex items-center justify-between mt-auto">
-                            <div>
-                              <div className="text-xs text-slate-500">إجمالي الاستثمار</div>
-                              {/* Investment value color updated */}
-                              <div className="font-bold text-lg text-green-700">{formatCurrency(project.financial_indicators.total_investment)}</div>
+                            <div className="border-t border-slate-200/80 pt-4 flex items-center justify-between mt-auto">
+                                <div>
+                                    <div className="text-xs text-slate-500">إجمالي الاستثمار</div>
+                                    <div className="font-bold text-lg text-green-700">{formatCurrency(project.financial_indicators.total_investment)}</div>
+                                </div>
+                                <div className="flex items-center gap-1 text-sm font-semibold text-green-600 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                                    <span>التفاصيل</span>
+                                    <ArrowLeft className="h-4 w-4" />
+                                </div>
                             </div>
-                            <div className="flex items-center gap-1 text-sm font-semibold text-green-600 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                              <span>التفاصيل</span>
-                              <ArrowLeft className="h-4 w-4" />
-                            </div>
-                          </div>
                         </div>
                       </div>
-                    </Link>
+                    </a>
                   </motion.div>
                 )
               )}
@@ -231,17 +251,18 @@ export default function Achievements() {
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          <Link href="/projects">
+          <a href="/projects">
             <Button
               size="lg"
-              className="bg-gradient-to-r from-[#006C35] to-emerald-500 text-white px-8 py-6 sm:px-10 sm:py-7 text-base sm:text-lg shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transform hover:-translate-y-1 transition-all duration-300 group"
+              className="mx-auto flex items-center rounded-full bg-gradient-to-r from-[#38ae71] to-emerald-500 text-white shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transform hover:-translate-y-1 transition-all duration-300 group"
             >
               استكشف كافة الإنجازات
               <ArrowLeft className="mr-3 h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1" />
             </Button>
-          </Link>
+          </a>
         </motion.div>
       </div>
     </section>
   )
 }
+

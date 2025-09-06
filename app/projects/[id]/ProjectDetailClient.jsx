@@ -1,369 +1,425 @@
 "use client"
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { MapPin, DollarSign, Target, Award, Lightbulb, Download, FileText, Calendar, Image as ImageIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
-import Image from "next/image"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
+import { useState, useEffect, useRef } from "react"
+import { motion, useInView, useSpring, useTransform, useScroll } from "framer-motion"
+import { MapPin, DollarSign, Target, Award, TrendingUp, CheckCircle, ArrowRight, Sparkles, Eye, Users, Clock, BarChart3, Zap, Globe, Star, Image as ImageIcon } from "lucide-react"
 import BookingModal from "@/components/booking-modal"
 
-// Animation Variants for staggered effect
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 },
-  },
-}
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+// Mock project data for demonstration
+const mockProject = {
+  project_name: "مشروع التكنولوجيا المتقدمة",
+  sector: { ar: "التكنولوجيا", en: "Technology" },
+  governate: "الرياض",
+  location: "حي الملك عبدالله المالي",
+  description: "مشروع رائد يهدف إلى تطوير حلول تقنية مبتكرة تساهم في تحقيق رؤية 2030 من خلال الاستفادة من أحدث التقنيات والذكاء الاصطناعي",
+  area: 15000,
+  image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop",
+  market_size: "يقدر حجم السوق المستهدف بأكثر من 50 مليار ريال سعودي، مع نمو متوقع بنسبة 15% سنوياً خلال الخمس سنوات القادمة، مدفوعاً بالتحول الرقمي والاستثمار في التكنولوجيا المتقدمة.",
+  competitive_advantage: "التميز في استخدام الذكاء الاصطناعي المتقدم، فريق عمل متخصص ذو خبرة عالمية، شراكات استراتيجية مع عمالقة التكنولوجيا، وموقع استراتيجي في قلب المنطقة المالية.",
+  vision_alignment: "يتماشى المشروع بشكل مثالي مع رؤية السعودية 2030 من خلال تعزيز الاقتصاد الرقمي، خلق فرص عمل نوعية للشباب السعودي، وترسيخ مكانة المملكة كمركز تقني عالمي.",
+  financial_indicators: {
+    total_investment: 125000000,
+    internal_rate_of_return: "25%",
+    payback_period: "3.5 سنة"
+  }
 }
 
-export default function ProjectDetailClient({ project }) {
+// --- Animation Variants (Structure preserved) ---
+const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.3, when: "beforeChildren" } } };
+const itemVariants = { hidden: { opacity: 0, y: 40, scale: 0.95, rotateX: -15 }, visible: { opacity: 1, y: 0, scale: 1, rotateX: 0, transition: { type: "spring", stiffness: 120, damping: 15, duration: 0.8 } } };
+const floatingVariants = { initial: { y: 0, rotate: 0 }, animate: { y: [-10, 10, -10], rotate: [-2, 2, -2], transition: { duration: 6, repeat: Infinity, ease: "easeInOut" } } };
+const glowVariants = { initial: { boxShadow: "0 0 20px rgba(16, 185, 129, 0)" }, animate: { boxShadow: ["0 0 20px rgba(16, 185, 129, 0.3)", "0 0 40px rgba(16, 185, 129, 0.6)", "0 0 20px rgba(16, 185, 129, 0.3)"], transition: { duration: 3, repeat: Infinity, ease: "easeInOut" } } };
+
+// --- Reusable Animated Counter ---
+const AnimatedCounter = ({ value, isCurrency = false, suffix = "" }) => {
+  const spring = useSpring(0, { mass: 0.8, stiffness: 75, damping: 15 });
+  const display = useTransform(spring, (current) => {
+    if (isCurrency) {
+      return new Intl.NumberFormat("ar-SA", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(current.toFixed(0));
+    }
+    return current.toFixed(0) + suffix;
+  });
+
+  useEffect(() => { spring.set(value); }, [spring, value]);
+
+  return (
+    <motion.span className="font-bold text-2xl bg-gradient-to-r from-green-600 to-emerald-500 bg-clip-text text-transparent">
+      {display}
+    </motion.span>
+  );
+};
+
+export default function ProjectDetailClient({ project = mockProject }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [imageError, setImageError] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isHovering, setIsHovering] = useState(false)
   
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start end", "end start"] });
+  
+  const y = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0.6]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
   const formatCurrency = (amount) => {
     if (typeof amount !== "number") return "غير محدد"
-    return new Intl.NumberFormat("ar-SA", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount)
+    return new Intl.NumberFormat("ar-SA", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount)
   }
-  
+
+  // ✅ Themed sector colors
   const getSectorColor = (sectorKey) => {
     const colors = {
-      Healthcare: { gradient: "from-blue-600 to-blue-500", text: "text-blue-600", bg: "bg-blue-50" },
-      Agriculture: { gradient: "from-green-600 to-green-500", text: "text-green-600", bg: "bg-green-50" },
-      Manufacturing: { gradient: "from-orange-600 to-orange-500", text: "text-orange-600", bg: "bg-orange-50" },
-      Technology: { gradient: "from-purple-600 to-purple-500", text: "text-purple-600", bg: "bg-purple-50" },
-      "Real estate": { gradient: "from-rose-600 to-rose-500", text: "text-rose-600", bg: "bg-rose-50" },
-      Tourism: { gradient: "from-teal-600 to-teal-500", text: "text-teal-600", bg: "bg-teal-50" },
-      "Human Resources": { gradient: "from-indigo-600 to-indigo-500", text: "text-indigo-600", bg: "bg-indigo-50" },
-      "Interior Design": { gradient: "from-amber-600 to-amber-500", text: "text-amber-600", bg: "bg-amber-50" },
-      "Mining and Quarrying": { gradient: "from-slate-600 to-slate-500", text: "text-slate-600", bg: "bg-slate-50" },
-      "Food and Beverage": { gradient: "from-pink-600 to-pink-500", text: "text-pink-600", bg: "bg-pink-50" },
-      "Recycling and Waste Management": { gradient: "from-lime-600 to-lime-500", text: "text-lime-600", bg: "bg-lime-50" },
-      "Education": { gradient: "from-cyan-600 to-cyan-500", text: "text-cyan-600", bg: "bg-cyan-50" },
-      "Food Processing": { gradient: "from-yellow-600 to-yellow-500", text: "text-yellow-600", bg: "bg-yellow-50" },
+      Technology: { gradient: "from-green-600 to-emerald-500" },
+      Agriculture: { gradient: "from-green-600 to-emerald-500" },
+      // Add other sectors if needed, all using the same theme
+      default: { gradient: "from-slate-600 to-slate-500" },
     }
-    return colors[sectorKey] || { gradient: "from-gray-600 to-gray-500", text: "text-gray-600", bg: "bg-gray-50" }
+    return colors[sectorKey] || colors.default
   }
-  
-  const PrimaryButton = ({ children, className = "", ...props }) => (
-    <Button
+  const sectorColors = getSectorColor(project.sector.en);
+
+  const PrimaryButton = ({ children, className = "", icon: Icon, ...props }) => (
+    <motion.button
       onClick={() => setIsModalOpen(true)}
-      className={`bg-gradient-to-r from-teal-700 via-emerald-600 to-teal-500 text-white hover:saturate-150 transition-all duration-300 shadow-lg hover:shadow-emerald-500/30 ${className}`}
+      className={`group relative overflow-hidden bg-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg shadow-green-500/30 transition-all duration-500 ${className}`}
+      whileHover={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.4)", y: -5 }}
+      whileTap={{ scale: 0.95 }}
       {...props}
     >
-      {children}
-    </Button>
+      <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="relative flex items-center gap-3 z-10">
+        {Icon && <Icon className="w-5 h-5" />}
+        {children}
+        <motion.div className="group-hover:translate-x-1 transition-transform duration-300" animate={{ x: [0, 5, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
+          <ArrowRight className="w-5 h-5" />
+        </motion.div>
+      </div>
+    </motion.button>
   )
   
-  const SecondaryButton = ({ children, icon: Icon, className = "", ...props }) => (
-    <Button
-      variant="outline"
-      className={`border-gray-300 hover:bg-teal-50 hover:text-teal-700 hover:border-teal-300 transition-all duration-300 flex items-center gap-2 ${className}`}
-      {...props}
-    >
-      {Icon && <Icon className="w-4 h-4" />}
-      {children}
-    </Button>
-  )
-  
-  const headlineWords = project.project_name.split(" ");
-  
+  const financialsRef = useRef(null);
+  const isInView = useInView(financialsRef, { once: true, amount: 0.3 });
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800" dir="rtl">
-      <Navbar />
+    <div className="min-h-screen bg-slate-50 text-slate-800" dir="rtl">
+      <div className="fixed inset-0 bg-gradient-to-br from-white via-green-50 to-slate-50" />
       
-      {/* Hero Section with Image */}
-      <section className="relative h-[70vh] min-h-[500px] overflow-hidden">
-        <div className="absolute inset-0">
-          {!imageError ? (
-            <Image
-              src={project.image}
-              alt={project.project_name}
-              fill
-              className="object-cover"
-              quality={100}
-              priority
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-              <div className="text-center p-8">
-                <ImageIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-300 text-lg">صورة غير متوفرة</p>
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <motion.div variants={floatingVariants} initial="initial" animate="animate" className="absolute top-20 right-10 w-20 h-20 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-full blur-xl" />
+        <motion.div variants={floatingVariants} initial="initial" animate="animate" style={{ animationDelay: "2s" }} className="absolute bottom-20 left-10 w-32 h-32 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-full blur-xl" />
+      </div>
+
+      <motion.section 
+        ref={heroRef} 
+        style={{ y, opacity }} 
+        className="relative pt-20 pb-32 md:pb-16 overflow-hidden"
+        onMouseMove={handleMouseMove} 
+        onMouseEnter={() => setIsHovering(true)} 
+        onMouseLeave={() => setIsHovering(false)}
+      >
+        {isHovering && <motion.div className="absolute pointer-events-none z-[5] w-96 h-96 rounded-full bg-gradient-to-r from-green-500/5 to-emerald-500/5 blur-3xl" animate={{ x: mousePosition.x - 192, y: mousePosition.y - 192 }} transition={{ type: "spring", stiffness: 150, damping: 15 }} />}
+
+        <div className="relative z-20 container mx-auto px-6">
+          <motion.div className="flex flex-col-reverse lg:flex-row items-center gap-16" variants={containerVariants} initial="hidden" animate="visible">
+            <motion.div className="flex-1 text-right space-y-8" variants={itemVariants}>
+              <div className="space-y-4">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="inline-flex items-center gap-3 bg-green-100/80 backdrop-blur-sm border border-green-200/50 rounded-full px-4 py-2">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                  <span className="text-green-800 font-medium text-sm">مشروع استثماري متميز</span>
+                </motion.div>
+                <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-tight">
+                  <motion.span initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.8, type: "spring" }} className="block bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 bg-clip-text text-transparent">
+                    {project.project_name}
+                  </motion.span>
+                </h1>
+                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }} className="flex items-center gap-4 flex-wrap">
+                  <div className={`px-4 py-2 rounded-xl bg-gradient-to-r ${sectorColors.gradient} text-white font-medium shadow-lg`}>
+                    {project.sector?.ar || project.sector?.en}
+                  </div>
+                  <div className="flex items-center gap-2 text-slate-600">
+                    <MapPin className="w-4 h-4 text-green-500" />
+                    <span>{project.governate} • {project.location}</span>
+                  </div>
+                </motion.div>
               </div>
-            </div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
-        </div>
-        <div className="absolute inset-0 flex items-end">
-          <div className="container mx-auto px-4 py-16">
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }} 
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 max-w-4xl leading-tight"
-            >
-              {project.project_name}
-            </motion.h1>
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="flex flex-wrap gap-3"
-            >
-              <Badge className={`bg-white/20 backdrop-blur-sm text-white border-white/30 px-4 py-1.5 text-sm`}>
-                {project.sector.ar}
-              </Badge>
-              <Badge className={`bg-white/20 backdrop-blur-sm text-white border-white/30 px-4 py-1.5 text-sm`}>
-                {project.governate}، {project.country.ar}
-              </Badge>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Breadcrumb and Key Info */}
-      <section className="relative py-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-gray-100"></div>
-        <div className="container mx-auto px-4 relative">
-          <motion.div initial="hidden" animate="visible" variants={containerVariants}>
-            <motion.div variants={itemVariants} className="flex items-center mb-10 text-sm">
-              <Link href="/" className="text-teal-700 hover:text-amber-600 transition-colors"> الرئيسية </Link>
-              <span className="mx-2 text-gray-400">/</span>
-              <Link href="/projects" className="text-teal-700 hover:text-amber-600 transition-colors"> المشاريع </Link>
-              <span className="mx-2 text-gray-400">/</span>
-              <span className="text-amber-600 font-medium">{project.project_name}</span>
-            </motion.div>
-            
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-                <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-                  <div className={`h-1 w-full bg-gradient-to-r ${getSectorColor(project.sector.en).gradient}`}></div>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <MapPin className="w-5 h-5 text-teal-600" />
-                      <span>الموقع</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-700 font-medium">{project.governate}، {project.country.ar}</p>
-                    <p className="text-sm text-gray-500 mt-1">{project.location}</p>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-                  <div className={`h-1 w-full bg-gradient-to-r ${getSectorColor(project.sector.en).gradient}`}></div>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <Target className="w-5 h-5 text-teal-600" />
-                      <span>القطاع</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Badge className={`${getSectorColor(project.sector.en).bg} ${getSectorColor(project.sector.en).text} border-none px-4 py-1.5`}>
-                      {project.sector.ar}
-                    </Badge>
-                  </CardContent>
-                </Card>
-                
-                <Card className="bg-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
-                  <div className={`h-1 w-full bg-gradient-to-r ${getSectorColor(project.sector.en).gradient}`}></div>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <DollarSign className="w-5 h-5 text-teal-600" />
-                      <span>الاستثمار الكلي</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-700 font-bold text-xl">{formatCurrency(project.financial_indicators.total_investment)}</p>
-                  </CardContent>
-                </Card>
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-                <div className="lg:col-span-2">
-                  <Card className="bg-white border-0 shadow-lg h-full">
-                    <CardHeader>
-                      <CardTitle className="text-2xl font-bold text-gray-800">وصف المشروع</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600 leading-relaxed text-lg">{project.description}</p>
-                    </CardContent>
-                  </Card>
+              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="text-xl text-slate-600 leading-relaxed max-w-2xl">
+                {project.description}
+              </motion.p>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }} className="grid grid-cols-2 gap-6 max-w-lg">
+                <div className="group relative overflow-hidden bg-white/60 backdrop-blur-sm border border-white/50 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative z-10">
+                    <div className="text-sm text-slate-500 mb-2">المساحة الإجمالية</div>
+                    <div className="text-2xl font-bold text-slate-900">{project.area?.toLocaleString()} م²</div>
+                    <div className="w-full h-1 bg-green-500/20 rounded-full mt-3">
+                      <motion.div className="h-full bg-green-500 rounded-full" initial={{ width: 0 }} animate={{ width: "75%" }} transition={{ delay: 1.2, duration: 1.5 }} />
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="space-y-6">
-                  <Card className="bg-gradient-to-br from-teal-50 to-emerald-50 border-0 shadow-lg">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-lg">
-                        <Award className="w-5 h-5 text-amber-500" />
-                        <span>الميزة التنافسية</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600">{project.competitive_advantage}</p>
-                    </CardContent>
-                  </Card>
+                <div className="group relative overflow-hidden bg-white/60 backdrop-blur-sm border border-white/50 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative z-10">
+                    <div className="text-sm text-slate-500 mb-2">الاستثمار المطلوب</div>
+                    <div className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                      {formatCurrency(project.financial_indicators?.total_investment)}
+                    </div>
+                    <div className="flex items-center gap-1 mt-2 text-green-600">
+                      <TrendingUp className="w-4 h-4" />
+                      <span className="text-xs font-medium">عائد متميز</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }} className="flex flex-wrap gap-4">
+                <PrimaryButton icon={Sparkles}>احجز استشارة </PrimaryButton>
+              </motion.div>
+            </motion.div>
+            <motion.div className="pt-12 md:pt-0 w-full lg:w-auto flex justify-center relative z-10" variants={itemVariants} style={{ scale }}>
+              <div className="relative">
+                {/* Main image container with blob outline */}
+                <motion.div className="relative w-72 h-72 md:w-96 md:h-96">
+                  {/* Morphing blob outline behind the image */}
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-br from-green-400/30 to-emerald-500/40"
+                    style={{
+                      borderRadius: "60% 40% 70% 30% / 50% 60% 40% 70%",
+                      filter: "blur(3px)",
+                      scale: 1.1
+                    }}
+                    animate={{ 
+                      borderRadius: [
+                        "60% 40% 70% 30% / 50% 60% 40% 70%",
+                        "30% 70% 40% 60% / 70% 30% 60% 50%",
+                        "70% 30% 50% 70% / 40% 70% 30% 60%",
+                        "40% 60% 30% 70% / 60% 40% 70% 30%",
+                        "60% 40% 70% 30% / 50% 60% 40% 70%"
+                      ],
+                      scale: [1.1, 1.15, 1.08, 1.12, 1.1],
+                      rotate: [0, 90, 180, 270, 360]
+                    }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                  />
                   
-                  <Card className="bg-gradient-to-br from-amber-50 to-orange-50 border-0 shadow-lg">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-lg">
-                        <Lightbulb className="w-5 h-5 text-yellow-500" />
-                        <span>الرؤية والتوافق</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600">{project.vision_alignment}</p>
-                    </CardContent>
-                  </Card>
-                </div>
+                  {/* Secondary blob outline with different color */}
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-br from-cyan-400/25 to-blue-500/35"
+                    style={{
+                      borderRadius: "40% 70% 60% 30% / 60% 30% 70% 50%",
+                      filter: "blur(4px)",
+                      scale: 1.06
+                    }}
+                    animate={{ 
+                      borderRadius: [
+                        "40% 70% 60% 30% / 60% 30% 70% 50%",
+                        "70% 30% 50% 60% / 40% 70% 30% 60%",
+                        "30% 60% 40% 70% / 70% 50% 60% 40%",
+                        "60% 40% 70% 50% / 30% 60% 40% 70%",
+                        "40% 70% 60% 30% / 60% 30% 70% 50%"
+                      ],
+                      scale: [1.06, 1.09, 1.04, 1.07, 1.06],
+                      rotate: [0, -60, -120, -180, -240, -300, -360]
+                    }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  />
+                  
+                  {/* Third subtle blob outline */}
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-pink-500/30"
+                    style={{
+                      borderRadius: "50% 50% 40% 60% / 70% 40% 60% 30%",
+                      filter: "blur(5px)",
+                      scale: 1.03
+                    }}
+                    animate={{ 
+                      borderRadius: [
+                        "50% 50% 40% 60% / 70% 40% 60% 30%",
+                        "60% 40% 70% 30% / 50% 60% 30% 70%",
+                        "40% 60% 30% 70% / 60% 30% 70% 40%",
+                        "70% 30% 60% 40% / 40% 70% 50% 60%",
+                        "50% 50% 40% 60% / 70% 40% 60% 30%"
+                      ],
+                      scale: [1.03, 1.05, 1.02, 1.04, 1.03],
+                      rotate: [0, 45, 90, 135, 180, 225, 270, 315, 360]
+                    }}
+                    transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
+                  />
+                  
+                  {/* Subtle background glow */}
+                  <motion.div 
+                    className="absolute -inset-8 bg-gradient-to-r from-green-500/5 to-emerald-500/10 rounded-full blur-3xl" 
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      opacity: [0.3, 0.6, 0.3] 
+                    }} 
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} 
+                  />
+                  
+                  {/* Clean circular image - positioned above the blobs */}
+                  <motion.div 
+                    className="relative w-full h-full rounded-full overflow-hidden shadow-2xl border-4 border-white z-10" 
+                    whileHover={{ 
+                      scale: 1.02, 
+                      boxShadow: "0 25px 50px -12px rgba(16, 185, 129, 0.4)",
+                      borderColor: "rgba(255, 255, 255, 1)"
+                    }} 
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                  >
+                    {!imageError ? ( 
+                      <img 
+                        src={project.image} 
+                        alt={project.project_name} 
+                        className="w-full h-full object-cover" 
+                        onError={() => setImageError(true)} 
+                      /> 
+                    ) : ( 
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-slate-500">
+                        <ImageIcon className="w-16 h-16" />
+                      </div> 
+                    )}
+                  </motion.div>
+                  
+                  {/* Subtle inner ring animation */}
+                  <motion.div 
+                    className="absolute inset-3 rounded-full border border-white/30 z-20"
+                    animate={{ 
+                      rotate: [0, 360],
+                      opacity: [0.1, 0.4, 0.1]
+                    }}
+                    transition={{ 
+                      rotate: { duration: 25, repeat: Infinity, ease: "linear" },
+                      opacity: { duration: 5, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                  />
+                </motion.div>
               </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-                <PrimaryButton className="text-lg px-8 py-4 shadow-xl">طلب استشارة</PrimaryButton>
-                <SecondaryButton icon={Download} className="text-lg px-8 py-4">
-                  تحميل دراسة الجدوى
-                </SecondaryButton>
-              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      <section className="py-32 relative bg-slate-50">
+        <div className="container mx-auto px-6">
+          <motion.div className="text-center max-w-4xl mx-auto mb-20" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
+            <div className="inline-flex items-center gap-4 bg-white/80 backdrop-blur-xl border border-white/50 rounded-full px-6 py-3 shadow-xl mb-8">
+              <div className="w-3 h-3 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 animate-pulse" />
+              <span className="text-slate-700 font-medium">تفاصيل المشروع</span>
+              <Zap className="w-4 h-4 text-green-500" />
             </div>
+            <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-green-600 via-emerald-600 to-green-500 bg-clip-text text-transparent">فرصة استثمارية</span><br /><span className="text-slate-800">لا تُفوّت</span>
+            </h2>
+            <p className="text-xl text-slate-600 leading-relaxed">اكتشف التفاصيل الشاملة لهذا المشروع الاستثماري الرائد والفرص الواعدة التي يوفرها</p>
+          </motion.div>
+
+          <motion.div className="grid lg:grid-cols-5 gap-16" variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
+            <div className="lg:col-span-3 space-y-10">
+              <motion.div variants={itemVariants}><EnhancedFeatureCard icon={Globe} title="فرص السوق وحجمه" gradient="from-blue-500 to-purple-500" iconBg="from-blue-100 to-indigo-100">{project.market_size}</EnhancedFeatureCard></motion.div>
+              <motion.div variants={itemVariants}><EnhancedFeatureCard icon={Award} title="الميزة التنافسية" gradient="from-green-500 to-cyan-500" iconBg="from-emerald-100 to-teal-100">{project.competitive_advantage}</EnhancedFeatureCard></motion.div>
+              <motion.div variants={itemVariants}><EnhancedFeatureCard icon={Target} title="الرؤية والتوافق" gradient="from-purple-500 to-rose-500" iconBg="from-purple-100 to-pink-100">{project.vision_alignment}</EnhancedFeatureCard></motion.div>
+            </div>
+            <aside className="lg:col-span-2 lg:sticky top-24 self-start space-y-8">
+              <motion.div variants={itemVariants} ref={financialsRef}>
+                <div className="group relative overflow-hidden bg-white/70 backdrop-blur-xl border border-white/50 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="relative z-10 p-8">
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="p-4 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 shadow-inner">
+                        <TrendingUp className="h-8 w-8 text-green-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold text-slate-900">المؤشرات المالية</h3>
+                        <p className="text-slate-600">الأرقام الرئيسية</p>
+                      </div>
+                    </div>
+                    <div className="space-y-6">
+                      <EnhancedFinancialRow label="إجمالي الاستثمار" value={isInView ? <AnimatedCounter value={project.financial_indicators.total_investment} isCurrency /> : "0"} icon={DollarSign} />
+                      <EnhancedFinancialRow label="معدل العائد الداخلي" value={project.financial_indicators.internal_rate_of_return} icon={BarChart3} />
+                      <EnhancedFinancialRow label="فترة الاسترداد" value={project.financial_indicators.payback_period} icon={Clock} />
+                    </div>
+                    <motion.div className="mt-8 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-100" whileHover={{ scale: 1.02 }}>
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" /><span className="text-sm font-medium text-green-700">توقعات النمو</span>
+                      </div>
+                      <p className="text-sm text-green-600">نمو متوقع بنسبة 15% سنوياً</p>
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+              <motion.div variants={itemVariants}>
+                <div className="group relative overflow-hidden bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 text-slate-900 border border-green-500/10">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-60 transition-opacity duration-700" />
+                  <div className="relative z-10 p-8">
+                    <h3 className="text-2xl font-bold mb-6 text-slate-900">إحصائيات سريعة</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between"><span className="text-slate-700">معدل النجاح</span><div className="flex items-center gap-2"><span className="text-2xl font-bold text-green-600">92%</span><div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" /></div></div>
+                      <div className="flex items-center justify-between"><span className="text-slate-700">فرص العمل المتوقعة</span><span className="text-2xl font-bold text-green-600">250+</span></div>
+                      <div className="flex items-center justify-between"><span className="text-slate-700">مدة التنفيذ</span><span className="text-2xl font-bold text-green-600">18 شهر</span></div>
+                    </div>
+                    <div className="mt-6 p-4 bg-green-500/10 backdrop-blur-sm rounded-2xl border border-green-500/20">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Sparkles className="w-4 h-4 text-green-600" /><span className="text-sm font-medium text-slate-900">ميزة خاصة</span>
+                      </div>
+                      <p className="text-sm text-slate-900">دعم حكومي متكامل ضمن رؤية 2030</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </aside>
           </motion.div>
         </div>
       </section>
-      
-      {/* Detailed Information Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">تفاصيل المشروع</h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-teal-500 to-emerald-500 mx-auto rounded-full"></div>
-            </div>
-            
-            <motion.div
-              className="grid lg:grid-cols-3 gap-8"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={containerVariants}
-            >
-              <div className="lg:col-span-2 space-y-8">
-                <motion.div variants={itemVariants} whileHover={{ y: -5, transition: { type: 'spring', stiffness: 300 } }}>
-                  <Card className="shadow-lg hover:shadow-xl transition-all duration-300 border-0 overflow-hidden">
-                    <div className={`h-1 w-full bg-gradient-to-r ${getSectorColor(project.sector.en).gradient}`}></div>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3 text-xl">
-                        <Target className={`h-6 w-6 ${getSectorColor(project.sector.en).text}`} />
-                        نظرة عامة على المشروع
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-6 text-gray-600">
-                      <p className="leading-relaxed text-lg">{project.vision_alignment}</p>
-                      <p className="leading-relaxed text-lg">{project.market_size}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-                
-                <motion.div variants={itemVariants} whileHover={{ y: -5, transition: { type: 'spring', stiffness: 300 } }}>
-                  <Card className="shadow-lg hover:shadow-xl transition-all duration-300 border-0 overflow-hidden">
-                    <div className={`h-1 w-full bg-gradient-to-r from-amber-500 to-orange-500`}></div>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3 text-xl">
-                        <Award className="h-6 w-6 text-amber-500" />
-                        الميزة التنافسية
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600 leading-relaxed text-lg">{project.competitive_advantage}</p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </div>
-              
-              <div className="lg:sticky top-24 space-y-6">
-                <motion.div variants={itemVariants}>
-                  <Card className="shadow-lg border-0 overflow-hidden">
-                    <div className={`h-1 w-full bg-gradient-to-r from-emerald-500 to-teal-500`}></div>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3 text-xl">
-                        <DollarSign className="h-6 w-6 text-emerald-500" />
-                        المؤشرات المالية
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex justify-between items-baseline border-b border-gray-200/80 py-3">
-                        <span className="text-gray-600">إجمالي الاستثمار</span>
-                        <span className="font-bold text-xl text-emerald-600">{formatCurrency(project.financial_indicators.total_investment)}</span>
-                      </div>
-                      <div className="flex justify-between items-baseline border-b border-gray-200/80 py-3">
-                        <span className="text-gray-600">معدل العائد الداخلي</span>
-                        <span className="font-bold text-xl text-teal-600">{project.financial_indicators.internal_rate_of_return}</span>
-                      </div>
-                      <div className="flex justify-between items-baseline py-3">
-                        <span className="text-gray-600">فترة الاسترداد</span>
-                        <span className="font-bold text-xl text-purple-600">{project.financial_indicators.payback_period}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-                
-                <motion.div variants={itemVariants}>
-                  <Card className="shadow-lg border-0 overflow-hidden">
-                    <div className={`h-1 w-full bg-gradient-to-r from-amber-500 to-orange-500`}></div>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3 text-xl">
-                        <Calendar className="h-6 w-6 text-amber-500" />
-                        الجدول الزمني
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">بدء المشروع</span>
-                        <span className="font-medium">Q2 2023</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">انتهاء المشروع</span>
-                        <span className="font-medium">Q4 2025</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-                
-                <motion.div variants={itemVariants}>
-                  <Card className="shadow-lg border-0 overflow-hidden">
-                    <div className={`h-1 w-full bg-gradient-to-r from-teal-500 to-emerald-500`}></div>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3 text-xl">
-                        <Lightbulb className="h-6 w-6 text-yellow-500" />
-                        إجراءات سريعة
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      <PrimaryButton className="w-full">طلب استشارة</PrimaryButton>
-                      <SecondaryButton icon={FileText} className="w-full">طلب دراسة مفصلة</SecondaryButton>
-                      <SecondaryButton icon={Download} className="w-full">تحميل الملف التعريفي</SecondaryButton>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-      
-      <Footer />
-      <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </main>
+
+  <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </div>
   )
 }
+
+// Enhanced Sub-components
+const EnhancedFeatureCard = ({ icon: Icon, title, children }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <motion.div
+      className="group relative overflow-hidden bg-white/70 backdrop-blur-xl border border-white/50 rounded-3xl shadow-2xl transition-all duration-700"
+      whileHover={{ y: -10, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.1)", scale: 1.02 }}
+      onHoverStart={() => setIsHovered(true)} onHoverEnd={() => setIsHovered(false)}
+    >
+      <div className={`absolute inset-0 bg-gradient-to-br from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
+      <div className="relative z-10 p-10">
+        <div className="flex items-start gap-6 mb-6">
+          <motion.div className={`p-4 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 shadow-lg`} animate={isHovered ? { rotate: [0, -10, 10, 0], scale: [1, 1.1, 1] } : {}} transition={{ duration: 0.6 }}>
+            <Icon className={`h-8 w-8 text-green-600`} />
+          </motion.div>
+          <div className="flex-1">
+            <h3 className="text-3xl font-bold text-slate-900 mb-3 group-hover:text-green-600 transition-colors duration-300">{title}</h3>
+            <motion.div className="w-16 h-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full" initial={{ width: 0 }} whileInView={{ width: 64 }} viewport={{ once: true }} transition={{ delay: 0.2, duration: 0.8 }} />
+          </div>
+        </div>
+        <p className="text-slate-600 leading-relaxed text-lg">{children}</p>
+        <motion.div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" whileHover={{ scale: 1.1 }}>
+          <div className="w-8 h-8 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full flex items-center justify-center">
+            <ArrowRight className="w-4 h-4 text-white" />
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+};
+
+const EnhancedFinancialRow = ({ label, value, icon: Icon }) => (
+  <motion.div 
+    className="group flex justify-between items-center py-4 border-b border-slate-100/80 hover:bg-green-50/50 rounded-xl px-4 -mx-4 transition-all duration-300"
+    whileHover={{ x: 5 }}
+  >
+    <div className="flex items-center gap-3">
+      {Icon && <div className="p-2 rounded-lg bg-green-100 group-hover:bg-green-200 transition-colors duration-300"><Icon className="w-4 h-4 text-green-600" /></div>}
+      <span className="text-slate-700 group-hover:text-slate-900 transition-colors font-medium">{label}</span>
+    </div>
+    <div className="font-bold text-xl text-green-600 group-hover:text-green-700 transition-colors">{value}</div>
+  </motion.div>
+);

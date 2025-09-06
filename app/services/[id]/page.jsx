@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 import Navbar from "@/components/navbar"
@@ -8,7 +9,10 @@ import { Badge } from "@/components/ui/badge"
 import servicesData from "@/data/services.json"
 
 export default function ServicePage({ params }) {
-    const service = servicesData.services.find(s => s.id === parseInt(params.id))
+    // `params` may be a Promise in new Next.js runtimes; unwrap it with React.use
+    const resolvedParams = React.use(params)
+    const id = resolvedParams?.id
+    const service = servicesData.services.find(s => s.id === parseInt(id))
 
     if (!service) {
         return <div>Service not found</div>
@@ -16,7 +20,6 @@ export default function ServicePage({ params }) {
 
     return (
         <div className="min-h-screen bg-slate-50">
-            <Navbar />
             
             <main className="container mx-auto px-4 py-8">
                 <div className="mb-8">
@@ -46,8 +49,6 @@ export default function ServicePage({ params }) {
                     </div>
                 </div>
             </main>
-
-            <Footer />
         </div>
     )
 }

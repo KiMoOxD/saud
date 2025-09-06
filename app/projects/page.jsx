@@ -1,25 +1,25 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
-import { motion, animate } from "framer-motion"
+import { motion, animate, AnimatePresence } from "framer-motion"
 import { Search, MapPin, DollarSign, TrendingUp, ArrowLeft, Inbox, Globe, Package, BarChart2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
 import projectsData from "@/data/projectsData.json"
 import Image from "next/image"
 
 const rawProjects = projectsData.projects;
 
+// --- Helper Functions ---
 const formatCurrency = (amount) => {
     if (typeof amount !== "number") return "N/A"
     return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", notation: "compact" }).format(amount)
 }
 
+// --- Child Components ---
 function AnimatedStat({ finalValue, label, formatter = (v) => v, icon: Icon }) {
     const [displayValue, setDisplayValue] = useState(formatter(0));
 
@@ -35,7 +35,7 @@ function AnimatedStat({ finalValue, label, formatter = (v) => v, icon: Icon }) {
     }, [finalValue]);
 
     return (
-        <div className="bg-white/60 backdrop-blur-md p-4 rounded-xl shadow-lg shadow-green-900/5 text-center border border-white/70">
+        <div className="bg-white p-4 rounded-2xl shadow-lg shadow-green-900/10 text-center border border-slate-100">
             <Icon className="mx-auto h-7 w-7 mb-2 text-green-600" />
             <div className="text-3xl font-bold text-slate-900 tracking-tighter">{displayValue}</div>
             <div className="text-sm text-slate-500">{label}</div>
@@ -43,33 +43,27 @@ function AnimatedStat({ finalValue, label, formatter = (v) => v, icon: Icon }) {
     );
 }
 
+// --- Main Page Component ---
 export default function ProjectsPage() {
     const [searchQuery, setSearchQuery] = useState("")
     const [selectedCountry, setSelectedCountry] = useState("all")
     const [selectedSector, setSelectedSector] = useState("all")
     const [sortBy, setSortBy] = useState("investment")
 
-
     const { allProjects, countryNames, sectorNames, uniqueSectors, uniqueCountries, totalInvestment } = useMemo(() => {
-        // Correctly handles strings and prevents errors if name is undefined
         const createKey = (name) => name?.toLowerCase().replace(/\s+/g, '_') || 'unknown';
-
         const tempCountryNames = {};
         const tempSectorNames = {};
 
         const processedProjects = rawProjects.map(p => {
-            // FIX: Pass the English name string from the country object to createKey
             const countryKey = createKey(p.country?.en);
             if (p.country?.ar && !tempCountryNames[countryKey]) {
-                // Store the Arabic name for the dropdown filter
                 tempCountryNames[countryKey] = p.country.ar;
             }
-
             const sectorKey = p.sector?.en || 'N/A';
             if (sectorKey !== 'N/A' && !tempSectorNames[sectorKey]) {
                 tempSectorNames[sectorKey] = p.sector.ar;
             }
-
             return {
                 ...p,
                 countryKey: countryKey,
@@ -88,7 +82,6 @@ export default function ProjectsPage() {
             totalInvestment: investment
         };
     }, []);
-
 
     const filteredAndSortedProjects = useMemo(() => {
         return allProjects
@@ -112,19 +105,17 @@ export default function ProjectsPage() {
     }, [allProjects, searchQuery, selectedCountry, selectedSector, sortBy])
 
     const getSectorStyle = (sectorKey) => {
-        // FIX: Removed spaces from keys to match data (e.g., "Real estate" -> "RealEstate")
         const styles = {
-            Agriculture: { border: "border-emerald-500", badge: "bg-emerald-100 text-emerald-800" },
-            Manufacturing: { border: "border-yellow-500", badge: "bg-yellow-100 text-yellow-800" },
-            Healthcare: { border: "border-cyan-500", badge: "bg-cyan-100 text-cyan-800" },
-            RealEstate: { border: "border-stone-500", badge: "bg-stone-100 text-stone-800" },
-            HumanResources: { border: "border-sky-500", badge: "bg-sky-100 text-sky-800" },
-            InteriorDesign: { border: "border-rose-500", badge: "bg-rose-100 text-rose-800" },
-            MiningandQuarrying: { border: "border-slate-500", badge: "bg-slate-100 text-slate-800" },
-            Tourism: { border: "border-orange-500", badge: "bg-orange-100 text-orange-800" },
+            Agriculture: { badge: "bg-emerald-100 text-emerald-800" },
+            Manufacturing: { badge: "bg-yellow-100 text-yellow-800" },
+            Healthcare: { badge: "bg-cyan-100 text-cyan-800" },
+            RealEstate: { badge: "bg-stone-100 text-stone-800" },
+            HumanResources: { badge: "bg-sky-100 text-sky-800" },
+            InteriorDesign: { badge: "bg-rose-100 text-rose-800" },
+            MiningandQuarrying: { badge: "bg-slate-100 text-slate-800" },
+            Tourism: { badge: "bg-orange-100 text-orange-800" },
         };
-        // Remove spaces from the incoming key to match the style keys
-        return styles[sectorKey.replace(/\s/g, '')] || { border: "border-gray-400", badge: "bg-gray-100 text-gray-800" };
+        return styles[sectorKey.replace(/\s/g, '')] || { badge: "bg-gray-100 text-gray-800" };
     }
 
     const containerVariants = {
@@ -138,11 +129,8 @@ export default function ProjectsPage() {
     }
 
     return (
-        <main className="min-h-screen bg-emerald-50/40" dir="rtl">
-            <Navbar />
-
-            <section className="relative py-24 md:py-32 overflow-hidden">
-                <div className="absolute inset-0 -z-10 bg-gradient-to-b from-green-100/60 via-emerald-50/60 to-emerald-50/0"></div>
+        <main className="min-h-screen bg-slate-50" dir="rtl">
+            <section className="relative py-24 md:py-32 overflow-hidden bg-gradient-to-b from-green-50 to-slate-50">
                 <div className="container mx-auto px-4 relative">
                     <motion.div
                         className="max-w-3xl mx-auto text-center"
@@ -151,7 +139,7 @@ export default function ProjectsPage() {
                         variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
                     >
                         <motion.h1
-                            className="text-4xl md:text-6xl font-extrabold bg-gradient-to-l from-emerald-800 via-green-600 to-lime-500 bg-clip-text text-transparent mb-6"
+                            className="text-4xl md:text-6xl font-extrabold bg-gradient-to-l from-slate-800 via-green-700 to-green-500 bg-clip-text text-transparent mb-6"
                             variants={itemVariants}
                         >
                             محفظة مشاريعنا الاستثمارية
@@ -170,104 +158,99 @@ export default function ProjectsPage() {
                         animate="visible"
                         variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.4 } } }}
                     >
-                        {allProjects.length > 0 && (
-                            <motion.div variants={itemVariants}>
-                                <AnimatedStat finalValue={allProjects.length} label="مشروع" icon={Package} />
-                            </motion.div>
-                        )}
-                        {uniqueCountries.length > 0 && (
-                            <motion.div variants={itemVariants}>
-                                <AnimatedStat finalValue={uniqueCountries.length} label="دولة" icon={Globe} />
-                            </motion.div>
-                        )}
-                        {uniqueSectors.length > 0 && (
-                            <motion.div variants={itemVariants}>
-                                <AnimatedStat finalValue={uniqueSectors.length} label="قطاع" icon={BarChart2} />
-                            </motion.div>
-                        )}
-                        {totalInvestment > 0 && (
-                            <motion.div variants={itemVariants}>
-                                <AnimatedStat finalValue={totalInvestment} label="إجمالي الاستثمارات" icon={DollarSign} formatter={formatCurrency} />
-                            </motion.div>
-                        )}
+                        <motion.div variants={itemVariants}><AnimatedStat finalValue={allProjects.length} label="مشروع" icon={Package} /></motion.div>
+                        <motion.div variants={itemVariants}><AnimatedStat finalValue={uniqueCountries.length} label="دولة" icon={Globe} /></motion.div>
+                        <motion.div variants={itemVariants}><AnimatedStat finalValue={uniqueSectors.length} label="قطاع" icon={BarChart2} /></motion.div>
+                        <motion.div variants={itemVariants}><AnimatedStat finalValue={totalInvestment} label="إجمالي الاستثمارات" icon={DollarSign} formatter={formatCurrency} /></motion.div>
                     </motion.div>
                 </div>
             </section>
 
-            <section className="sticky top-0 z-30 py-4 bg-white/70 backdrop-blur-xl border-b border-slate-200/80 shadow-sm">
+            <section className="py-10">
                 <div className="container mx-auto px-4">
-                    <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-                        <div className="relative w-full lg:max-w-xs">
-                            <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 h-5 w-5" />
-                            <Input placeholder="ابحث..." onChange={(e) => setSearchQuery(e.target.value)} className="w-full pr-12 bg-white rounded-full border-slate-300/70 focus:ring-green-500 focus:border-green-500" />
-                        </div>
-                        <div className="flex flex-wrap gap-3">
-                            <Select value={selectedCountry} onValueChange={setSelectedCountry}><SelectTrigger className="w-36 bg-white rounded-full border-slate-300/70"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">جميع الدول</SelectItem>{Object.entries(countryNames).map(([key, name]) => <SelectItem key={key} value={key}>{name}</SelectItem>)}</SelectContent></Select>
-                            <Select value={selectedSector} onValueChange={setSelectedSector}><SelectTrigger className="w-36 bg-white rounded-full border-slate-300/70"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">جميع القطاعات</SelectItem>{uniqueSectors.map(s => <SelectItem key={s} value={s}>{sectorNames[s] || s}</SelectItem>)}</SelectContent></Select>
-                            <Select value={sortBy} onValueChange={setSortBy}><SelectTrigger className="w-36 bg-white rounded-full border-slate-300/70"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="investment">الأعلى استثماراً</SelectItem><SelectItem value="roi">الأعلى عائد</SelectItem><SelectItem value="name">الترتيب الأبجدي</SelectItem></SelectContent></Select>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section className="py-20 bg-transparent">
-                <div className="container mx-auto px-4">
+                    {/* --- ✅ START: Redesigned, Non-Sticky Filter Section --- */}
                     <motion.div
-                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        className="bg-white p-6 rounded-2xl border border-slate-200 shadow-md mb-12"
                     >
-                        {filteredAndSortedProjects.map((project) => (
-                            <motion.div key={project.id} variants={itemVariants} className="h-full">
-                                <Link href={`/projects/${project.id}`} className="block h-full">
-                                    <motion.div
-                                        whileHover={{ y: -5 }}
-                                        transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                                        className="h-full bg-white rounded-2xl shadow-lg shadow-emerald-900/5 overflow-hidden flex flex-col group"
-                                    >
-                                        <div className="relative h-52 w-full overflow-hidden">
-                                            <Image
-                                                src={project.image || "/placeholder.jpg"}
-                                                alt={project.project_name}
-                                                fill
-                                                className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-                                            <div className="absolute top-4 right-4">
-                                                <Badge className={`${getSectorStyle(project.sector.en).badge} border-none shadow-md`}>{project.sector.ar}</Badge>
-                                            </div>
-                                        </div>
-                                        <div className="p-5 flex flex-col flex-grow">
-                                            <h3 className="text-lg font-bold text-slate-800 group-hover:text-green-600 transition-colors duration-300 line-clamp-2 mb-2">
-                                                {project.project_name}
-                                            </h3>
-                                            <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
-                                                <Globe className="h-4 w-4" />
-                                                <span>{project.country.ar} - {project.location}</span>
-                                            </div>
-                                            <div className="mt-auto space-y-2 text-sm">
-                                                {typeof project.financial_indicators.total_investment === "number" && (
-                                                    <div className="flex items-center gap-2 text-slate-600"><DollarSign size={16} className="text-green-500" /> <span className="font-semibold">{formatCurrency(project.financial_indicators.total_investment)}</span></div>
-                                                )}
-                                                {project.financial_indicators.internal_rate_of_return && (
-                                                    <div className="flex items-center gap-2 text-slate-600"><TrendingUp size={16} className="text-green-500" /> IRR: <span className="font-semibold">{project.financial_indicators.internal_rate_of_return}</span></div>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="p-4 bg-slate-50 border-t border-slate-200/60 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                            <span className="text-green-600 font-semibold flex items-center justify-center gap-1">
-                                                عرض التفاصيل <ArrowLeft size={16} />
-                                            </span>
-                                        </div>
-                                    </motion.div>
-                                </Link>
-                            </motion.div>
-                        ))}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-center">
+                            <div className="relative lg:col-span-2">
+                                <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                                <Input
+                                    placeholder="ابحث بالاسم، الوصف، أو الموقع..."
+                                    value={searchQuery}
+                                    onChange={e => setSearchQuery(e.target.value)}
+                                    className="w-full h-12 pr-12"
+                                />
+                            </div>
+                            <Select value={selectedCountry} onValueChange={setSelectedCountry}><SelectTrigger className="w-full h-12"><SelectValue placeholder="اختر دولة" /></SelectTrigger><SelectContent><SelectItem value="all">جميع الدول</SelectItem>{Object.entries(countryNames).map(([key, name]) => <SelectItem key={key} value={key}>{name}</SelectItem>)}</SelectContent></Select>
+                            <Select value={selectedSector} onValueChange={setSelectedSector}><SelectTrigger className="w-full h-12"><SelectValue placeholder="اختر قطاع" /></SelectTrigger><SelectContent><SelectItem value="all">جميع القطاعات</SelectItem>{uniqueSectors.map(s => <SelectItem key={s} value={s}>{sectorNames[s] || s}</SelectItem>)}</SelectContent></Select>
+                            <Select value={sortBy} onValueChange={setSortBy}><SelectTrigger className="w-full h-12"><SelectValue placeholder="ترتيب حسب" /></SelectTrigger><SelectContent><SelectItem value="investment">الأعلى استثماراً</SelectItem><SelectItem value="roi">الأعلى عائد</SelectItem><SelectItem value="name">الترتيب الأبجدي</SelectItem></SelectContent></Select>
+                        </div>
                     </motion.div>
+                    {/* --- ✅ END: Redesigned Filter Section --- */}
 
-                    {filteredAndSortedProjects.length === 0 && (
+                    <AnimatePresence>
+                    {filteredAndSortedProjects.length > 0 ? (
                         <motion.div
+                            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                            key="projects-grid"
+                        >
+                            {filteredAndSortedProjects.map((project) => (
+                                <motion.div key={project.id} variants={itemVariants} className="h-full">
+                                    <Link href={`/projects/${project.id}`} className="block h-full">
+                                        <motion.div
+                                            whileHover={{ y: -5 }}
+                                            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                                            className="h-full bg-white rounded-2xl shadow-lg shadow-green-900/5 overflow-hidden flex flex-col group"
+                                        >
+                                            <div className="relative h-52 w-full overflow-hidden">
+                                                <Image
+                                                    src={project.image || "/placeholder.jpg"}
+                                                    alt={project.project_name}
+                                                    fill
+                                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                                <div className="absolute top-4 right-4">
+                                                    <Badge className={`${getSectorStyle(project.sector.en).badge} border-none shadow-md`}>{project.sector.ar}</Badge>
+                                                </div>
+                                            </div>
+                                            <div className="p-5 flex flex-col flex-grow">
+                                                <h3 className="text-lg font-bold text-slate-800 group-hover:text-green-600 transition-colors duration-300 line-clamp-2 mb-2">
+                                                    {project.project_name}
+                                                </h3>
+                                                <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
+                                                    <Globe className="h-4 w-4" />
+                                                    <span>{project.country?.ar || ''} - {project.location}</span>
+                                                </div>
+                                                <div className="mt-auto space-y-2 text-sm">
+                                                    {typeof project.financial_indicators.total_investment === "number" && (
+                                                        <div className="flex items-center gap-2 text-slate-600"><DollarSign size={16} className="text-green-500" /> <span className="font-semibold">{formatCurrency(project.financial_indicators.total_investment)}</span></div>
+                                                    )}
+                                                    {project.financial_indicators.internal_rate_of_return && (
+                                                        <div className="flex items-center gap-2 text-slate-600"><TrendingUp size={16} className="text-green-500" /> IRR: <span className="font-semibold">{project.financial_indicators.internal_rate_of_return}</span></div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="p-4 bg-slate-50 border-t border-slate-200/60 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <span className="text-green-600 font-semibold flex items-center justify-center gap-1">
+                                                    عرض التفاصيل <ArrowLeft size={16} />
+                                                </span>
+                                            </div>
+                                        </motion.div>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="no-results"
                             className="text-center py-20"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -289,10 +272,9 @@ export default function ProjectsPage() {
                             </Button>
                         </motion.div>
                     )}
+                    </AnimatePresence>
                 </div>
             </section>
-
-            <Footer />
         </main>
     )
 }
