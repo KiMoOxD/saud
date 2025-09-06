@@ -4,18 +4,7 @@ import { motion, AnimatePresence, useInView, animate } from "framer-motion"
 import { ArrowLeft, TrendingUp, Target } from "lucide-react"
 import React, { useEffect, useRef, useState } from "react"
 
-// --- MOCK DATA to prevent build errors ---
-const projectsData = {
-  projects: [
-    { id: 1, project_name: "مشروع نيوم السكني", sector: { en: "Real Estate", ar: "عقارات" }, description: "تطوير مجمع سكني فاخر ومتكامل الخدمات في قلب مدينة نيوم المستقبلية.", financial_indicators: { total_investment: 150000000 } },
-    { id: 2, project_name: "منصة التجارة الإلكترونية", sector: { en: "Technology", ar: "تقنية" }, description: "إنشاء منصة تجارة إلكترونية متطورة تدعم الشركات الصغيرة والمتوسطة.", financial_indicators: { total_investment: 5000000 } },
-    { id: 3, project_name: "مصنع الصناعات الغذائية", sector: { en: "Industrial", ar: "صناعي" }, description: "تأسيس مصنع لإنتاج وتعبئة المواد الغذائية بأحدث التقنيات.", financial_indicators: { total_investment: 25000000 } },
-    { id: 4, project_name: "منتجع سياحي بيئي", sector: { en: "Tourism", ar: "سياحة" }, description: "بناء منتجع سياحي صديق للبيئة يعتمد على الطاقة المتجددة.", financial_indicators: { total_investment: 75000000 } },
-    { id: 5, project_name: "تطبيق التوصيل الذكي", sector: { en: "Technology", ar: "تقنية" }, description: "تطبيق مبتكر لخدمات التوصيل يعتمد على الذكاء الاصطناعي لتحسين المسارات.", financial_indicators: { total_investment: 8000000 } },
-    { id: 6, project_name: "مركز بيانات سحابي", sector: { en: "Technology", ar: "تقنية" }, description: "مركز بيانات عالي الأداء لتقديم خدمات الحوسبة السحابية.", financial_indicators: { total_investment: 120000000 } },
-    { id: 7, project_name: "مجمع بتروكيماويات", sector: { en: "Industrial", ar: "صناعي" }, description: "تطوير مجمع صناعي لإنتاج البتروكيماويات المتخصصة.", financial_indicators: { total_investment: 300000000 } }
-  ]
-};
+import projectsData from "@/data/projectsData.json"
 
 
 // --- Helper Components ---
