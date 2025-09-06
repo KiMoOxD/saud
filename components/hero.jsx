@@ -196,7 +196,7 @@ export default function OptimizedHero() {
   return (
     <section 
       ref={heroRef} 
-      className="relative w-full min-h-screen flex flex-col justify-center py-12 sm:py-16 md:py-24 overflow-hidden bg-gradient-to-br from-white  to-green-50/30" 
+      className="relative w-full min-h-screen flex flex-col justify-center py-12 sm:py-16 md:py-24 overflow-hidden bg-white" 
       dir="rtl"
     >
 
