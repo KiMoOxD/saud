@@ -199,49 +199,6 @@ export default function OptimizedHero() {
       className="relative w-full min-h-screen flex flex-col justify-center py-12 sm:py-16 md:py-24 overflow-hidden bg-gradient-to-br from-white  to-green-50/30" 
       dir="rtl"
     >
-      {/* Simplified Background Layers */}
-      <div className="absolute inset-0 -z-10">
-        
-        {/* Reduced complexity background blobs */}
-        {!prefersReducedMotion && (
-          <>
-            <motion.div
-              className="absolute top-[-20%] right-[-20%] w-[420px] sm:w-[600px] md:w-[800px] h-[420px] sm:h-[600px] md:h-[800px] bg-gradient-to-br from-green-500/15 via-emerald-500/10 to-teal-500/5 blur-[120px] sm:blur-[160px] md:blur-[200px] rounded-full"
-              style={{ y: y1 }}
-              animate={{
-                scale: [1, 1.1, 1]
-              }}
-              transition={{
-                duration: 20,
-                ease: "easeInOut",
-                repeat: Infinity,
-              }}
-            />
-            
-            <motion.div
-              className="absolute bottom-[-25%] left-[-15%] w-[360px] sm:w-[480px] md:w-[600px] h-[360px] sm:h-[480px] md:h-[600px] bg-gradient-to-tr from-green-600/10 via-emerald-400/8 to-lime-500/3 blur-[90px] sm:blur-[130px] md:blur-[180px] rounded-full"
-              style={{ y: y2 }}
-              animate={{
-                scale: [1.1, 0.9, 1.1]
-              }}
-              transition={{
-                duration: 25,
-                ease: "easeInOut",
-                repeat: Infinity,
-                delay: 5
-              }}
-            />
-          </>
-        )}
-
-        {/* Static grid pattern for reduced motion */}
-        <div className="absolute inset-0 opacity-[0.02]">
-          <div className="w-full h-full" style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(93,197,107,0.3) 1px, transparent 0)`,
-            backgroundSize: '50px 50px'
-          }} />
-        </div>
-      </div>
 
       {/* Content Container */}
       <div className="relative z-20 container mx-auto px-6 max-w-7xl">
