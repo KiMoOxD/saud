@@ -1,5 +1,6 @@
 import React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import BookingTrigger from "@/components/booking-trigger"
 
 import investmentsData from "@/data/investments.json"
@@ -55,8 +56,8 @@ export default function InvestmentDetailPage({ params }) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
             {image && (
-              <div className="rounded-2xl overflow-hidden shadow-lg">
-                <img src={image} alt={name} className="w-full h-72 object-cover" />
+              <div className="rounded-2xl overflow-hidden shadow-lg relative w-full" style={{ minHeight: 288 }}>
+                <Image src={image} alt={name} fill className="object-cover" />
               </div>
             )}
 

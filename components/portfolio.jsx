@@ -143,7 +143,7 @@ export default function Achievements() {
             </p>
           </motion.div>
           <motion.div className="lg:col-span-2 grid grid-cols-2 gap-8" variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" }} }}>
-            <Stat icon={<Target size={36} />} value={totalProjects} label="مشروع ناجح" formatter={(v) => `${v}+`} />
+            <Stat icon={<Target size={36} />} value={1200} label="مشروع ناجح" formatter={(v) => `${v}+`} />
             <Stat icon={<TrendingUp size={36} />} value={totalInvestment} label="قيمة الاستثمارات" formatter={formatCurrency} />
           </motion.div>
         </motion.div>

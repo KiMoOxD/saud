@@ -150,9 +150,9 @@ export default function OptimizedHero() {
 
   // Memoized stats data
   const stats = useMemo(() => [
-    { icon: TrendingUp, value: 500, label: "مشروع ناجح+" },
+    { icon: TrendingUp, value: 1200, label: "مشروع ناجح+" },
     { icon: Lightbulb, value: 15, label: "سنة خبرة" },
-    { icon: Shield, value: 98, label: "رضا العملاء %" },
+    { icon: Shield, value: 85, label: "رضا العملاء %" },
     { icon: Zap, value: 24, label: "دعم فني/7" },
   ], [])
 

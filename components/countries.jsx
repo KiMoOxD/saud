@@ -130,7 +130,7 @@ export default function Countries() {
                         <h3 className="font-bold text-slate-800 whitespace-nowrap">{country.name}</h3>
                         {hasProjects ? (
                           <div className="flex items-center gap-2 text-sm">
-                            <AnimatedCounter value={country.projects} className="font-bold text-lg text-emerald-600" />
+                            <AnimatedCounter value={+country.projects * 100 } className="font-bold text-lg text-emerald-600" />
                             <span className="text-slate-500">مشروع</span>
                           </div>
                         ) : (

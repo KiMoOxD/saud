@@ -158,8 +158,8 @@ export default function ProjectsPage() {
                         animate="visible"
                         variants={{ visible: { transition: { staggerChildren: 0.1, delayChildren: 0.4 } } }}
                     >
-                        <motion.div variants={itemVariants}><AnimatedStat finalValue={allProjects.length} label="مشروع" icon={Package} /></motion.div>
-                        <motion.div variants={itemVariants}><AnimatedStat finalValue={uniqueCountries.length} label="دولة" icon={Globe} /></motion.div>
+                        <motion.div variants={itemVariants}><AnimatedStat finalValue={1200} label="مشروع" icon={Package} /></motion.div>
+                        <motion.div variants={itemVariants}><AnimatedStat finalValue={80} label="دولة" icon={Globe} /></motion.div>
                         <motion.div variants={itemVariants}><AnimatedStat finalValue={uniqueSectors.length} label="قطاع" icon={BarChart2} /></motion.div>
                         <motion.div variants={itemVariants}><AnimatedStat finalValue={totalInvestment} label="إجمالي الاستثمارات" icon={DollarSign} formatter={formatCurrency} /></motion.div>
                     </motion.div>
