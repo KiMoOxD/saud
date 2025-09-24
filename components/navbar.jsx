@@ -8,6 +8,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import BookingModal from "./booking-modal" 
 
 const primaryGradient = "linear-gradient(to right, #5dc56b, #3a9d47)"
+const primaryGradientHover = "linear-gradient(to right, #4caf50, #2e7d37)" // Slightly darker for hover states
 
 // Memoized BookingSystem component
 const BookingSystem = ({ onModalStateChange }) => {
@@ -30,14 +31,14 @@ const BookingSystem = ({ onModalStateChange }) => {
     <>
       <button
         onClick={handleOpenModal}
-        className="relative group inline-flex items-center justify-center h-11 px-6 text-white text-sm font-bold rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105"
+        className="relative group inline-flex items-center justify-center h-12 px-6 text-white text-sm font-bold rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
         style={{ background: primaryGradient }}
       >
         {!prefersReducedMotion && (
-          <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-40 group-hover:animate-shine" />
+          <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-shine" />
         )}
         <span className="relative z-10 flex items-center gap-2">
-          <Sparkles size={18} />
+          <Sparkles size={18} className="group-hover:animate-pulse" />
           احجز استشارة
         </span>
       </button>
@@ -53,35 +54,44 @@ const Logo = ({ scrolled }) => {
   
   return (
     <Link href="/" className="flex items-center gap-3 z-50 group cursor-pointer">
-      <div className={`relative p-2 rounded-full shadow-inner transition-all duration-300 ${
+      <div className={`relative p-2.5 rounded-full shadow-lg transition-all duration-300 backdrop-blur-sm ${
         scrolled 
-          ? "bg-green-50/80 shadow-green-100" 
-          : "bg-white/80 shadow-slate-200"
-      } group-hover:shadow-md`}>
-        <div className={`transform transition-transform duration-500 ${
-          prefersReducedMotion ? '' : 'group-hover:rotate-[-15deg]'
+          ? "bg-green-50/90 shadow-green-200/50" 
+          : "bg-white/90 shadow-slate-300/50"
+      } group-hover:shadow-xl group-hover:bg-green-50/80`}>
+        <div className={`transform transition-all duration-500 ${
+          prefersReducedMotion ? '' : 'group-hover:rotate-[-12deg] group-hover:scale-110'
         }`}>
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="30" height="30" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#5dc56b" />
                 <stop offset="100%" stopColor="#3a9d47" />
               </linearGradient>
+              <filter id="logoGlow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge> 
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
             </defs>
-            <path d="M14 0L20.4952 7.50481L14 15.0096L7.50481 7.50481L14 0Z" fill="url(#logoGradient)"/>
-            <path d="M20.4952 7.50481L28 14L14 28L0 14L7.50481 7.50481L14 15.0096L20.4952 7.50481Z" fill="url(#logoGradient)" style={{filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))'}}/>
+            <g filter="url(#logoGlow)">
+              <path d="M14 0L20.4952 7.50481L14 15.0096L7.50481 7.50481L14 0Z" fill="url(#logoGradient)"/>
+              <path d="M20.4952 7.50481L28 14L14 28L0 14L7.50481 7.50481L14 15.0096L20.4952 7.50481Z" fill="url(#logoGradient)"/>
+            </g>
           </svg>
         </div>
       </div>
       <div className="flex flex-col">
-        <span className={`text-2xl font-bold bg-clip-text text-transparent transition-all duration-300 ${
+        <span className={`text-2xl font-bold bg-clip-text text-transparent transition-all duration-300 leading-tight ${
           scrolled 
             ? "bg-gradient-to-r from-gray-800 to-gray-900" 
             : "bg-gradient-to-r from-slate-700 to-slate-900"
         }`}>
-          شركة سعود
+          شركة دِرَايَة
         </span>
-        <div className="h-0.5 w-0 group-hover:w-full rounded-full transition-all duration-500" style={{ background: primaryGradient }}/>
+        <div className="h-0.5 w-0 group-hover:w-full rounded-full transition-all duration-700 ease-out" style={{ background: primaryGradient }}/>
       </div>
     </Link>
   )
@@ -92,8 +102,8 @@ const NavLink = ({ link, isActive, linkColor, onMobileClick, isMobile = false })
   const prefersReducedMotion = useReducedMotion()
   
   const baseClasses = isMobile
-    ? "group relative flex items-center gap-4 p-4 rounded-xl text-md font-semibold transition-all duration-300"
-    : "group relative flex items-center justify-center h-11 px-5 text-sm font-medium rounded-full transition-all duration-300"
+    ? "group relative flex items-center gap-4 p-4 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-sm hover:shadow-md"
+    : "group relative flex items-center justify-center h-12 px-6 text-sm font-medium rounded-full transition-all duration-300 shadow-sm hover:shadow-md"
   
   const scaleClass = prefersReducedMotion ? "" : "transform hover:scale-105"
   
@@ -104,14 +114,14 @@ const NavLink = ({ link, isActive, linkColor, onMobileClick, isMobile = false })
       className={`${baseClasses} ${scaleClass} ${linkColor}`}
     >
       <div 
-        className={`absolute inset-0 ${isMobile ? 'rounded-xl' : 'rounded-full'} transition-all duration-300 ${
-          isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+        className={`absolute inset-0 ${isMobile ? 'rounded-2xl' : 'rounded-full'} transition-all duration-300 backdrop-blur-sm ${
+          isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100'
         }`} 
-        style={{ background: primaryGradient }} 
+        style={{ background: isActive ? primaryGradientHover : primaryGradient }} 
       />
       <div className="relative z-10 flex items-center gap-2">
-        <link.icon size={isMobile ? 24 : 18} />
-        <span>{link.label}</span>
+        <link.icon size={isMobile ? 24 : 20} className={isActive ? "text-white" : ""} />
+        <span className="relative">{link.label}</span>
       </div>
     </Link>
   )
@@ -170,11 +180,11 @@ export default function Navbar() {
   // Memoized header classes
   const headerClasses = useMemo(() => {
     if (scrolled) {
-      return "bg-white/95 backdrop-blur-lg shadow-lg border-b border-gray-100"
+      return "bg-white/98 backdrop-blur-xl shadow-xl border-b border-green-50/50"
     }
     return pathname === "/"
       ? "bg-gradient-to-b from-white to-[#00FF87]"
-      : "bg-white border-b border-gray-100"
+      : "bg-white/95 backdrop-blur-xl border-b border-gray-100"
   }, [scrolled, pathname])
 
   // Memoized mobile menu handlers
@@ -191,9 +201,9 @@ export default function Navbar() {
   }), [prefersReducedMotion])
 
   const drawerVariants = useMemo(() => ({
-    initial: { x: '100%' },
-    animate: { x: 0 },
-    exit: { x: '100%' },
+    initial: { x: '100%', opacity: 0 },
+    animate: { x: 0, opacity: 1 },
+    exit: { x: '100%', opacity: 0 },
     transition: prefersReducedMotion 
       ? { duration: 0.2, ease: "easeOut" }
       : { type: 'spring', damping: 25, stiffness: 200 }
@@ -202,16 +212,16 @@ export default function Navbar() {
   return (
     <>
       <header className={`sticky top-0 z-50 w-full transition-all duration-500 ${headerClasses}`}>
-        <nav className="container mx-auto px-6 md:px-8" dir="rtl">
-          <div className="flex items-center justify-between py-4">
+        <nav className="container mx-auto px-4 md:px-8 lg:px-12" dir="rtl">
+          <div className="flex items-center justify-between py-4 md:py-5">
             <Logo scrolled={scrolled} />
             
-            <div className="hidden md:flex items-center gap-4">
-              <ul className="flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-3 lg:gap-4">
+              <ul className="flex items-center gap-2 lg:gap-3">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href
                   const linkColor = isActive
-                    ? "text-white"
+                    ? "text-white shadow-lg"
                     : scrolled || pathname !== "/"
                       ? "text-gray-700 hover:text-white"
                       : "text-slate-600 hover:text-white"
@@ -228,7 +238,7 @@ export default function Navbar() {
                 })}
               </ul>
               
-              <div className={`w-px h-8 mx-2 transition-colors duration-300 ${
+              <div className={`w-px h-8 mx-2 lg:mx-3 transition-colors duration-300 ${
                 scrolled || pathname !== '/' ? "bg-gray-200" : "bg-slate-200"
               }`} />
               
@@ -238,12 +248,12 @@ export default function Navbar() {
             <div className="md:hidden">
               <button 
                 onClick={handleMenuOpen} 
-                className={`p-2 focus:outline-none rounded-full transition-all duration-300 ${
+                className={`p-2.5 focus:outline-none rounded-xl transition-all duration-300 shadow-sm hover:shadow-md ${
                   prefersReducedMotion ? '' : 'transform hover:scale-110'
                 } ${
                   scrolled || pathname !== '/'
-                    ? "text-gray-700 hover:bg-gray-100" 
-                    : "text-slate-700 hover:bg-slate-200/70"
+                    ? "text-gray-700 bg-gray-50 hover:bg-gray-100" 
+                    : "text-slate-700 bg-white/70 hover:bg-slate-200/70"
                 }`} 
                 aria-label="Open Menu"
               >
@@ -261,18 +271,18 @@ export default function Navbar() {
             <motion.div
               {...overlayVariants}
               onClick={handleMenuClose}
-              className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[60]"
+              className="fixed inset-0 bg-slate-900/50 backdrop-blur-md z-[60]"
             />
             <motion.div
               {...drawerVariants}
-              className="fixed top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl p-6 flex flex-col z-[60]"
+              className="fixed top-0 right-0 bottom-0 w-[90%] max-w-sm bg-white/95 backdrop-blur-xl shadow-2xl p-6 flex flex-col z-[60] border-l border-gray-100/50"
               dir="rtl"
             >
-              <div className="flex justify-between items-center pb-6 border-b border-gray-200">
+              <div className="flex justify-between items-center pb-6 border-b border-gray-100">
                 <Logo scrolled={true} />
                 <button 
                   onClick={handleMenuClose} 
-                  className={`p-2 text-gray-700 focus:outline-none rounded-full hover:bg-red-100/80 transition-all duration-300 ${
+                  className={`p-2.5 text-gray-700 focus:outline-none rounded-xl hover:bg-red-50/80 transition-all duration-300 shadow-sm hover:shadow-md ${
                     prefersReducedMotion ? '' : 'transform hover:scale-110'
                   }`}
                   aria-label="Close Menu"
@@ -281,10 +291,10 @@ export default function Navbar() {
                 </button>
               </div>
               
-              <ul className="flex flex-col gap-4 flex-grow mt-8">
+              <ul className="flex flex-col gap-3 lg:gap-4 flex-grow mt-8">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href
-                  const linkColor = isActive ? "text-white" : "text-gray-700 hover:text-white"
+                  const linkColor = isActive ? "text-white shadow-lg" : "text-gray-700 hover:text-white"
                   
                   return (
                     <li key={link.href}>
@@ -300,8 +310,8 @@ export default function Navbar() {
                 })}
               </ul>
               
-              <div className="mt-auto pt-6 border-t border-gray-200 text-center">
-                <p className="text-sm text-gray-600 mb-4">جاهز لبدء مشروعك؟</p>
+              <div className="mt-auto pt-6 border-t border-gray-100 text-center pb-4">
+                <p className="text-sm text-gray-600 mb-4 font-medium">جاهز لبدء مشروعك؟</p>
                 <BookingSystem onModalStateChange={handleModalStateChange} />
               </div>
             </motion.div>
