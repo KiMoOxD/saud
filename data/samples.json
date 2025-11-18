@@ -1,0 +1,36 @@
+{
+  "samples": [
+    {
+      "id": "bus-station",
+      "title": "محطة الحافلات",
+      "description": "دراسة جدوى شاملة لمشروع محطة حافلات حديثة",
+      "icon": "Bus",
+      "color": "blue",
+      "file": "BusStation.pdf"
+    },
+    {
+      "id": "food-oil-factory",
+      "title": "مصنع الزيوت الغذائية",
+      "description": "دراسة فنية واقتصادية لمصنع إنتاج الزيوت الغذائية",
+      "icon": "Factory",
+      "color": "amber",
+      "file": "FoodOilFactory.pdf"
+    },
+    {
+      "id": "logistics-corp",
+      "title": "شركة الخدمات اللوجستية",
+      "description": "خطة عمل متكاملة لشركة متخصصة في الخدمات اللوجستية",
+      "icon": "Truck",
+      "color": "purple",
+      "file": "LogisticsCorp.pdf"
+    },
+    {
+      "id": "sheep-farm",
+      "title": "مزرعة الأغنام",
+      "description": "دراسة جدوى لمشروع تربية الأغنام والثروة الحيوانية",
+      "icon": "Sheep",
+      "color": "green",
+      "file": "SheepFarm.pdf"
+    }
+  ]
+}

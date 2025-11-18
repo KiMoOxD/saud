@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { usePathname } from 'next/navigation'
-import { Menu, X, Briefcase, Home, Sparkles, DollarSign, Wrench } from "lucide-react"
+import { Menu, X, Briefcase, Home, Sparkles, DollarSign, Wrench, FileText } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import BookingModal from "./booking-modal" 
@@ -31,7 +31,7 @@ const BookingSystem = ({ onModalStateChange }) => {
     <>
       <button
         onClick={handleOpenModal}
-        className="relative group inline-flex items-center justify-center h-12 px-6 text-white text-sm font-bold rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+        className="relative group inline-flex items-center justify-center h-12 px-6 text-white text-xs font-bold rounded-full overflow-hidden transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
         style={{ background: primaryGradient }}
       >
         {!prefersReducedMotion && (
@@ -103,7 +103,7 @@ const NavLink = ({ link, isActive, linkColor, onMobileClick, isMobile = false })
   
   const baseClasses = isMobile
     ? "group relative flex items-center gap-4 p-4 rounded-2xl text-lg font-semibold transition-all duration-300 shadow-sm hover:shadow-md"
-    : "group relative flex items-center justify-center h-12 px-6 text-sm font-medium rounded-full transition-all duration-300 shadow-sm hover:shadow-md"
+    : "group relative flex items-center justify-center h-12 text-xs px-2 lg:px-4 text-sm font-medium rounded-full transition-all duration-300 shadow-sm hover:shadow-md"
   
   const scaleClass = prefersReducedMotion ? "" : "transform hover:scale-105"
   
@@ -139,7 +139,8 @@ export default function Navbar() {
     { href: "/", label: "الرئيسية", icon: Home },
     { href: "/projects", label: "المشاريع", icon: Briefcase },
     { href: "/investments", label: "الاستثمارات", icon: DollarSign },
-    { href: "/services", label: "الخدمات", icon: Wrench }
+    { href: "/services", label: "الخدمات", icon: Wrench },
+    { href: "/samples", label: "نماذج ودراسات", icon: FileText }
   ], [])
 
   // Optimized scroll handler with throttling
@@ -216,7 +217,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between py-4 md:py-5">
             <Logo scrolled={scrolled} />
             
-            <div className="hidden md:flex items-center gap-3 lg:gap-4">
+            <div className="hidden lg:flex items-center gap-3 lg:gap-4">
               <ul className="flex items-center gap-2 lg:gap-3">
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href
@@ -245,7 +246,7 @@ export default function Navbar() {
               <BookingSystem onModalStateChange={handleModalStateChange} />
             </div>
 
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <button 
                 onClick={handleMenuOpen} 
                 className={`p-2.5 focus:outline-none rounded-xl transition-all duration-300 shadow-sm hover:shadow-md ${
