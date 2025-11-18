@@ -220,7 +220,7 @@ export default function BookingModal({ isOpen, onClose }) {
         phone: formData.phone,
         project_name: formData.projectName,
         message: formData.message || 'لم يتم تقديم تفاصيل إضافية',
-        to_name: 'فريق شركة سعود',
+        to_name: 'فريق شركة دراية',
         reply_to: formData.email,
         submission_date: new Date().toLocaleDateString('ar-SA', {
           year: 'numeric', month: 'long', day: 'numeric',
