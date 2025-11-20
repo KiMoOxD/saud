@@ -5,7 +5,11 @@ import { usePathname } from 'next/navigation'
 import { Menu, X, Briefcase, Home, Sparkles, DollarSign, Wrench, FileText } from "lucide-react"
 import Link from "next/link"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import BookingModal from "./booking-modal" 
+import BookingModal from "./booking-modal"
+
+import logo from "../public/logo.png"
+
+console.log(logo)
 
 const primaryGradient = "linear-gradient(to right, #5dc56b, #3a9d47)"
 const primaryGradientHover = "linear-gradient(to right, #4caf50, #2e7d37)" // Slightly darker for hover states
@@ -54,7 +58,7 @@ const Logo = ({ scrolled }) => {
   
   return (
     <Link href="/" className="flex items-center gap-3 z-50 group cursor-pointer">
-      <div className={`relative p-2.5 rounded-full shadow-lg transition-all duration-300 backdrop-blur-sm ${
+      <div className={`relative p-2 rounded-full shadow-lg transition-all duration-300 backdrop-blur-sm ${
         scrolled 
           ? "bg-green-50/90 shadow-green-200/50" 
           : "bg-white/90 shadow-slate-300/50"
@@ -62,25 +66,7 @@ const Logo = ({ scrolled }) => {
         <div className={`transform transition-all duration-500 ${
           prefersReducedMotion ? '' : 'group-hover:rotate-[-12deg] group-hover:scale-110'
         }`}>
-          <svg width="30" height="30" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#5dc56b" />
-                <stop offset="100%" stopColor="#3a9d47" />
-              </linearGradient>
-              <filter id="logoGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                <feMerge> 
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
-            <g filter="url(#logoGlow)">
-              <path d="M14 0L20.4952 7.50481L14 15.0096L7.50481 7.50481L14 0Z" fill="url(#logoGradient)"/>
-              <path d="M20.4952 7.50481L28 14L14 28L0 14L7.50481 7.50481L14 15.0096L20.4952 7.50481Z" fill="url(#logoGradient)"/>
-            </g>
-          </svg>
+          <img src="/logo.png" alt="Draia Logo" className="w-8 h-8 object-contain" />
         </div>
       </div>
       <div className="flex flex-col">
@@ -139,8 +125,7 @@ export default function Navbar() {
     { href: "/", label: "الرئيسية", icon: Home },
     { href: "/projects", label: "المشاريع", icon: Briefcase },
     { href: "/investments", label: "الاستثمارات", icon: DollarSign },
-    { href: "/services", label: "الخدمات", icon: Wrench },
-    { href: "/samples", label: "نماذج ودراسات", icon: FileText }
+    { href: "/services", label: "الخدمات", icon: Wrench }
   ], [])
 
   // Optimized scroll handler with throttling

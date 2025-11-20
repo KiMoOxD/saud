@@ -1,32 +1,22 @@
 "use client"
 
-import { motion, AnimatePresence, useInView, animate } from "framer-motion"
-import { ArrowLeft, TrendingUp, Target } from "lucide-react"
+import { motion, AnimatePresence, useInView, animate, LayoutGroup } from "framer-motion"
+import { ArrowLeft, TrendingUp, Briefcase, Layers, Filter, Check } from "lucide-react"
 import React, { useEffect, useRef, useState } from "react"
-
 import projectsData from "@/data/projectsData.json"
 
+// --- Utility Components ---
 
-// --- Helper Components ---
-const Button = ({ children, className, size, ...props }) => {
-  const sizeClasses = size === 'lg' ? 'px-6 py-3 sm:px-6 sm:py-3 text-base sm:text-lg' : 'px-4 py-2 text-sm';
-  return (
-    <button className={`${sizeClasses} ${className}`} {...props}>
-      {children}
-    </button>
-  );
-};
-
-function AnimatedCounter({ value, className, formatter = (v) => v.toLocaleString() }) {
+const AnimatedCounter = ({ value, formatter = (v) => v.toLocaleString() }) => {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: "-100px" })
+  const inView = useInView(ref, { once: true, margin: "-50px" })
 
   useEffect(() => {
     if (inView && ref.current) {
       const node = ref.current
       const controls = animate(0, value, {
-        duration: 2.5,
-        ease: "easeOut",
+        duration: 2,
+        ease: "circOut",
         onUpdate(latest) {
           node.textContent = formatter(latest.toFixed(0))
         },
@@ -35,43 +25,48 @@ function AnimatedCounter({ value, className, formatter = (v) => v.toLocaleString
     }
   }, [inView, value, formatter])
 
-  return <span ref={ref} className={className}>0</span>
+  return <span ref={ref}>0</span>
 }
 
+const formatCurrency = (amount) => {
+  const value = Math.round(amount);
+  if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`
+  if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`
+  return `$${value}`
+}
 
 export default function Achievements() {
   const allProjects = projectsData.projects
   const [activeSector, setActiveSector] = useState("All")
   const [filteredProjects, setFilteredProjects] = useState([])
 
-  const totalProjects = allProjects.length
+  // --- Data Processing ---
   const totalInvestment = allProjects.reduce((sum, p) => sum + (p.financial_indicators.total_investment || 0), 0)
+  const successfulProjects = 1200 // Hardcoded or derived
 
-  const sectorNames = allProjects.reduce((map, project) => {
-    if (project.sector && project.sector.en && project.sector.ar) {
-      map[project.sector.en] = project.sector.ar
+  const sectorStats = allProjects.reduce((acc, project) => {
+    const key = project.sector?.en
+    const label = project.sector?.ar
+    if (key && label) {
+      if (!acc[key]) acc[key] = { label, count: 0 }
+      acc[key].count += 1
     }
-    return map
+    return acc
   }, {})
 
-  const topSectors = ["All", ...Object.entries(
-    allProjects.reduce((acc, project) => {
-      if (project.sector && project.sector.en) {
-        acc[project.sector.en] = (acc[project.sector.en] || 0) + 1
-      }
-      return acc
-    }, {})
-  )
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 5)
-    .map(([sector]) => sector)
-  ];
+  const menuItems = [
+    { id: "All", label: "الكل", desktopLabel: "جميع المشاريع", count: allProjects.length, icon: Layers },
+    ...Object.entries(sectorStats)
+      .sort(([, a], [, b]) => b.count - a.count)
+      .slice(0, 5)
+      .map(([key, val]) => ({ id: key, label: val.label, desktopLabel: val.label, count: val.count, icon: Briefcase }))
+  ]
 
   useEffect(() => {
     const featuredProjects = allProjects
       .filter((p) => typeof p.financial_indicators.total_investment === "number")
       .sort((a, b) => (b.financial_indicators.total_investment || 0) - (a.financial_indicators.total_investment || 0))
-      .slice(0, 4)
+      .slice(0, 6)
 
     if (activeSector === "All") {
       setFilteredProjects(featuredProjects);
@@ -79,179 +74,208 @@ export default function Achievements() {
       const sectorProjects = allProjects
         .filter(p => p.sector && p.sector.en === activeSector)
         .sort((a, b) => (b.financial_indicators.total_investment || 0) - (a.financial_indicators.total_investment || 0))
-        .slice(0, 4);
       setFilteredProjects(sectorProjects);
     }
   }, [activeSector, allProjects]);
 
-  const formatCurrency = (amount) => {
-    const value = Math.round(amount);
-    if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`
-    if (value >= 1000) return `$${(value / 1000).toFixed(0)}K`
-    return `$${value}`
-  }
-
-  const Stat = ({ icon, value, label, formatter }) => (
-    <div className="text-center">
-      <div className="flex justify-center items-center mb-2 text-green-600">
-        {icon}
-      </div>
-      <div className="text-4xl lg:text-5xl font-bold text-slate-800">
-        <AnimatedCounter value={value} formatter={formatter} />
-      </div>
-      <p className="text-sm text-slate-500 mt-1">{label}</p>
-    </div>
-  );
-
   return (
-    <section className="relative w-full bg-white text-slate-800 py-24 sm:py-28 md:py-36 overflow-hidden">
-        {/* Background Animated Shapes */}
-        <div className="absolute inset-0 z-0">
-            <motion.div 
-              className="absolute top-1/4 left-0 w-96 h-96 bg-green-200/50 rounded-full filter blur-3xl"
-              animate={{ x: [-100, 100, -100], rotate: [0, 180, 0] }}
-              transition={{ duration: 40, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' }}
-            />
-            <motion.div 
-              className="absolute bottom-1/4 right-0 w-[30rem] h-[30rem] bg-green-200/40 rounded-full filter blur-3xl"
-              animate={{ x: [100, -100, 100], y: [50, -50, 50] }}
-              transition={{ duration: 50, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror', delay: 5 }}
-            />
-              <motion.div 
-              className="absolute bottom-1/2 right-1/3 w-80 h-80 bg-emerald-100/40 rounded-full filter blur-3xl"
-              animate={{ y: [80, -80, 80] }}
-              transition={{ duration: 60, repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror', delay: 10 }}
-            />
+    <section className="relative w-full bg-white text-slate-800 py-16 md:py-24 overflow-hidden font-sans" dir="rtl">
+      
+      {/* Mobile-Friendly Background Pattern */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.02]" 
+           style={{ 
+             backgroundImage: 'linear-gradient(#059669 1px, transparent 1px), linear-gradient(to right, #059669 1px, transparent 1px)', 
+             backgroundSize: '40px 40px' 
+           }}>
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        
+        {/* --- Header Section --- */}
+        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-10 lg:mb-16 gap-8">
+          
+          {/* Titles */}
+          <div className="max-w-2xl relative">
+            <div className="absolute -right-4 top-2 w-1 h-12 bg-gradient-to-b from-green-600 to-emerald-400 rounded-full lg:hidden"></div>
+            <h2 className="text-3xl md:text-5xl text-center md:text-right font-extrabold text-slate-900 mb-3 leading-tight">
+              سجل <span className="text-green-700">الإنجازات</span>
+            </h2>
+            <p className="text-base text-center md:text-right md:text-lg text-slate-500 leading-relaxed pl-4">
+              بصماتنا في سوق العمل. تصفح مشاريعنا التي حققت عوائد استثنائية لعملائنا.
+            </p>
+          </div>
+
+          {/* Stats Cards - Responsive Grid */}
+          <div className="w-full lg:w-auto grid grid-cols-2 gap-4 bg-slate-50/80 p-4 rounded-2xl border border-slate-100">
+            <div className="text-center lg:text-right px-2">
+              <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">قيمة الاستثمارات</p>
+              <p className="text-2xl md:text-3xl font-bold  tracking-tight text-green-700">
+                <AnimatedCounter value={totalInvestment} formatter={formatCurrency} />
+              </p>
+            </div>
+            {/* <div className="w-px bg-slate-200 hidden lg:block"></div> */}
+            <div className="text-center lg:text-right px-2 border-r border-slate-200 lg:border-0">
+              <p className="text-slate-400 text-xs md:text-sm font-medium mb-1">مشروع ناجح</p>
+              <p className="text-2xl md:text-3xl font-bold text-green-700 tracking-tight">
+                <AnimatedCounter value={successfulProjects} formatter={(v) => `+${v}`} />
+              </p>
+            </div>
+          </div>
         </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+          
+          {/* --- Navigation / Filtering --- */}
+          <div className="w-full lg:w-1/4 flex-shrink-0">
+            
+            {/* MOBILE: Tag Cloud Layout (No Scrolling) */}
+            <div className="lg:hidden mb-6">
+              {/* <div className="flex items-center gap-2 mb-3 text-slate-400 text-sm font-medium">
+                <Filter className="w-4 h-4" />
+                <span>تصفية المشاريع:</span>
+              </div> */}
+              <div className="flex flex-wrap justify-center gap-2">
+                {menuItems.map((item) => {
+                  const isActive = activeSector === item.id
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveSector(item.id)}
+                      className={`relative px-4 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 border
+                        ${isActive 
+                          ? 'bg-green-600 text-white border-green-600 shadow-lg shadow-green-600/20' 
+                          : 'bg-white text-slate-600 border-slate-200 hover:border-green-300 hover:bg-green-50'
+                        }`}
+                    >
+                      {isActive && <Check className="w-3.5 h-3.5" />}
+                      {item.label}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
 
-        {/* --- Header & Stats Section --- */}
-        <motion.div
-          className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center mb-20 md:mb-24"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ staggerChildren: 0.2 }}
-        >
-          <motion.div className="lg:col-span-3 text-center lg:text-right" variants={{ hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" }} }}>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 mb-5 leading-tight">
-              إنجازاتنا
-            </h2>
-            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0">
-              كل مشروع هو بصمة نتركها في عالم الأعمال، وشاهد على قدرتنا في تحويل الفرص إلى نجاحات استثنائية.
-            </p>
-          </motion.div>
-          <motion.div className="lg:col-span-2 grid grid-cols-2 gap-8" variants={{ hidden: { opacity: 0, y: 50 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" }} }}>
-            <Stat icon={<Target size={36} />} value={1200} label="مشروع ناجح" formatter={(v) => `${v}+`} />
-            <Stat icon={<TrendingUp size={36} />} value={totalInvestment} label="قيمة الاستثمارات" formatter={formatCurrency} />
-          </motion.div>
-        </motion.div>
-
-        {/* --- Main Content Container --- */}
-        <div className="relative bg-white/60 backdrop-blur-xl rounded-2xl p-4 sm:p-6 md:p-8 border border-slate-200/80 shadow-md">
-          {/* --- Animated Sector Filters --- */}
-          <div className="flex justify-center border-b border-slate-200/90 mb-8 overflow-x-auto pb-2">
-            <div className="flex flex-nowrap -mx-2">
-            {topSectors.map(sector => (
-              <button
-                key={sector}
-                onClick={() => setActiveSector(sector)}
-                className={`relative px-3 sm:px-4 py-3 text-sm sm:text-base font-semibold whitespace-nowrap transition-colors duration-300
-                  ${activeSector === sector ? 'text-green-600' : 'text-slate-500 hover:text-slate-900'}`
-                }
-              >
-                {sector === "All" ? "أبرز المشاريع" : sectorNames[sector]}
-                {activeSector === sector && (
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#006C35] to-emerald-500"
-                    layoutId="underline"
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                )}
-              </button>
-            ))}
+            {/* DESKTOP: Sticky Sidebar List */}
+            <div className="hidden lg:block sticky top-24">
+              <h3 className="text-xs uppercase tracking-wider text-slate-400 font-bold mb-4">التصنيفات</h3>
+              <div className="flex flex-col gap-2">
+                {menuItems.map((item) => {
+                  const isActive = activeSector === item.id
+                  const Icon = item.icon
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveSector(item.id)}
+                      className={`group flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-300 w-full text-right
+                        ${isActive 
+                          ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/10 translate-x-2' 
+                          : 'bg-transparent hover:bg-white hover:shadow-md text-slate-600'
+                        }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className={`w-5 h-5 ${isActive ? 'text-green-400' : 'text-slate-400 group-hover:text-green-600'}`} />
+                        <span className="font-bold text-sm">{item.desktopLabel}</span>
+                      </div>
+                      <span className={`text-xs font-bold py-0.5 px-2 rounded-md ${isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                        {item.count}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+              
+              {/* Decorative CTA Box */}
+              <div className="mt-8 p-5 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100 rounded-2xl">
+                 <p className="text-green-800 font-bold text-sm mb-1">مشروعك القادم؟</p>
+                 <p className="text-green-600/80 text-xs mb-3 leading-relaxed">دعنا نضيف قصة نجاحك إلى هذه القائمة.</p>
+                 <a href="/contact" className="inline-flex items-center text-xs font-bold text-green-700 hover:text-green-900 border-b border-green-300 pb-0.5">
+                    ابدأ الآن <ArrowLeft className="w-3 h-3 mr-1" />
+                 </a>
+              </div>
             </div>
           </div>
 
-          {/* --- Projects Grid --- */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeSector}
-              className="grid grid-cols-1 md:grid-cols-2 gap-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-            >
-              {filteredProjects.map((project, index) => (
-                  <motion.div
-                    key={project.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
-                  >
-                    {/* --- NEW: Futuristic Card Design --- */}
-                    <a href={`/projects/${project.id}`} className="block h-full group">
-                      <div className="relative h-full p-6 rounded-2xl border transition-all duration-300 overflow-hidden bg-slate-50/50 backdrop-blur-lg border-slate-200/50 hover:border-emerald-400/60 hover:shadow-2xl hover:shadow-emerald-500/20">
-                        {/* Animated light orb on hover */}
-                        <div className="absolute top-0 -left-full w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl opacity-50 group-hover:left-10 transition-all duration-700 ease-in-out"></div>
-                        {/* Subtle dot pattern */}
-                        <div className="absolute inset-0 z-0 opacity-[0.04]" style={{
-                          backgroundImage: `radial-gradient(circle at center, #059669 1px, transparent 1px)`,
-                          backgroundSize: '25px 25px'
-                        }}></div>
-                        
-                        {/* The content must be on a relative div to be on top */}
-                        <div className="relative z-10 h-full flex flex-col">
-                            <div className="flex-grow">
-                                <div className="flex items-start justify-between mb-3">
-                                    <h4 className="font-bold text-lg text-slate-800 group-hover:text-green-700 transition-colors">{project.project_name}</h4>
-                                    <div className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-800 flex-shrink-0">{project.sector.ar}</div>
-                                </div>
-                                <p className="text-slate-600 text-sm mb-4 leading-relaxed line-clamp-2">{project.description}</p>
-                            </div>
-                            <div className="border-t border-slate-200/80 pt-4 flex items-center justify-between mt-auto">
-                                <div>
-                                    <div className="text-xs text-slate-500">إجمالي الاستثمار</div>
-                                    <div className="font-bold text-lg text-green-700">{formatCurrency(project.financial_indicators.total_investment)}</div>
-                                </div>
-                                <div className="flex items-center gap-1 text-sm font-semibold text-green-600 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
-                                    <span>التفاصيل</span>
-                                    <ArrowLeft className="h-4 w-4" />
-                                </div>
-                            </div>
-                        </div>
-                      </div>
-                    </a>
-                  </motion.div>
-                )
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </div>
+          {/* --- Grid Content --- */}
+          <div className="w-full lg:w-3/4 min-h-[400px]">
+            <LayoutGroup>
+              <motion.div 
+                layout
+                className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
+              >
+                <AnimatePresence mode="popLayout">
+                  {filteredProjects.map((project, index) => (
+                    <motion.div
+                      layout
+                      key={project.id}
+                      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                    >
+                      <ProjectCard project={project} />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
+            </LayoutGroup>
 
-        {/* --- Call to Action --- */}
-        <motion.div
-          className="text-center mt-16 md:mt-20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          <a href="/projects">
-            <Button
-              size="lg"
-              className="mx-auto flex items-center rounded-full bg-gradient-to-r from-[#38ae71] to-emerald-500 text-white shadow-lg shadow-green-500/30 hover:shadow-xl hover:shadow-emerald-500/40 transform hover:-translate-y-1 transition-all duration-300 group"
+            {/* Footer Link */}
+            <motion.div 
+              layout
+              className="mt-10 text-center lg:text-right"
             >
-              استكشف كافة الإنجازات
-              <ArrowLeft className="mr-3 h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1" />
-            </Button>
-          </a>
-        </motion.div>
+               <a href="/projects" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-slate-100 text-slate-700 font-bold text-sm hover:bg-green-600 hover:text-white transition-all duration-300 group">
+                  <span>عرض كافة المشاريع</span>
+                  <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+               </a>
+            </motion.div>
+          </div>
+
+        </div>
       </div>
     </section>
   )
 }
 
+// --- Responsive Project Card ---
+function ProjectCard({ project }) {
+  return (
+    <a href={`/projects/${project.id}`} className="block group h-full">
+      <article className="bg-white h-full rounded-2xl p-5 md:p-6 shadow-sm border border-slate-100 hover:border-green-500/30 hover:shadow-xl hover:shadow-green-900/5 transition-all duration-300 flex flex-col relative overflow-hidden">
+        
+        {/* Hover Accent Line */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-right"></div>
+
+        {/* Header */}
+        <div className="flex justify-between items-start mb-3 md:mb-4">
+          <span className="inline-block px-3 py-1 rounded-lg bg-slate-50 text-slate-600 text-[10px] md:text-xs font-bold group-hover:bg-green-50 group-hover:text-green-700 transition-colors">
+            {project.sector.ar}
+          </span>
+          <div className="flex items-center gap-1.5 text-green-600 bg-green-50/50 px-2.5 py-1 rounded-lg">
+             <TrendingUp className="w-3.5 h-3.5" />
+             <span className="text-[11px] md:text-xs font-bold font-mono">
+               {formatCurrency(project.financial_indicators.total_investment)}
+             </span>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-grow">
+          <h4 className="text-base md:text-lg font-bold text-slate-800 mb-2 group-hover:text-green-700 transition-colors">
+            {project.project_name}
+          </h4>
+          <p className="text-slate-500 text-xs md:text-sm leading-relaxed line-clamp-3">
+            {project.description}
+          </p>
+        </div>
+
+        {/* Simple Footer */}
+        <div className="mt-4 pt-4 border-t border-slate-50 flex justify-end">
+            <span className="text-xs font-bold text-slate-300 group-hover:text-green-600 flex items-center gap-1 transition-colors">
+               التفاصيل <ArrowLeft className="w-3 h-3" />
+            </span>
+        </div>
+      </article>
+    </a>
+  )
+}
